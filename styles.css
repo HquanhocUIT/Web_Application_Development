@@ -82,3 +82,68 @@ select,
 textarea {
   font: inherit;
 }
+
+/* T-02B: responsive 2D grids */
+main {
+  width: min(100%, 72rem);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+  min-width: 0;
+}
+
+header,
+nav,
+footer {
+  min-width: 0;
+}
+
+h1 {
+  overflow-wrap: anywhere;
+}
+
+#skills ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+#skills li,
+.project-card {
+  min-width: 0;
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow-wrap: anywhere;
+}
+
+.project-grid,
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.project-grid > *,
+.projects-grid > *,
+.project-card {
+  min-width: 0;
+}
+
+#contact a {
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 30rem) {
+  #skills ul {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+
+  .project-grid,
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+}
