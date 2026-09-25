@@ -17,9 +17,17 @@
 - **Verification:** Open Chrome DevTools → Elements → Accessibility and verify the landmark tree.
 - **Commit:** `git commit -m "feat(html): semantic landmark tree"`
 
+### T-02A: Tokens & Reset
+
+- Scope: Define global CSS custom properties and reset styles.
+- Use CSS variables for colors, spacing, typography, borders, and shadows.
+- Do not use hardcoded hex colors inside CSS rules.
+- Do not modify JavaScript or implement the theme switcher yet.
+- Verification: inspect :root variables and check that the page still renders correctly.
+- Commit: feat(css): tokens & reset
+
 ### Tasks intentionally postponed
 
-- T-02: Design tokens and CSS custom properties in `:root`.
 - T-03: Responsive grid layout.
 - T-04: Isolated audio engine.
 - T-05: Keyboard event listeners with repeat-rate throttling.
