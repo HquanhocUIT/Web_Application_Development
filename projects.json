@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Accessible Portfolio",
+    "description": "A semantic portfolio page focused on landmarks, keyboard access, and responsive presentation.",
+    "technologies": ["HTML5", "CSS3", "Web Accessibility"],
+    "url": "https://github.com/HquanhocUIT",
+    "linkLabel": "View Accessible Portfolio on GitHub"
+  },
+  {
+    "title": "Battery Shop Dashboard",
+    "description": "A commerce dashboard concept for browsing battery products and monitoring catalog data.",
+    "technologies": ["React", "TypeScript", "Supabase"],
+    "url": "https://github.com/HquanhocUIT",
+    "linkLabel": "View Battery Shop Dashboard on GitHub"
+  },
+  {
+    "title": "Data Analysis Study",
+    "description": "A data exploration project combining SQL, Python, and machine learning experiments.",
+    "technologies": ["Python", "SQL", "Machine Learning"],
+    "url": "https://github.com/HquanhocUIT",
+    "linkLabel": "View Data Analysis Study on GitHub"
+  }
+]
