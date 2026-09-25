@@ -15,3 +15,5 @@
 - Task T-03B: Live project data (fetch local `projects.json` and render project cards).
 
 - Task T-03C: Empty and error states (accessible retry button and loading recovery).
+
+### Prompt AI agent: https://chatgpt.com/share/6ab6a63d-ca6c-83ec-9c67-7aa5b0b60c1b
