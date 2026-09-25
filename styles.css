@@ -194,6 +194,34 @@ h1 {
   color: var(--color-accent);
 }
 
+.projects-status {
+  margin-block: var(--space-3);
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.project-retry {
+  min-height: 2.75rem;
+  max-width: 100%;
+  margin-inline-start: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-accent-contrast);
+  background-color: var(--color-accent);
+  border: 1px solid var(--color-accent-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.project-retry:hover {
+  background-color: var(--color-accent-strong);
+}
+
+.project-retry:focus-visible {
+  outline: 2px solid var(--color-accent-strong);
+  outline-offset: 2px;
+}
+
 /* T-03A: pure CSS loading skeleton */
 .project-card--skeleton {
   display: grid;

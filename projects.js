@@ -1,4 +1,6 @@
 const projectsList = document.querySelector("#projects-list");
+const projectsStatus = document.querySelector("#projects-status");
+const skeletonCardCount = 3;
 
 const isSafeProjectUrl = (value) => {
   try {
@@ -64,7 +66,39 @@ const createProjectCard = (project, index) => {
   return listItem;
 };
 
-const renderProjects = (projects) => {
+const createSkeletonCard = () => {
+  const listItem = document.createElement("li");
+  const article = document.createElement("article");
+  const titleSkeleton = document.createElement("span");
+  const descriptionSkeleton = document.createElement("span");
+  const shortLineSkeleton = document.createElement("span");
+
+  listItem.setAttribute("aria-hidden", "true");
+  article.className = "project-card project-card--skeleton";
+  titleSkeleton.className = "skeleton skeleton--title";
+  descriptionSkeleton.className = "skeleton";
+  shortLineSkeleton.className = "skeleton skeleton--line-short";
+  article.append(titleSkeleton, descriptionSkeleton, shortLineSkeleton);
+  listItem.append(article);
+
+  return listItem;
+};
+
+const renderLoadingState = () => {
+  const fragment = document.createDocumentFragment();
+
+  for (let index = 0; index < skeletonCardCount; index += 1) {
+    fragment.append(createSkeletonCard());
+  }
+
+  projectsList.replaceChildren(fragment);
+  projectsList.dataset.state = "loading";
+  projectsList.setAttribute("aria-busy", "true");
+  projectsList.setAttribute("aria-label", "Projects are loading");
+  projectsStatus.textContent = "Loading projects...";
+};
+
+const renderSuccessState = (projects) => {
   const fragment = document.createDocumentFragment();
 
   projects.forEach((project, index) => {
@@ -74,11 +108,43 @@ const renderProjects = (projects) => {
   projectsList.replaceChildren(fragment);
   projectsList.dataset.state = "success";
   projectsList.setAttribute("aria-busy", "false");
+  projectsList.setAttribute("aria-label", "Projects");
+  projectsStatus.textContent = "Projects loaded.";
+};
+
+const renderEmptyState = () => {
+  projectsList.replaceChildren();
+  projectsList.dataset.state = "empty";
+  projectsList.setAttribute("aria-busy", "false");
+  projectsList.setAttribute("aria-label", "No projects available");
+  projectsStatus.textContent = "No projects are available yet.";
+};
+
+const renderErrorState = () => {
+  const retryButton = document.createElement("button");
+
+  projectsList.replaceChildren();
+  projectsList.dataset.state = "error";
+  projectsList.setAttribute("aria-busy", "false");
+  projectsList.setAttribute("aria-label", "Projects failed to load");
+
+  retryButton.type = "button";
+  retryButton.className = "project-retry";
+  retryButton.textContent = "Retry";
+  retryButton.setAttribute("aria-label", "Retry loading projects");
+  retryButton.addEventListener("click", loadProjects);
+
+  projectsStatus.replaceChildren(
+    document.createTextNode("Unable to load projects. "),
+    retryButton
+  );
 };
 
 const loadProjects = async () => {
+  renderLoadingState();
+
   try {
-    const response = await fetch("projects.json");
+    const response = await fetch("./projects.json");
 
     if (!response.ok) {
       throw new Error("Projects could not be loaded.");
@@ -90,9 +156,14 @@ const loadProjects = async () => {
       throw new Error("Projects data is not an array.");
     }
 
-    renderProjects(projects);
+    if (projects.length === 0) {
+      renderEmptyState();
+      return;
+    }
+
+    renderSuccessState(projects);
   } catch {
-    // Keep the loading skeleton until the final error state is implemented.
+    renderErrorState();
   }
 };
 
