@@ -1,33 +1,17 @@
 # Task Decomposition
 
-## Project: Semantic DOM Architecture & A11y Contract
+## Project: Enterprise Developer Portfolio
 
-### T-01: Semantic DOM landmarks
+- Task T-01: Semantic DOM landmarks (0 divs, skip-link, 1 h1).
 
-- **Goal:** Build the initial semantic HTML landmark tree for the portfolio page.
-- **Scope:** HTML only; do not add CSS or JavaScript in this milestone.
-- **Requirements:**
-  - Use native semantic elements: `header`, `nav`, `main`, `section`, and `footer`.
-  - Use exactly one `h1`.
-  - Use zero `<div>` elements.
-  - Add an accessible skip link that points to `#main-content`.
-  - Give the navigation an accessible label.
-  - Give each content section a unique `id` for navigation.
-- **Acceptance check:** The page has a clear landmark hierarchy and the skip link moves keyboard focus to the main content.
-- **Verification:** Open Chrome DevTools → Elements → Accessibility and verify the landmark tree.
-- **Commit:** `git commit -m "feat(html): semantic landmark tree"`
+- Task T-02A: CSS tokens & reset (CSS variables in `:root`, reset, no hardcoded colors).
 
-### T-02A: Tokens & Reset
+- Task T-02B: Responsive 2D Grid layout (hero, skills, projects, contact, 375px mobile).
 
-- Scope: Define global CSS custom properties and reset styles.
-- Use CSS variables for colors, spacing, typography, borders, and shadows.
-- Do not use hardcoded hex colors inside CSS rules.
-- Do not modify JavaScript or implement the theme switcher yet.
-- Verification: inspect :root variables and check that the page still renders correctly.
-- Commit: feat(css): tokens & reset
+- Task T-02C: Theme Engine (light/dark mode, `localStorage` key `theme`, `aria-pressed`).
 
-### Tasks intentionally postponed
+- Task T-03A: Loading skeleton (pure CSS shimmer and reduced-motion support).
 
-- T-03: Responsive grid layout.
-- T-04: Isolated audio engine.
-- T-05: Keyboard event listeners with repeat-rate throttling.
+- Task T-03B: Live project data (fetch local `projects.json` and render project cards).
+
+- Task T-03C: Empty and error states (accessible retry button and loading recovery).
