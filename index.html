@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="theme.js" defer></script>
     <title>Nguyễn Phan Hoàng Quân | Information Systems Student</title>
   </head>
 
@@ -12,12 +14,21 @@
     <header>
       <h1>Nguyễn Phan Hoàng Quân</h1>
       <p>Third-Year Information Systems Student</p>
+      <button
+        type="button"
+        id="theme-toggle"
+        aria-pressed="false"
+        aria-label="Switch to dark theme"
+      >
+        Use dark theme
+      </button>
     </header>
 
     <nav aria-label="Primary navigation">
       <ul>
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -41,6 +52,27 @@
           <li>Node.js</li>
           <li>Machine Learning</li>
           <li>Python</li>
+        </ul>
+      </section>
+
+      <section id="projects" aria-labelledby="projects-heading">
+        <h2 id="projects-heading">Projects</h2>
+        <ul class="project-grid" aria-busy="true" aria-label="Projects are loading">
+          <li class="project-card project-card--skeleton" aria-hidden="true">
+            <span class="skeleton skeleton--title"></span>
+            <span class="skeleton"></span>
+            <span class="skeleton skeleton--line-short"></span>
+          </li>
+          <li class="project-card project-card--skeleton" aria-hidden="true">
+            <span class="skeleton skeleton--title"></span>
+            <span class="skeleton"></span>
+            <span class="skeleton skeleton--line-short"></span>
+          </li>
+          <li class="project-card project-card--skeleton" aria-hidden="true">
+            <span class="skeleton skeleton--title"></span>
+            <span class="skeleton"></span>
+            <span class="skeleton skeleton--line-short"></span>
+          </li>
         </ul>
       </section>
 

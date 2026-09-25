@@ -1,4 +1,6 @@
 :root {
+  color-scheme: light;
+
   /* Background colors */
   --color-background: #f8fafc;
   --color-background-muted: #eef2f7;
@@ -52,6 +54,31 @@
   /* Shadows */
   --shadow-sm: 0 1px 2px #0f172a14;
   --shadow-md: 0 4px 6px -1px #0f172a1a, 0 2px 4px -2px #0f172a1a;
+
+  /* Loading skeleton */
+  --skeleton-card-min-height: 12rem;
+  --skeleton-line-height: 0.75rem;
+  --skeleton-title-height: 1.25rem;
+  --skeleton-shimmer-duration: 1.5s;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-background: #0f172a;
+  --color-background-muted: #1e293b;
+  --color-surface: #111827;
+  --color-surface-raised: #1e293b;
+  --color-text: #f8fafc;
+  --color-text-muted: #cbd5e1;
+  --color-text-inverse: #0f172a;
+  --color-accent: #60a5fa;
+  --color-accent-strong: #93c5fd;
+  --color-accent-contrast: #0f172a;
+  --color-border: #334155;
+  --color-border-strong: #475569;
+  --shadow-sm: 0 1px 2px #02061766;
+  --shadow-md: 0 4px 6px -1px #02061780, 0 2px 4px -2px #02061780;
 }
 
 *,
@@ -135,6 +162,56 @@ h1 {
 
 #contact a {
   overflow-wrap: anywhere;
+}
+
+/* T-03A: pure CSS loading skeleton */
+.project-card--skeleton {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-height: var(--skeleton-card-min-height);
+}
+
+.skeleton {
+  display: block;
+  width: 100%;
+  height: var(--skeleton-line-height);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background-muted);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-background-muted) 0%,
+    var(--color-surface-raised) 50%,
+    var(--color-background-muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer var(--skeleton-shimmer-duration) linear infinite;
+}
+
+.skeleton--title {
+  width: 70%;
+  height: var(--skeleton-title-height);
+}
+
+.skeleton--line-short {
+  width: 45%;
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background-position: 0 0;
+  }
 }
 
 @media (min-width: 30rem) {
