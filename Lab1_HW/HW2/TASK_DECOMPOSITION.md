@@ -29,3 +29,10 @@
 - Task M4-03: Preserve FIFO event order.
 - Task M4-04: Verify recorded beat sequence.
 - Commit: `feat(recorder): implement FIFO beat recorder`
+
+### M5: UI Enhancement & Recorder Controls
+- [ ] Task M5-01: Improve drum kit layout and styling.
+- [ ] Task M5-02: Display recorded beats in the UI.
+- [ ] Task M5-03: Add Clear Recorder button.
+- [ ] Task M5-04: Reset queue and recording timestamp.
+- Commit: `feat(ui): enhance recorder interface`
