@@ -26,6 +26,8 @@ function playSound(soundName) {
     return;
   }
 
+  recordBeat(soundName);
+
   const audioInstance = new Audio(sourceAudio.src);
   audioInstance.play();
 }
@@ -51,3 +53,21 @@ document.addEventListener("keydown", (event) => {
 
   playSound(soundName);
 });
+
+const beatQueue = [];
+let recordingStartTime = null;
+
+function recordBeat(soundName) {
+  if (recordingStartTime === null) {
+    recordingStartTime = performance.now();
+  }
+
+  const timestamp = performance.now() - recordingStartTime;
+
+  beatQueue.push({
+    sound: soundName,
+    timestamp: timestamp,
+  });
+
+  console.log(beatQueue);
+}
