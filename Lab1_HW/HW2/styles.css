@@ -1,0 +1,212 @@
+/* =========================
+   Reset & Global
+========================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  background: #f4f7fb;
+  color: #1f2937;
+}
+
+
+/* =========================
+   Header
+========================= */
+
+header {
+  background: #111827;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+header h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+header p {
+  color: #d1d5db;
+}
+
+
+/* =========================
+   Main
+========================= */
+
+main {
+  width: min(92%, 900px);
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+section h2 {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+
+/* =========================
+   Drum Pads
+========================= */
+
+.drum-pads {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.drum-pad {
+  min-height: 120px;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.drum-pad:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  background-color: #eef2ff;
+}
+
+.drum-pad:active {
+  transform: scale(0.96);
+}
+
+.drum-pad:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+
+/* =========================
+   Key & Sound Name
+========================= */
+
+.key {
+  width: 42px;
+  height: 42px;
+  margin-bottom: 0.6rem;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.sound-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+
+/* =========================
+   Recorder
+========================= */
+
+#recorder {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+#recorder p {
+  color: #6b7280;
+}
+
+#beat-list {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+#beat-list li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#clear-recording {
+  margin-bottom: 1rem;
+  padding: 0.65rem 1.1rem;
+
+  border: none;
+  border-radius: 8px;
+
+  background-color: #dc2626;
+  color: white;
+
+  font-weight: 600;
+  cursor: pointer;
+}
+/* =========================
+   Clear button hover & focus
+========================= */
+#clear-recording:hover {
+  background-color: #b91c1c;
+}
+
+#clear-recording:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  text-align: center;
+  background: #111827;
+  color: white;
+}
+
+
+/* =========================
+   Desktop
+========================= */
+
+@media (min-width: 700px) {
+  .drum-pads {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+  }
+
+  .drum-pad {
+    min-height: 150px;
+  }
+}

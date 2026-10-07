@@ -1,7 +1,9 @@
 "use strict";
 
+const beatList = document.getElementById("beat-list");
 const drumPads = document.querySelectorAll(".drum-pad");
 const audioElements = document.querySelectorAll("audio[data-sound]");
+const clearRecordingButton = document.getElementById("clear-recording");
 
 const soundMap = new Map();
 
@@ -64,10 +66,37 @@ function recordBeat(soundName) {
 
   const timestamp = performance.now() - recordingStartTime;
 
-  beatQueue.push({
+  const beat = {
     sound: soundName,
     timestamp: timestamp,
-  });
+  };
 
-  console.log(beatQueue);
+  beatQueue.push(beat);
+
+  renderBeatQueue();
 }
+
+function renderBeatQueue() {
+  beatList.replaceChildren();
+
+  beatQueue.forEach((beat) => {
+    const item = document.createElement("li");
+
+    item.textContent =
+      `${beat.sound} - ${Math.round(beat.timestamp)} ms`;
+
+    beatList.appendChild(item);
+  });
+}
+
+clearRecordingButton.addEventListener("click", () => {
+  beatQueue.length = 0;
+  recordingStartTime = null;
+
+  beatList.replaceChildren();
+
+  const emptyMessage = document.createElement("li");
+  emptyMessage.textContent = "No beats recorded yet.";
+
+  beatList.appendChild(emptyMessage);
+});
