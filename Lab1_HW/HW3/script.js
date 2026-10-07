@@ -74,6 +74,10 @@ const registrationForm = document.getElementById("registration-form");
 const submitButton = document.getElementById("submit-button");
 const formStatus = document.getElementById("form-status");
 
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const phoneInput = document.getElementById("phone");
+
 const allowedTransitions = {
   [FORM_STATES.IDLE]: [
     FORM_STATES.SUBMITTING,
@@ -114,7 +118,6 @@ function setFormState(nextState) {
   if (formState === FORM_STATES.SUCCESS) {
     submitButton.disabled = false;
     submitButton.textContent = "Register";
-    formStatus.textContent = "Registration successful.";
   }
 
   if (formState === FORM_STATES.ERROR) {
@@ -136,14 +139,21 @@ async function submitRegistration() {
 
   console.log("Submit process count:", submitProcessCount);
 
-  /*
-   * Small delay only for M3-03 verification.
-   * This makes the Submitting state visible long enough
-   * to test repeated clicks.
-   */
   await new Promise((resolve) => {
     setTimeout(resolve, 2000);
   });
+}
+
+
+/* =========================
+   M4: Safe User Input Rendering
+========================= */
+
+function renderSuccessMessage() {
+  const userName = nameInput.value.trim();
+
+  formStatus.textContent =
+    `Registration successful. Welcome, ${userName}.`;
 }
 
 
@@ -179,7 +189,9 @@ registrationForm.addEventListener("submit", async (event) => {
 
   try {
     await submitRegistration();
+
     setFormState(FORM_STATES.SUCCESS);
+    renderSuccessMessage();
   } catch {
     setFormState(FORM_STATES.ERROR);
   }
