@@ -5,6 +5,15 @@ const audioElements = document.querySelectorAll("audio[data-sound]");
 
 const soundMap = new Map();
 
+const keyBindings = new Map([
+  ["a", "kick"],
+  ["s", "snare"],
+  ["d", "hihat"],
+  ["f", "clap"],
+  ["g", "tom"],
+  ["h", "crash"],
+]);
+
 audioElements.forEach((audio) => {
   const soundName = audio.dataset.sound;
   soundMap.set(soundName, audio);
@@ -26,4 +35,19 @@ drumPads.forEach((pad) => {
     const soundName = pad.dataset.sound;
     playSound(soundName);
   });
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.repeat) {
+    return;
+  }
+
+  const key = event.key.toLowerCase();
+  const soundName = keyBindings.get(key);
+
+  if (!soundName) {
+    return;
+  }
+
+  playSound(soundName);
 });
