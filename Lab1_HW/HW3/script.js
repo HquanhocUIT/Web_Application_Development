@@ -74,44 +74,16 @@ const registrationForm = document.getElementById("registration-form");
 const submitButton = document.getElementById("submit-button");
 const formStatus = document.getElementById("form-status");
 
-function setFormState(nextState) {
-  formState = nextState;
-  registrationForm.dataset.state = formState;
-
-  if (formState === FORM_STATES.IDLE) {
-    submitButton.textContent = "Register";
-    formStatus.textContent = "";
-  }
-
-  if (formState === FORM_STATES.SUBMITTING) {
-    submitButton.textContent = "Submitting...";
-    formStatus.textContent = "Processing your registration...";
-  }
-
-  if (formState === FORM_STATES.SUCCESS) {
-    submitButton.textContent = "Register";
-    formStatus.textContent = "Registration successful.";
-  }
-
-  if (formState === FORM_STATES.ERROR) {
-    submitButton.textContent = "Register";
-    formStatus.textContent = "Registration failed. Please try again.";
-  }
-}
-
-async function submitRegistration() {
-  /*
-   * Temporary submission layer.
-   * A real API request can replace this later.
-   */
-  return Promise.resolve();
-}
 const allowedTransitions = {
-  [FORM_STATES.IDLE]: [FORM_STATES.SUBMITTING],
+  [FORM_STATES.IDLE]: [
+    FORM_STATES.SUBMITTING,
+  ],
+
   [FORM_STATES.SUBMITTING]: [
     FORM_STATES.SUCCESS,
     FORM_STATES.ERROR,
   ],
+
   [FORM_STATES.SUCCESS]: [],
   [FORM_STATES.ERROR]: [],
 };
@@ -134,17 +106,81 @@ function setFormState(nextState) {
   registrationForm.dataset.state = formState;
 
   if (formState === FORM_STATES.SUBMITTING) {
+    submitButton.disabled = true;
     submitButton.textContent = "Submitting...";
     formStatus.textContent = "Processing your registration...";
   }
 
   if (formState === FORM_STATES.SUCCESS) {
+    submitButton.disabled = false;
     submitButton.textContent = "Register";
     formStatus.textContent = "Registration successful.";
   }
 
   if (formState === FORM_STATES.ERROR) {
+    submitButton.disabled = false;
     submitButton.textContent = "Register";
     formStatus.textContent = "Registration failed. Please try again.";
   }
 }
+
+
+/* =========================
+   M3: Double-Submit Prevention
+========================= */
+
+let submitProcessCount = 0;
+
+async function submitRegistration() {
+  submitProcessCount += 1;
+
+  console.log("Submit process count:", submitProcessCount);
+
+  /*
+   * Small delay only for M3-03 verification.
+   * This makes the Submitting state visible long enough
+   * to test repeated clicks.
+   */
+  await new Promise((resolve) => {
+    setTimeout(resolve, 2000);
+  });
+}
+
+
+/* =========================
+   Initial Form State
+========================= */
+
+registrationForm.dataset.state = formState;
+
+submitButton.disabled = false;
+submitButton.textContent = "Register";
+
+formStatus.textContent = "";
+
+
+/* =========================
+   Submit Handler
+========================= */
+
+registrationForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (formState === FORM_STATES.SUBMITTING) {
+    return;
+  }
+
+  if (!registrationForm.checkValidity()) {
+    registrationForm.reportValidity();
+    return;
+  }
+
+  setFormState(FORM_STATES.SUBMITTING);
+
+  try {
+    await submitRegistration();
+    setFormState(FORM_STATES.SUCCESS);
+  } catch {
+    setFormState(FORM_STATES.ERROR);
+  }
+});
