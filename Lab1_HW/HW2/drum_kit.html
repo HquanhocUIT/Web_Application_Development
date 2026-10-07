@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Interactive drum kit built with semantic HTML, CSS, and JavaScript."
+    />
+
+    <title>Drum Kit Engine</title>
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Drum Kit Engine</h1>
+      <p>Play drum sounds using the keyboard or drum pads.</p>
+    </header>
+
+    <main>
+      <section id="drum-kit" aria-labelledby="drum-kit-title">
+        <h2 id="drum-kit-title">Drum Pads</h2>
+
+        <div class="drum-pads">
+          <button type="button" class="drum-pad" data-sound="kick">
+            <span class="key">A</span>
+            <span class="sound-name">Kick</span>
+          </button>
+
+          <button type="button" class="drum-pad" data-sound="snare">
+            <span class="key">S</span>
+            <span class="sound-name">Snare</span>
+          </button>
+
+          <button type="button" class="drum-pad" data-sound="hihat">
+            <span class="key">D</span>
+            <span class="sound-name">Hi-Hat</span>
+          </button>
+
+          <button type="button" class="drum-pad" data-sound="clap">
+            <span class="key">F</span>
+            <span class="sound-name">Clap</span>
+          </button>
+
+          <button type="button" class="drum-pad" data-sound="tom">
+            <span class="key">G</span>
+            <span class="sound-name">Tom</span>
+          </button>
+
+          <button type="button" class="drum-pad" data-sound="crash">
+            <span class="key">H</span>
+            <span class="sound-name">Crash</span>
+          </button>
+        </div>
+        <audio data-sound="kick" src="sounds/kick.wav" preload="auto"></audio>
+        <audio data-sound="snare" src="sounds/snare.wav" preload="auto"></audio>
+        <audio data-sound="hihat" src="sounds/hihat.wav" preload="auto"></audio>
+        <audio data-sound="clap" src="sounds/clap.wav" preload="auto"></audio>
+        <audio data-sound="tom" src="sounds/tom.wav" preload="auto"></audio>
+        <audio data-sound="crash" src="sounds/crash.wav" preload="auto"></audio>
+      </section>
+
+      <section id="recorder" aria-labelledby="recorder-title">
+        <h2 id="recorder-title">Beat Recorder</h2>
+
+        <p>No beats recorded yet.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Drum Kit Engine</p>
+    </footer>
+  </body>
+</html>
