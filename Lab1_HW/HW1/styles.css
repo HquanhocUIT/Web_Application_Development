@@ -17,6 +17,7 @@ body {
     line-height: 1.6;
     background-color: #f5f7fa;
     color: #1f2937;
+    min-height: 100vh;
 }
 
 a:focus-visible {
