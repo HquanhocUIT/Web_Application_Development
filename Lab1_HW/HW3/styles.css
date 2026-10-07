@@ -81,6 +81,39 @@ section h2 {
   color: #6b7280;
 }
 
+.countdown-display {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background-color: #f9fafb;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.countdown-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.countdown-label {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+@media (min-width: 700px) {
+  .countdown-display {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
 
 /* =========================
    Form

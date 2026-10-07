@@ -24,8 +24,26 @@
       <section id="countdown" aria-labelledby="countdown-title">
         <h2 id="countdown-title">Event Countdown</h2>
 
-        <div class="countdown-display">
-          <p>Countdown will appear here.</p>
+        <div class="countdown-display" aria-label="Event countdown">
+          <div class="countdown-item">
+            <span id="days" class="countdown-value">00</span>
+            <span class="countdown-label">Days</span>
+          </div>
+
+          <div class="countdown-item">
+            <span id="hours" class="countdown-value">00</span>
+            <span class="countdown-label">Hours</span>
+          </div>
+
+          <div class="countdown-item">
+            <span id="minutes" class="countdown-value">00</span>
+            <span class="countdown-label">Minutes</span>
+          </div>
+
+          <div class="countdown-item">
+            <span id="seconds" class="countdown-value">00</span>
+            <span class="countdown-label">Seconds</span>
+          </div>
         </div>
       </section>
 
@@ -36,20 +54,12 @@
         <form>
           <div>
             <label for="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-            />
+            <input type="text" id="name" name="name" />
           </div>
 
           <div>
             <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-            />
+            <input type="email" id="email" name="email" />
           </div>
 
           <button type="submit">Register</button>
@@ -60,5 +70,6 @@
     <footer>
       <p>&copy; 2026 Resilient Landing Page</p>
     </footer>
+    <script src="script.js"></script>
   </body>
 </html>
