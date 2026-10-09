@@ -30,7 +30,188 @@
 
 ## 4. Mini-React Architecture Constraints
 
-Exercise 1 must implement these functions **from scratch**, in their respective authorized WBS tasks:
+Exercise 1 must implement these functions
+
+# Project Development Rules
+
+## Lab 2: Modern React Architecture, Virtual DOM & State Machines
+
+**Exercise 1:** Building a Mini-React VNode & Mounting Engine
+
+**Source of Truth:** `TASK_DECOMPOSITION.md`
+
+## Rule 1: Anti-One-Shot / Anti-Monolithic Development
+
+- ONE PROMPT = ONE WBS SUB-TASK.
+- Never implement the entire exercise in one response.
+- Never execute multiple WBS sub-tasks simultaneously.
+- Complete only the explicitly requested sub-task.
+- Stop after completing and verifying the current task.
+- Wait for explicit user approval before proceeding.
+
+## Rule 2: WBS-Driven Development
+
+- Follow `TASK_DECOMPOSITION.md` strictly.
+- Execute Tasks 1.1 through 1.6 in dependency order.
+- Verify each task before marking its checkbox as completed.
+- Keep incomplete tasks unchecked.
+- Never skip, merge, or automatically start another task.
+- Do not add unrelated implementation tasks.
+- Treat `TASK_DECOMPOSITION.md` as the authoritative progress tracker.
+
+## Rule 3: Technology Stack
+
+- Use Vanilla JavaScript with ES Modules.
+- Use HTML5 and CSS3.
+- Use native browser DOM APIs.
+- Do not use ReactJS, JSX, TypeScript, or external frameworks.
+- Do not introduce unnecessary libraries or dependencies.
+- Keep the project compatible with modern browsers.
+
+## Rule 4: Mini-React Architecture
+
+- Define VNode and Props contracts before implementation.
+- Implement `createTextElement()` to represent primitive text children.
+- Implement `createElement()` with nested children flattening and normalization.
+- Implement recursive `renderToDOM()` with text and element type guards.
+- Support standard props such as `id`, `role`, and `className`.
+- Support event handlers such as `onClick`.
+- Preserve VNode hierarchy and semantic HTML structure.
+- Avoid unnecessary `<div>` wrappers.
+- Keep the architecture minimal and limited to Exercise 1.
+
+## Rule 5: Security
+
+- Prevent XSS when rendering VNode text.
+- Use `document.createTextNode()` or equivalent safe DOM text APIs.
+- Never use `innerHTML` to render VNode text.
+- Treat `<script>alert(1)</script>` as literal text.
+- Never execute text content as JavaScript.
+- Attach event handlers using `addEventListener()`.
+- Do not evaluate event-handler strings as executable code.
+
+## Rule 6: Testing and Verification
+
+- Test semantic HTML elements:
+  - `<main>`
+  - `<section>`
+  - `<header>`
+  - `<h1>`
+  - `<p>`
+  - `<button>`
+- Test nested VNode structures and children ordering.
+- Test nested array flattening and primitive normalization.
+- Test standard props and event handlers.
+- Test XSS resistance using `<script>alert(1)</script>`.
+- Inspect the rendered DOM using Chrome DevTools.
+- Confirm that unnecessary wrapper elements are absent.
+- Never claim tests passed unless they were actually executed.
+- Clearly distinguish expected results from observed results.
+
+## Rule 7: Clean Code
+
+- Follow KISS (Keep It Simple, Stupid).
+- Follow YAGNI (You Aren't Gonna Need It).
+- Follow DRY (Don't Repeat Yourself).
+- Avoid unnecessary abstractions and premature optimization.
+- Keep functions small, readable, and focused.
+- Use clear and consistent naming conventions.
+- Do not refactor unrelated code.
+- Make only the changes required by the current WBS sub-task.
+
+## Rule 8: Code Delivery
+
+- Always provide complete source code directly in chat.
+- Use one code block per source file.
+- Ensure code is ready to copy and paste.
+- Never provide pseudocode or incomplete implementation snippets.
+- Do not assume access to the user's local repository or computer.
+- Do not generate unrelated files.
+- Preserve the required project structure:
+
+```text
+lab02_exercise1/
+├── index.html
+├── mini-react.js
+├── test-runner.js
+├── project_rules.md
+└── TASK_DECOMPOSITION.md
+```
+
+- File responsibilities:
+  - `index.html`: Main HTML page and mounting container.
+  - `mini-react.js`: Mini-React VNode and DOM engine.
+  - `test-runner.js`: Browser tests and mounting verification.
+  - `project_rules.md`: Development constraints.
+  - `TASK_DECOMPOSITION.md`: WBS and progress tracking.
+
+## Rule 9: Git Workflow
+
+- Keep Git commits atomic and task-focused.
+- Commit only files related to the completed task.
+- Follow the required implementation checkpoints:
+  - Commit 1: `feat(core): implement createElement factory`
+  - Commit 2: `feat(core): implement renderToDOM`
+- Provide appropriate Git commands after successful verification.
+- Do not automatically execute Git commands.
+- Never claim a commit or push succeeded without evidence.
+- Do not include unrelated changes in commits.
+
+## Rule 10: Task Completion
+
+Every WBS sub-task response must include:
+
+1. Complete implementation or requested document.
+2. Brief explanation of the changes.
+3. Verification instructions and actual results, if available.
+4. Instructions for updating the corresponding WBS checkbox.
+5. Appropriate Git commit and push commands when applicable.
+6. An explicit stop before the next sub-task.
+
+A task may be marked completed only after its acceptance criteria have been verified.
+
+If verification cannot be performed, report the limitation and leave the corresponding WBS checkbox unchecked.
+
+## Development Workflow
+
+1. Read the current task in `TASK_DECOMPOSITION.md`.
+2. Confirm that prerequisite tasks are completed.
+3. Implement only the requested sub-task.
+4. Provide complete, copy-paste-ready deliverables.
+5. Provide verification steps.
+6. Verify the task before marking it completed.
+7. Update only the corresponding WBS checkbox after verification.
+8. Provide appropriate Git commands.
+9. Stop and wait for explicit user permission.
+
+## Current Documentation Checkpoint
+
+**Task 0.2: Create Project Rules**
+
+Verification checklist:
+
+- [ ] `project_rules.md` contains all 10 required rules.
+- [ ] Project structure matches the required layout.
+- [ ] Rules are consistent with `TASK_DECOMPOSITION.md`.
+- [ ] No JavaScript or HTML implementation files were created or modified.
+- [ ] Task 1.1 has not been started.
+
+### Suggested Git Commands
+
+```bash
+git add project_rules.md
+git commit -m "docs: add project development rules"
+git push
+```
+
+These commands must be executed manually after reviewing and verifying the document.
+
+## Final Constraint
+
+**ONE PROMPT = ONE WBS SUB-TASK.**
+
+Never proceed to another task without explicit user approval.
+**from scratch**, in their respective authorized WBS tasks:
 
 - `createElement`
 - `createTextElement`
