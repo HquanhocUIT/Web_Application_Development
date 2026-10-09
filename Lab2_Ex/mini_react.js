@@ -5,9 +5,10 @@
  *
  * Task 1.1: Define VNode & Props Contracts
  * Task 1.2: Implement createTextElement() Factory
+ * Task 1.3: Implement createElement() Factory
  *
  * This module defines the data structures used by the Mini-React engine
- * and provides a factory for creating text VNodes.
+ * and provides factories for creating virtual DOM nodes.
  */
 
 /**
@@ -69,5 +70,40 @@ export function createTextElement(value) {
       nodeValue: String(value),
     },
     children: [],
+  };
+}
+
+/**
+ * Creates an element VNode with normalized children.
+ *
+ * Nested children arrays are flattened while preserving their order.
+ * Strings and numbers are converted into text VNodes.
+ * Null, undefined, and boolean children are ignored.
+ * Existing VNodes are preserved without modification.
+ *
+ * @param {string} type - HTML element tag name.
+ * @param {Props | null | undefined} props - Element properties.
+ * @param {...*} children - Child VNodes, primitives, or nested arrays.
+ * @returns {VNode} A virtual DOM element.
+ */
+export function createElement(type, props, ...children) {
+  const normalizedChildren = children
+    .flat(Infinity)
+    .filter(
+      (child) =>
+        child !== null &&
+        child !== undefined &&
+        typeof child !== "boolean"
+    )
+    .map((child) =>
+      typeof child === "string" || typeof child === "number"
+        ? createTextElement(child)
+        : child
+    );
+
+  return {
+    type,
+    props: { ...(props ?? {}) },
+    children: normalizedChildren,
   };
 }
