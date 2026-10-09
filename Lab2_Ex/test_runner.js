@@ -12,7 +12,7 @@ import {
   createElement,
   createTextElement,
   renderToDOM,
-} from "./mini-react.js";
+} from "./mini_react.js";
 
 // --------------------------------------------------
 // 1. Test environment
