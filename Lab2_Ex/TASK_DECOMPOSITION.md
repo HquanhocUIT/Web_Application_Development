@@ -2,104 +2,98 @@
 
 ## Exercise 1: Mini-React VNode & Mounting Engine
 
-- [ ] **Task 1.1: Inspect the existing project configuration and locate the intended Mini-React module and test entry points**
-  - Verify the language/tooling already configured (JavaScript or TypeScript) without changing configuration or installing dependencies.
-  - Identify whether `test-runner.js` exists and how it is expected to be executed.
+- [ ] **Task 1.1: Define VNode & Props contracts.**
+  - Define the expected VNode structure for element nodes and text nodes.
+  - Define the shape and purpose of `props`.
+  - Specify how `children` are stored in the VNode hierarchy.
+  - Establish handling expectations for standard props such as `id`, `role`, and `className`.
+  - Establish the naming convention for event handlers such as `onClick`.
+  - Keep the contracts minimal and limited to Exercise 1 requirements.
 
-- [ ] **Task 1.2: Define the `Props` contract**
-  - Specify the shape for DOM attributes, event-handler props, and normalized `children`.
-  - Keep the contract compatible with the project's existing JavaScript/TypeScript setup.
+- [ ] **Task 1.2: Implement `createTextElement()` factory.**
+  - Convert primitive child values into text VNodes.
+  - Ensure text values are represented as data rather than executable HTML.
+  - Keep the text VNode structure consistent with the contract defined in Task 1.1.
+  - Verify that text such as `<script>alert(1)</script>` remains literal text data.
 
-- [ ] **Task 1.3: Define the `VNode` contract**
-  - Specify the element `type` and `props` fields required by the Mini-React engine.
-  - Ensure the contract can represent both normal elements and text VNodes.
+- [ ] **Task 1.3: Implement `createElement()` with children flattening and normalization.**
+  - Accept an element type, props, and child values.
+  - Preserve the requested semantic element hierarchy without unnecessary wrapper elements.
+  - Flatten nested child arrays.
+  - Normalize primitive children into text VNodes using `createTextElement()`.
+  - Preserve existing VNode children.
+  - Store normalized children consistently in the resulting VNode.
+  - Support props needed by Exercise 1, including `id`, `role`, `className`, and event-handler props.
 
-- [ ] **Task 1.4: Verify the VNode and Props contracts**
-  - Confirm the contracts can represent semantic tags such as `main`, `header`, `section`, and `button` without wrapper-specific assumptions.
-  - Confirm text VNodes fit the same recursive rendering model.
+- [ ] **Task 1.4: Implement recursive `renderToDOM()` with text/element type guards.**
+  - Distinguish text VNodes from element VNodes.
+  - Render text VNodes using safe DOM text APIs only.
+  - Never use `innerHTML` to render VNode text content.
+  - Create DOM elements matching the VNode element type.
+  - Apply standard props such as `id`, `role`, and `className`.
+  - Register event handlers such as `onClick`.
+  - Recursively render and append child VNodes in the correct hierarchy.
+  - Verify that `<script>alert(1)</script>` renders as literal text and does not execute.
 
-- [ ] **Task 1.5: Create an atomic Git commit for the VNode/Props contract change**
-  - Commit only the contract-related change.
+- [ ] **Task 1.5: Create `index.html` and `test-runner.js` for browser testing.**
+  - Create the main browser page and mounting container.
+  - Load the Mini-React engine using ES Modules.
+  - Create browser-based verification cases for VNode creation and DOM mounting.
+  - Exercise semantic elements including `<main>`, `<section>`, `<header>`, `<h1>`, `<p>`, and `<button>`.
+  - Verify props, nested children, normalized text children, and click-handler behavior.
+  - Include a browser test for literal `<script>alert(1)</script>` text.
 
-- [ ] **Task 1.6: Implement `createTextElement`**
-  - Return the agreed text VNode shape.
-  - Store text as data that will later be mounted through a DOM text node rather than parsed as HTML.
+- [ ] **Task 1.6: Verify semantic HTML, XSS resistance, and DOM structure using Chrome DevTools.**
+  - Inspect the rendered DOM hierarchy in Chrome DevTools.
+  - Confirm that no unnecessary `<div>` wrappers were introduced.
+  - Confirm that semantic elements match the intended VNode hierarchy.
+  - Confirm `id`, `role`, and `className` are represented correctly in the DOM.
+  - Confirm `onClick` behavior works as expected.
+  - Confirm nested children arrays render in the expected order.
+  - Confirm primitive children render as text nodes.
+  - Confirm `<script>alert(1)</script>` appears as literal text and does not execute JavaScript.
+  - Mark Exercise 1 complete only after all verification checks pass.
 
-- [ ] **Task 1.7: Verify `createTextElement` behavior**
-  - Check representative string and primitive-derived text values produce the expected text VNode structure.
-  - Confirm HTML-looking text such as `<script>alert(1)</script>` remains plain text data at this stage.
+## Exercise 1 Requirements
 
-- [ ] **Task 1.8: Create an atomic Git commit for `createTextElement`**
-  - Commit only the text VNode factory change.
+- Use Vanilla JavaScript with ES Modules.
+- Implement only:
+  - `createElement`
+  - `createTextElement`
+  - `renderToDOM`
+- Use semantic HTML including:
+  - `<main>`
+  - `<section>`
+  - `<header>`
+  - `<h1>`
+  - `<p>`
+  - `<button>`
+- Preserve the VNode hierarchy without unnecessary `<div>` wrappers.
+- Flatten nested children arrays.
+- Normalize primitive children into text VNodes.
+- Handle standard props such as `id`, `role`, and `className`.
+- Support event handlers such as `onClick`.
+- Render text safely using DOM text APIs and never `innerHTML`.
+- Treat `<script>alert(1)</script>` as literal text without executing JavaScript.
+- Inspect and verify the resulting DOM using browser DevTools.
 
-- [ ] **Task 1.9: Implement recursive/nested child flattening for `createElement`**
-  - Flatten nested child arrays into one ordered child sequence.
-  - Preserve the original left-to-right child order.
+## Development Rules
 
-- [ ] **Task 1.10: Implement child normalization for `createElement`**
-  - Convert supported primitive children into text VNodes through `createTextElement`.
-  - Preserve already-created VNodes without wrapping them in extra DOM elements.
+- ONE PROMPT = ONE WBS SUB-TASK.
+- Never implement multiple WBS sub-tasks simultaneously.
+- Never generate the entire Mini-React engine in one response.
+- Finish and verify the current task before proceeding.
+- Do not start the next task without explicit user permission.
+- Follow KISS, YAGNI, and minimal-change principles.
+- Keep Git commits atomic and aligned with the required checkpoints.
 
-- [ ] **Task 1.11: Verify `createElement` flattening and normalization**
-  - Check nested arrays flatten correctly.
-  - Check primitive children become text VNodes.
-  - Check existing VNodes remain structurally unchanged and ordered.
+## Target Project Structure
 
-- [ ] **Task 1.12: Create an atomic Git commit for `createElement` child processing**
-  - Commit only the flattening/normalization change.
-
-- [ ] **Task 1.13: Implement the text-VNode branch of `renderToDOM`**
-  - Add the type guard/branch needed to recognize text VNodes.
-  - Create a real DOM `Text` node for text content.
-
-- [ ] **Task 1.14: Verify text mounting and XSS resistance**
-  - Mount a text VNode containing `<script>alert(1)</script>`.
-  - Verify the string is visible as text and no script executes.
-
-- [ ] **Task 1.15: Create an atomic Git commit for text-node mounting**
-  - Commit only the text rendering branch.
-
-- [ ] **Task 1.16: Implement DOM element creation for non-text VNodes**
-  - Create the real DOM element directly from the VNode `type`.
-  - Do not introduce unnecessary wrapper elements.
-
-- [ ] **Task 1.17: Implement DOM attribute/property handling**
-  - Apply non-event props to the created DOM element using behavior appropriate to the existing project requirements.
-  - Exclude `children` from DOM attributes.
-
-- [ ] **Task 1.18: Implement DOM event-handler binding**
-  - Recognize event-handler props and attach the corresponding DOM listeners.
-  - Keep event handling separate from normal attribute assignment.
-
-- [ ] **Task 1.19: Implement recursive child mounting in `renderToDOM`**
-  - Recursively render each normalized child VNode.
-  - Append mounted children in VNode order to the correct parent element.
-
-- [ ] **Task 1.20: Verify recursive mounting and prop handling**
-  - Confirm nested VNodes become the expected nested DOM tree.
-  - Confirm a representative normal attribute is applied.
-  - Confirm a representative event handler fires from the mounted element.
-
-- [ ] **Task 1.21: Create an atomic Git commit for DOM element creation, props, events, and recursive mounting**
-  - Commit only the completed `renderToDOM` element-mounting behavior.
-
-- [ ] **Task 1.22: Run the provided `test-runner.js` if available**
-  - Execute the repository-provided test command or runner without altering dependencies.
-  - Record any failing cases for follow-up rather than combining fixes into this verification task.
-
-- [ ] **Task 1.23: Verify semantic HTML structure against the VNode tree**
-  - Render a representative tree containing `main`, `header`, `section`, and `button`.
-  - Confirm each semantic DOM element appears at the same structural position as its corresponding VNode.
-  - Confirm no extra wrapper elements were introduced.
-
-- [ ] **Task 1.24: Verify XSS behavior in the fully mounted tree**
-  - Render `<script>alert(1)</script>` as a primitive child through the complete `createElement` → `renderToDOM` path.
-  - Confirm it becomes a text node and does not execute.
-
-- [ ] **Task 1.25: Inspect the mounted DOM in browser DevTools**
-  - Compare the live DOM hierarchy with the expected VNode hierarchy.
-  - Check semantic tags, text nodes, attributes, event-bound elements, child order, and absence of unnecessary wrappers.
-
-- [ ] **Task 1.26: Create a final atomic Git commit for any verification-only fixtures or narrowly scoped corrections, if needed**
-  - Keep each correction isolated; do not bundle unrelated fixes.
-  - If no repository changes are required after verification, do not create an empty commit.
+```text
+lab02_exercise1/
+├── index.html
+├── mini-react.js
+├── test-runner.js
+├── project_rules.md
+└── TASK_DECOMPOSITION.md
+```
