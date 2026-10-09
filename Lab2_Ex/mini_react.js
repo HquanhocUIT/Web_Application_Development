@@ -6,9 +6,10 @@
  * Task 1.1: Define VNode & Props Contracts
  * Task 1.2: Implement createTextElement() Factory
  * Task 1.3: Implement createElement() Factory
+ * Task 1.4: Implement Recursive renderToDOM()
  *
- * This module defines the data structures used by the Mini-React engine
- * and provides factories for creating virtual DOM nodes.
+ * This module defines virtual DOM node structures,
+ * provides VNode factories, and renders VNodes to DOM nodes.
  */
 
 /**
@@ -106,4 +107,54 @@ export function createElement(type, props, ...children) {
     props: { ...(props ?? {}) },
     children: normalizedChildren,
   };
+}
+
+/**
+ * Recursively converts a VNode into a real DOM node.
+ *
+ * Text VNodes are rendered using document.createTextNode().
+ * Element VNodes are rendered using document.createElement().
+ * Attributes and event handlers are applied to element nodes.
+ * Child nodes are recursively appended in their original order.
+ *
+ * The returned DOM node is not automatically mounted.
+ *
+ * @param {VNode} vnode - Virtual DOM node to render.
+ * @returns {Node} The resulting DOM node.
+ */
+export function renderToDOM(vnode) {
+  if (vnode.type === "TEXT_ELEMENT") {
+    return document.createTextNode(vnode.props.nodeValue);
+  }
+
+  const element = document.createElement(vnode.type);
+
+  for (const [name, value] of Object.entries(vnode.props)) {
+    if (name === "className") {
+      if (value != null) {
+        element.setAttribute("class", String(value));
+      }
+    } else if (
+      name.startsWith("on") &&
+      typeof value === "function"
+    ) {
+      element.addEventListener(
+        name.slice(2).toLowerCase(),
+        value
+      );
+    } else if (
+      name !== "children" &&
+      !name.startsWith("on") &&
+      value != null &&
+      typeof value !== "function"
+    ) {
+      element.setAttribute(name, String(value));
+    }
+  }
+
+  for (const child of vnode.children) {
+    element.appendChild(renderToDOM(child));
+  }
+
+  return element;
 }
