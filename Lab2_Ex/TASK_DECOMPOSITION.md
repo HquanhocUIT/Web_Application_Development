@@ -2,7 +2,7 @@
 
 ## Exercise 1: Mini-React VNode & Mounting Engine
 
-- [ ] **Task 1.1: Define VNode & Props contracts.**
+- [x] **Task 1.1: Define VNode & Props contracts.**
   - Define the expected VNode structure for element nodes and text nodes.
   - Define the shape and purpose of `props`.
   - Specify how `children` are stored in the VNode hierarchy.
@@ -10,13 +10,13 @@
   - Establish the naming convention for event handlers such as `onClick`.
   - Keep the contracts minimal and limited to Exercise 1 requirements.
 
-- [ ] **Task 1.2: Implement `createTextElement()` factory.**
+- [x] **Task 1.2: Implement `createTextElement()` factory.**
   - Convert primitive child values into text VNodes.
   - Ensure text values are represented as data rather than executable HTML.
   - Keep the text VNode structure consistent with the contract defined in Task 1.1.
   - Verify that text such as `<script>alert(1)</script>` remains literal text data.
 
-- [ ] **Task 1.3: Implement `createElement()` with children flattening and normalization.**
+- [x] **Task 1.3: Implement `createElement()` with children flattening and normalization.**
   - Accept an element type, props, and child values.
   - Preserve the requested semantic element hierarchy without unnecessary wrapper elements.
   - Flatten nested child arrays.
@@ -25,7 +25,7 @@
   - Store normalized children consistently in the resulting VNode.
   - Support props needed by Exercise 1, including `id`, `role`, `className`, and event-handler props.
 
-- [ ] **Task 1.4: Implement recursive `renderToDOM()` with text/element type guards.**
+- [x] **Task 1.4: Implement recursive `renderToDOM()` with text/element type guards.**
   - Distinguish text VNodes from element VNodes.
   - Render text VNodes using safe DOM text APIs only.
   - Never use `innerHTML` to render VNode text content.
@@ -35,7 +35,7 @@
   - Recursively render and append child VNodes in the correct hierarchy.
   - Verify that `<script>alert(1)</script>` renders as literal text and does not execute.
 
-- [ ] **Task 1.5: Create `index.html` and `test-runner.js` for browser testing.**
+- [x] **Task 1.5: Create `index.html` and `test-runner.js` for browser testing.**
   - Create the main browser page and mounting container.
   - Load the Mini-React engine using ES Modules.
   - Create browser-based verification cases for VNode creation and DOM mounting.
@@ -43,7 +43,7 @@
   - Verify props, nested children, normalized text children, and click-handler behavior.
   - Include a browser test for literal `<script>alert(1)</script>` text.
 
-- [ ] **Task 1.6: Verify semantic HTML, XSS resistance, and DOM structure using Chrome DevTools.**
+- [x] **Task 1.6: Verify semantic HTML, XSS resistance, and DOM structure using Chrome DevTools.**
   - Inspect the rendered DOM hierarchy in Chrome DevTools.
   - Confirm that no unnecessary `<div>` wrappers were introduced.
   - Confirm that semantic elements match the intended VNode hierarchy.
