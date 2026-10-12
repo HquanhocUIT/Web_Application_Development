@@ -41,19 +41,30 @@ describe('resilient async data fetching', () => {
     expect(result.current.view.status).toBe('SUCCESS');
   });
 
-  it('aborts stale request and ignores late success even when fetch ignores abort', async () => {
-    const old = deferred<FeedItem[]>();
-    const newest = deferred<FeedItem[]>();
-    mockedFetch.mockReturnValueOnce(old.promise).mockReturnValueOnce(newest.promise);
+  it('ignores duplicate load calls while the same request is in flight', async () => {
+    const pending = deferred<FeedItem[]>();
+    mockedFetch.mockReturnValueOnce(pending.promise);
     const { result } = renderHook(() => useDataLoader());
-    let oldAction!: Promise<void>;
-    let newAction!: Promise<void>;
-    act(() => { oldAction = result.current.load(); });
-    const oldSignal = mockedFetch.mock.calls[0][1];
-    act(() => { newAction = result.current.load(); });
-    expect(oldSignal.aborted).toBe(true);
-    await act(async () => { newest.resolve(items); await newAction; });
-    await act(async () => { old.resolve([]); await oldAction; });
+    let first!: Promise<void>;
+    act(() => { first = result.current.load(); void result.current.load(); });
+    expect(result.current.view.status).toBe('LOADING');
+    expect(mockedFetch).toHaveBeenCalledTimes(1);
+    await act(async () => { pending.resolve(items); await first; });
+    expect(result.current.view.status).toBe('SUCCESS');
+  });
+
+  it('prevents duplicate retries while retry request is loading', async () => {
+    const pending = deferred<FeedItem[]>();
+    mockedFetch.mockRejectedValueOnce(new Error('Connection unavailable'))
+      .mockReturnValueOnce(pending.promise);
+    const { result } = renderHook(() => useDataLoader());
+    await act(async () => { await result.current.load(); });
+    expect(result.current.view.status).toBe('ERROR');
+    let retry!: Promise<void>;
+    act(() => { retry = result.current.load(); void result.current.load(); });
+    expect(result.current.view.status).toBe('LOADING');
+    expect(mockedFetch).toHaveBeenCalledTimes(2);
+    await act(async () => { pending.resolve(items); await retry; });
     expect(result.current.view).toEqual({ status: 'SUCCESS', data: items });
   });
 
@@ -68,6 +79,73 @@ describe('resilient async data fetching', () => {
     expect(signal.aborted).toBe(true);
     await act(async () => { old.reject(new Error('Late failure')); await action; });
     await act(async () => { await result.current.load(); });
+    expect(mockedFetch).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('async lifecycle regression scenarios', () => {
+  it('retries after several consecutive failures then succeeds', async () => {
+    mockedFetch.mockRejectedValueOnce(new Error('First outage'))
+      .mockRejectedValueOnce(new Error('Second outage'))
+      .mockRejectedValueOnce(new Error('Third outage'))
+      .mockResolvedValueOnce(items);
+    const { result } = renderHook(() => useDataLoader());
+    for (const message of ['First outage', 'Second outage', 'Third outage']) {
+      await act(async () => { await result.current.load(); });
+      expect(result.current.view).toEqual({ status: 'ERROR', error: message });
+    }
+    await act(async () => { await result.current.load(); });
+    expect(result.current.view).toEqual({ status: 'SUCCESS', data: items });
+    expect(mockedFetch).toHaveBeenCalledTimes(4);
+  });
+
+  it('coalesces a burst of retry attempts into a single in-flight request', async () => {
+    const retry = deferred<FeedItem[]>();
+    mockedFetch.mockRejectedValueOnce(new Error('Offline')).mockReturnValueOnce(retry.promise);
+    const { result } = renderHook(() => useDataLoader());
+    await act(async () => { await result.current.load(); });
+    expect(result.current.view.status).toBe('ERROR');
+    let inFlight!: Promise<void>;
+    act(() => {
+      inFlight = result.current.load();
+      for (let n = 0; n < 12; n++) void result.current.load();
+    });
+    expect(mockedFetch).toHaveBeenCalledTimes(2);
+    expect(result.current.view.status).toBe('LOADING');
+    await act(async () => { retry.resolve(items); await inFlight; });
+    expect(result.current.view).toEqual({ status: 'SUCCESS', data: items });
+  });
+
+  it('does not accept an old request rejection after a newer fetch has started', async () => {
+    const old = deferred<FeedItem[]>();
+    const latest = deferred<FeedItem[]>();
+    mockedFetch.mockReturnValueOnce(old.promise).mockReturnValueOnce(latest.promise);
+    const { result } = renderHook(() => useDataLoader());
+    let first!: Promise<void>;
+    act(() => { first = result.current.load(); });
+    const firstSignal = mockedFetch.mock.calls[0][1];
+    // Finish request #1 without settling its continuation until a newer load begins.
+    // The loader must continue to ignore the old rejection after the new request starts.
+    await act(async () => { old.reject(new Error('First request failed')); await first; });
+    expect(result.current.view.status).toBe('ERROR');
+    let second!: Promise<void>;
+    act(() => { second = result.current.load(); });
+    expect(firstSignal.aborted).toBe(true);
+    expect(result.current.view.status).toBe('LOADING');
+    await act(async () => { latest.resolve(items); await second; });
+    expect(result.current.view).toEqual({ status: 'SUCCESS', data: items });
+  });
+
+  it('aborts a pending request on unmount and ignores a late success', async () => {
+    const pending = deferred<FeedItem[]>();
+    mockedFetch.mockReturnValueOnce(pending.promise);
+    const { result, unmount } = renderHook(() => useDataLoader());
+    let inFlight!: Promise<void>;
+    act(() => { inFlight = result.current.load(); });
+    const signal = mockedFetch.mock.calls[0][1];
+    unmount();
+    expect(signal.aborted).toBe(true);
+    await act(async () => { pending.resolve(items); await inFlight; });
     expect(mockedFetch).toHaveBeenCalledTimes(1);
   });
 });

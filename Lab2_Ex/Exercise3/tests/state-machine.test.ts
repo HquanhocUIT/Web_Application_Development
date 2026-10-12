@@ -54,3 +54,38 @@ describe('finite ViewState machine', () => {
     expect(before.data).toEqual(['item']);
   });
 });
+
+describe('required end-to-end state transition sequences', () => {
+  it('completes IDLE → LOADING → SUCCESS with exactly one active view', () => {
+    let state: ViewState<number[]> = { status: 'IDLE' };
+    state = transition(state, { type: 'FETCH' });
+    expect(state).toEqual({ status: 'LOADING' });
+    state = transition(state, { type: 'RESOLVE', data: [1, 2] });
+    expect(state).toEqual({ status: 'SUCCESS', data: [1, 2] });
+    expect(Object.keys(state).sort()).toEqual(['data', 'status']);
+  });
+
+  it('completes IDLE → LOADING → ERROR → LOADING → SUCCESS', () => {
+    let state: ViewState<number[]> = { status: 'IDLE' };
+    state = transition(state, { type: 'FETCH' });
+    state = transition(state, { type: 'REJECT', error: 'Network unavailable' });
+    expect(state).toEqual({ status: 'ERROR', error: 'Network unavailable' });
+    state = transition(state, { type: 'RETRY' });
+    expect(state).toEqual({ status: 'LOADING' });
+    state = transition(state, { type: 'RESOLVE', data: [42] });
+    expect(state).toEqual({ status: 'SUCCESS', data: [42] });
+  });
+
+  it('handles repeated failures and retries without carrying stale fields', () => {
+    let state: ViewState<number[]> = { status: 'IDLE' };
+    state = transition(state, { type: 'FETCH' });
+    for (let attempt = 1; attempt <= 5; attempt += 1) {
+      state = transition(state, { type: 'REJECT', error: `Failure ${attempt}` });
+      expect(state).toEqual({ status: 'ERROR', error: `Failure ${attempt}` });
+      state = transition(state, { type: 'RETRY' });
+      expect(state).toEqual({ status: 'LOADING' });
+    }
+    state = transition(state, { type: 'RESOLVE', data: [5] });
+    expect(state).toEqual({ status: 'SUCCESS', data: [5] });
+  });
+});
