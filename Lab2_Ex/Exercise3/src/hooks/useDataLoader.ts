@@ -26,7 +26,11 @@ export function useDataLoader() {
     // Ignore calls after unmount rather than launching a request that cannot render.
     if (!mounted.current) return;
 
-    // Invalidate and cancel the previous request BEFORE starting the new one.
+    // A second click while loading must not create a duplicate request.
+    // The ref is updated synchronously (React state updates are asynchronous).
+    if (activeController.current && !activeController.current.signal.aborted) return;
+
+    // Invalidate and cancel any previous completed/stale request BEFORE starting.
     const id = ++requestId.current;
     activeController.current?.abort();
     const controller = new AbortController();
