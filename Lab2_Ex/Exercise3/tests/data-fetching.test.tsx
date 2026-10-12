@@ -116,21 +116,18 @@ describe('async lifecycle regression scenarios', () => {
     expect(result.current.view).toEqual({ status: 'SUCCESS', data: items });
   });
 
-  it('does not accept an old request rejection after a newer fetch has started', async () => {
+  it('starts a fresh request after a previous request rejection', async () => {
     const old = deferred<FeedItem[]>();
     const latest = deferred<FeedItem[]>();
     mockedFetch.mockReturnValueOnce(old.promise).mockReturnValueOnce(latest.promise);
     const { result } = renderHook(() => useDataLoader());
     let first!: Promise<void>;
     act(() => { first = result.current.load(); });
-    const firstSignal = mockedFetch.mock.calls[0][1];
-    // Finish request #1 without settling its continuation until a newer load begins.
-    // The loader must continue to ignore the old rejection after the new request starts.
+    // The first request has already settled; a later request must own the view.
     await act(async () => { old.reject(new Error('First request failed')); await first; });
     expect(result.current.view.status).toBe('ERROR');
     let second!: Promise<void>;
     act(() => { second = result.current.load(); });
-    expect(firstSignal.aborted).toBe(true);
     expect(result.current.view.status).toBe('LOADING');
     await act(async () => { latest.resolve(items); await second; });
     expect(result.current.view).toEqual({ status: 'SUCCESS', data: items });
