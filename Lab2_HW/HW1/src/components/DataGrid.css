@@ -1,0 +1,124 @@
+.data-grid-container {
+  --grid-text: #172033;
+  --grid-border: #7f8da0;
+  --grid-header-background: #e8eef5;
+  --grid-row-background: #ffffff;
+  --grid-row-alternate: #f8fafc;
+  --grid-row-hover: #f1f6fb;
+  --grid-row-selected: #e1efff;
+  --grid-row-selected-hover: #d6e8ff;
+  --grid-selection-indicator: #0b4f6c;
+  --grid-focus-indicator: #005fcc;
+  --grid-muted-text: #3f4d63;
+
+  width: 100%;
+  margin-top: 1.25rem;
+  overflow-x: auto;
+  border: 1px solid var(--grid-border);
+  border-radius: 0.75rem;
+  background: var(--grid-row-background);
+  box-shadow: 0 1px 3px rgb(23 32 51 / 8%);
+}
+
+.data-grid-table {
+  width: 100%;
+  min-width: 48rem;
+  border-collapse: collapse;
+  color: var(--grid-text);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.data-grid-table caption {
+  padding: 1rem 1.125rem;
+  border-bottom: 1px solid #c4ced9;
+  color: var(--grid-text);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.data-grid-table th {
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid #75859a;
+  background: var(--grid-header-background);
+  color: var(--grid-text);
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.data-grid-table th + th,
+.data-grid-table td + td {
+  border-left: 1px solid #d7e0e9;
+}
+
+.data-grid-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid #d7e0e9;
+  background: var(--grid-row-background);
+  color: var(--grid-text);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.data-grid-table tbody tr:nth-child(even) > td {
+  background: var(--grid-row-alternate);
+}
+
+.data-grid-table tbody tr:hover > td {
+  background: var(--grid-row-hover);
+}
+
+.data-grid-table tbody tr.data-grid-row--selected > td {
+  background: var(--grid-row-selected);
+  box-shadow: inset 0 1px 0 var(--grid-selection-indicator),
+    inset 0 -1px 0 var(--grid-selection-indicator);
+}
+
+.data-grid-table tbody tr.data-grid-row--selected > td:first-child {
+  box-shadow: inset 4px 0 0 var(--grid-selection-indicator),
+    inset 0 1px 0 var(--grid-selection-indicator),
+    inset 0 -1px 0 var(--grid-selection-indicator);
+}
+
+.data-grid-table tbody tr.data-grid-row--selected:hover > td {
+  background: var(--grid-row-selected-hover);
+}
+
+.data-grid-table td[colspan] {
+  padding: 2rem 1rem;
+  color: var(--grid-muted-text);
+  font-weight: 600;
+  text-align: center;
+}
+
+.data-grid-table :focus-visible {
+  outline: 3px solid var(--grid-focus-indicator);
+  outline-offset: 2px;
+  border-radius: 0.2rem;
+}
+
+.data-grid-sort-button {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding-inline: 0.25rem;
+  border: 0;
+  border-radius: 0.2rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.data-grid-sort-button:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .data-grid-table tbody td {
+    transition: background-color 120ms ease-out;
+  }
+}

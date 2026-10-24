@@ -1,15 +1,60 @@
 .app-shell {
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: 2rem;
+  width: min(100%, 78rem);
+  margin-inline: auto;
+  padding: clamp(1rem, 4vw, 3rem);
 }
 
-.app-shell h1 {
-  margin: 0 0 1rem;
-  font-size: clamp(2rem, 5vw, 3rem);
-  line-height: 1.15;
+.page-header {
+  padding-block: 1rem 2rem;
+  border-bottom: 1px solid #d9e1eb;
 }
 
-.app-shell p {
+.page-eyebrow {
+  margin: 0 0 0.75rem;
+  color: #3f4d63;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.page-header h1 {
   margin: 0;
+  color: #172033;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.page-description {
+  max-width: 48rem;
+  margin: 1rem 0 0;
+  color: #3f4d63;
+}
+
+.page-main {
+  padding-block: 2rem 4rem;
+}
+
+.grid-section {
+  width: 100%;
+}
+
+.grid-section-heading h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.grid-section-heading p {
+  max-width: 48rem;
+  margin: 0.5rem 0 0;
+  color: #3f4d63;
+}
+
+@media (max-width: 40rem) {
+  .page-main {
+    padding-block: 1.5rem 2.5rem;
+  }
 }
