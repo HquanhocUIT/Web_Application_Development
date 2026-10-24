@@ -132,7 +132,9 @@
 - **Mô tả:** Kiểm tra cấu trúc bảng và accessibility tree; xác minh `role="grid"`, `role="row"`, `role="gridcell"` cùng tên header/cell và trạng thái sort/filter/page/selection; kiểm tra thông báo thay đổi, contrast, focus và screen reader.
 - **Hoàn thành khi:** Semantic table vẫn được giữ; vai trò/trạng thái cần cho tương tác grid được accessibility tree công bố đúng; kiểm tra keyboard/screen reader và tiêu chí WCAG 2.2 AA liên quan được ghi lại; chữ thường đạt 4.5:1 và trạng thái không chỉ dựa vào màu. Có commit M6.
 
-- **Trạng thái kiểm tra:** Build/lint và đo tương phản đã đạt; Chrome headless làm renderer crash trước khi accessibility tree có thể được đọc. Chưa đánh dấu M6 hoàn thành cho đến khi xác minh được cây trợ năng.
+- **Đã rà soát mã:** Bảng giữ semantic HTML; `grid`, `row`, `columnheader`, `gridcell`, `aria-selected`, `aria-sort`, `scope`/`headers`, accessible names, live status, các handler bàn phím và xử lý focus đều có trong vị trí dự kiến.
+- **Giới hạn runtime:** Chrome headless crash trước khi trả Accessibility Tree; Chrome thường chạy ẩn thoát trước khi DevTools mở. Narrator có cài đặt nhưng không thể xác nhận nội dung đọc trong phiên này. Vì vậy Accessibility Tree sau sửa, thao tác bàn phím runtime và screen reader vẫn chưa xác minh.
+- **Tiếp tục:** Giữ M6 ở trạng thái đang xác minh; kiểm tra các mục runtime còn thiếu trong M7 khi môi trường trình duyệt/AT có thể quan sát được.
 
 ## M7: Responsive, Testing, Lighthouse và AI Audit — Chưa bắt đầu
 
