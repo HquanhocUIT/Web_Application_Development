@@ -164,6 +164,76 @@
   opacity: 1;
 }
 
+.data-grid-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #7f8da0;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  color: #172033;
+}
+
+.data-grid-pagination-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-size: 0.925rem;
+}
+
+.data-grid-pagination-info p {
+  margin: 0;
+}
+
+.data-grid-pagination-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.data-grid-pagination-button {
+  min-width: 6rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid #506078;
+  border-radius: 0.35rem;
+  background: #ffffff;
+  color: #172033;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.data-grid-pagination-button:hover:not(:disabled) {
+  background: #e8eef5;
+}
+
+.data-grid-pagination-button:disabled {
+  border-color: #7f8da0;
+  background: #e8eef5;
+  color: #3f4d63;
+  cursor: not-allowed;
+}
+
+.data-grid-pagination-button:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+@media (max-width: 40rem) {
+  .data-grid-pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .data-grid-pagination-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .data-grid-table tbody td {
     transition: background-color 120ms ease-out;

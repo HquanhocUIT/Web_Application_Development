@@ -19,7 +19,7 @@
 | M2 — Thiết kế Data, Props và State | Hoàn thành |
 | M3 — Xây dựng Semantic DataGrid | Hoàn thành |
 | M4 — Sorting và Filtering | Hoàn thành |
-| M5 — Pagination | Chưa bắt đầu |
+| M5 — Pagination | Hoàn thành |
 | M6 — Keyboard Navigation và Accessibility | Chưa bắt đầu |
 | M7 — Responsive, Testing, Lighthouse và AI Audit | Chưa bắt đầu |
 
@@ -98,19 +98,19 @@
 - **Mô tả:** Hoàn tất/xác minh `aria-sort` chỉ trên `th` đang sort (bỏ thuộc tính khi không sort), tên nút, Tab/Enter/Space, focus và thông báo screen reader nếu công cụ có sẵn. Thêm điều khiển lọc có label, lọc theo các cột `filterable`, quy tắc khớp không phân biệt hoa thường, xóa truy vấn và trạng thái không có kết quả; xử lý filter trước sort.
 - **Hoàn thành khi:** Sort tăng/giảm/none có trạng thái truy cập đúng; filter khớp/không khớp/rỗng hoạt động, có label và phối hợp với sort; không mutate props; build/lint và kiểm tra trình duyệt hoàn tất. Commit M4 gồm cập nhật WBS cùng Sorting/Filtering sau khi milestone hoàn thành.
 
-## M5: Pagination — Chưa bắt đầu
+## M5: Pagination — Hoàn thành
 
-### M5-01 — Áp dụng phân trang sau filter và sort
+### M5-01 — Áp dụng phân trang sau filter và sort [Hoàn thành]
 
 - **Mô tả:** Tính số trang và lát hàng đang hiển thị sau thứ tự filter → sort → pagination; dùng page size đã chọn/giá trị mặc định.
 - **Hoàn thành khi:** Trang hiện tại và page count luôn hợp lệ khi dữ liệu, filter, sort hoặc page size thay đổi; dữ liệu gốc không bị sửa.
 
-### M5-02 — Tạo điều khiển và thông tin trang truy cập được
+### M5-02 — Tạo điều khiển và thông tin trang truy cập được [Hoàn thành]
 
 - **Mô tả:** Tạo nút trang trước/sau (và đầu/cuối nếu phù hợp), nhãn truy cập được, trạng thái disabled cùng thông tin phạm vi hàng/trang.
 - **Hoàn thành khi:** Điều khiển dùng được bằng bàn phím; trạng thái đầu/cuối, một trang và không có kết quả được thể hiện rõ.
 
-### M5-03 — Kiểm tra pagination và commit M5
+### M5-03 — Kiểm tra pagination và commit M5 [Hoàn thành]
 
 - **Mô tả:** Kiểm tra dữ liệu rỗng, ít hơn một trang, nhiều trang, biên trang và thay đổi filter/sort; chạy build/lint và rà soát diff.
 - **Hoàn thành khi:** Đúng lát dữ liệu và phạm vi hàng trong mọi trường hợp đã chọn; có commit riêng M5 chỉ gồm file HW1.
