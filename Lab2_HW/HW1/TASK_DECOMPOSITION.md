@@ -21,7 +21,7 @@
 | M4 — Sorting và Filtering | Hoàn thành |
 | M5 — Pagination | Hoàn thành |
 | M6 — Keyboard Navigation và Accessibility | Đang xác minh Accessibility tree |
-| M7 — Responsive, Testing, Lighthouse và AI Audit | Chưa bắt đầu |
+| M7 — Responsive, Testing, Lighthouse và AI Audit | Đang thực hiện M7-02; kiểm tra runtime còn thiếu |
 
 ## M0: Khảo sát và lập kế hoạch — Hoàn thành
 
@@ -81,7 +81,7 @@
 - **Mô tả:** Kiểm tra sáu cột, 18 hàng, empty state, semantic markup, keys, build/lint và giao diện trước khi commit M3.
 - **Hoàn thành khi:** Render cơ bản chính xác, không lỗi đã biết trong phạm vi M3 và có commit M3.
 
-## M4: Sorting và Filtering — Đang thực hiện
+## M4: Sorting và Filtering — Hoàn thành
 
 ### M4-01 — Chốt kiểu, comparator và quy tắc sorting [Hoàn thành]
 
@@ -136,19 +136,25 @@
 - **Giới hạn runtime:** Chrome headless crash trước khi trả Accessibility Tree; Chrome thường chạy ẩn thoát trước khi DevTools mở. Narrator có cài đặt nhưng không thể xác nhận nội dung đọc trong phiên này. Vì vậy Accessibility Tree sau sửa, thao tác bàn phím runtime và screen reader vẫn chưa xác minh.
 - **Tiếp tục:** Giữ M6 ở trạng thái đang xác minh; kiểm tra các mục runtime còn thiếu trong M7 khi môi trường trình duyệt/AT có thể quan sát được.
 
-## M7: Responsive, Testing, Lighthouse và AI Audit — Chưa bắt đầu
+## M7: Responsive, Testing, Lighthouse và AI Audit — Đang thực hiện M7-02
 
-### M7-01 — Hoàn thiện responsive
+### M7-01 — Hoàn thiện responsive [Đang xác minh viewport]
 
 - **Mô tả:** Điều chỉnh bố cục trang, bảng và điều khiển cho viewport 320 CSS px, tablet và desktop; giới hạn cuộn ngang trong vùng bảng khi cần.
 - **Hoàn thành khi:** Không che/cắt nội dung hay điều khiển thiết yếu, không tràn ngang toàn trang ngoài chủ đích và vẫn dùng được bằng bàn phím.
+- **Kết quả rà soát tĩnh:** Đưa `overflow-x: auto` vào wrapper chỉ chứa bảng để ô tìm kiếm không bị cuộn ngang theo; CSS dự kiến giữ pagination dạng cột ở 320/375 px, dạng hàng ở 768/1280 px.
+- **Giới hạn xác minh:** Chrome và Edge đều thoát ngay khi khởi chạy trong môi trường này; chưa xác nhận trực quan hoặc đo DOM ở các viewport, nên M7-01 chưa được đánh dấu hoàn thành.
 
-### M7-02 — Kiểm thử hồi quy và Lighthouse
+### M7-02 — Kiểm thử hồi quy và Lighthouse [Đang xác minh]
 
 - **Mô tả:** Kiểm tra lại sorting, filtering, pagination, bàn phím, lựa chọn, trạng thái rỗng, responsive và console; chạy build/lint cùng Lighthouse Accessibility và Best Practices.
 - **Hoàn thành khi:** Lưu bằng chứng kiểm tra và điểm Lighthouse thực tế; mục tiêu mỗi mục 100/100 đạt được hoặc giới hạn còn lại được ghi rõ và xử lý trong phạm vi.
+- **Đã kiểm tra thực tế:** Vite dev server trả HTTP 200. Vite SSR render assertions đạt: 18 bản ghi nguồn, 10 hàng/60 ô ở trang đầu, sáu header/nút sort, liên kết `scope`/`headers`, nhãn grid, trạng thái rỗng và hai nút pagination disabled khi rỗng. Helper pagination trả 10/8 hàng, xử lý rỗng/đúng page size; comparator xử lý số, chữ hoa-thường, giá trị trống cuối ở cả hai hướng và giữ thứ tự khi giá trị bằng nhau. `npm run build`, `npm run lint` và `git diff --check` đều thành công.
+- **Rà soát mã, chưa xác minh tương tác:** Có chu kỳ sort và `aria-sort`, lọc các cột `filterable` không phân biệt hoa thường, reset trang đầu, roving focus/điều hướng mũi tên, Enter/Space và selection callback theo ID. SSR xác nhận markup ban đầu; không thực hiện được click/keyboard hoặc kiểm tra Accessibility Tree.
+- **Giới hạn trình duyệt/Lighthouse:** Edge headless với `--disable-gpu` vẫn kết thúc bằng `GPU process isn't usable` (exit code GPU `-1073741790`); không tạo screenshot. Không có Lighthouse CLI trong máy và package không có trong npm cache (`ENOTCACHED` ở chế độ offline). Vì vậy chưa có viewport render thực tế, browser console, screen reader hay điểm Lighthouse; không ghi điểm giả.
+- **Vấn đề thực tế đã ghi nhận:** Vùng cuộn ngang trước đây bao gồm cả ô tìm kiếm; đã chuyển overflow vào wrapper chỉ chứa bảng ở M7-01. Đây là phát hiện từ rà soát cấu trúc/CSS, chưa xác nhận trực quan. Chưa phát hiện lỗi mới trong các assertion SSR/helper đã chạy.
 
-### M7-03 — Hoàn thiện AI_FAILURE_AUDIT.md và commit cuối
+### M7-03 — Hoàn thiện AI_FAILURE_AUDIT.md và commit cuối [Hoàn thành]
 
 - **Mô tả:** Ghi ít nhất ba lỗi AI thực tế đã phát hiện trong quá trình làm bài, cách phát hiện, cách sửa và bằng chứng kiểm tra; rà soát diff/status và hoàn tất commit M7.
 - **Hoàn thành khi:** Mỗi lỗi có bằng chứng thực tế và kết quả xác minh sau sửa; không tạo lỗi giả. Nếu chưa đủ ba sự cố thực, tiếp tục rà soát code/kết quả thực tế trước khi hoàn tất audit; có commit cuối chỉ gồm file Homework 1.

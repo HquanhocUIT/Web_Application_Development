@@ -13,11 +13,17 @@
 
   width: 100%;
   margin-top: 1.25rem;
-  overflow-x: auto;
   border: 1px solid var(--grid-border);
   border-radius: 0.75rem;
   background: var(--grid-row-background);
   box-shadow: 0 1px 3px rgb(23 32 51 / 8%);
+}
+
+.data-grid-table-scroll {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 }
 
 .data-grid-table {

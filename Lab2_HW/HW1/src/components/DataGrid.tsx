@@ -323,109 +323,111 @@ function DataGrid<T extends object>({
             Searches filterable columns only.
           </p>
         </div>
-        <table
-          className="data-grid-table"
-          role="grid"
-          aria-label={caption ? undefined : 'Data grid'}
-          aria-labelledby={caption ? `${searchId}-caption` : undefined}
-          aria-describedby={`${searchId}-pagination-info`}
-        >
-          {caption && <caption id={`${searchId}-caption`}>{caption}</caption>}
-          <thead>
-            <tr role="row">
-              {columns.map((column) => (
-                <th
-                  key={column.id}
-                  id={`${searchId}-column-${encodeURIComponent(column.id)}`}
-                  role="columnheader"
-                  scope="col"
-                  aria-sort={
-                    sortColumn?.id === column.id && sortState
-                      ? sortState.direction === 'asc'
-                        ? 'ascending'
-                        : 'descending'
-                      : undefined
-                  }
-                >
-                  {column.sortable ? (
-                    <button
-                      className="data-grid-sort-button"
-                      type="button"
-                      onClick={() => handleSort(column.id)}
-                      aria-label={`Sort by ${column.header}`}
-                    >
-                      {column.header}
-                      {sortState?.columnId === column.id && (
-                        <span className="data-grid-sort-indicator" aria-hidden="true">
-                          {sortState.direction === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </button>
-                  ) : (
-                    column.header
-                  )}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {visibleRows.length > 0 ? (
-              visibleRows.map((row) => {
-                const rowId = getRowId(row)
-                const isSelected = selectedRowId === rowId
-
-                return (
-                  <tr
-                    key={rowId}
-                    role="row"
-                    className={isSelected ? 'data-grid-row--selected' : undefined}
-                    aria-selected={isSelected}
-                  >
-                    {columns.map((column) => {
-                      const value = row[column.field]
-                      const displayValue = column.formatValue
-                        ? column.formatValue(value, row)
-                        : String(value ?? '')
-
-                      return (
-                        <td
-                          key={column.id}
-                          role="gridcell"
-                          headers={`${searchId}-column-${encodeURIComponent(column.id)}`}
-                          ref={(element) => setCellRef(rowId, column.id, element)}
-                          tabIndex={
-                            activeCell?.rowId === rowId &&
-                            activeCell.columnId === column.id
-                              ? 0
-                              : -1
-                          }
-                          data-grid-cell="true"
-                          onFocus={() => setFocusedCell({ rowId, columnId: column.id })}
-                          onKeyDown={(event) =>
-                            handleCellKeyDown(event, row, column.id)
-                          }
-                        >
-                          {isSelected && column.id === columns[0]?.id && (
-                            <span className="data-grid-selection-label">
-                              Selected
-                            </span>
-                          )}
-                          {displayValue}
-                        </td>
-                      )
-                    })}
-                  </tr>
-                )
-              })
-            ) : (
+        <div className="data-grid-table-scroll">
+          <table
+            className="data-grid-table"
+            role="grid"
+            aria-label={caption ? undefined : 'Data grid'}
+            aria-labelledby={caption ? `${searchId}-caption` : undefined}
+            aria-describedby={`${searchId}-pagination-info`}
+          >
+            {caption && <caption id={`${searchId}-caption`}>{caption}</caption>}
+            <thead>
               <tr role="row">
-                <td role="gridcell" colSpan={Math.max(columns.length, 1)}>
-                  No records found
-                </td>
+                {columns.map((column) => (
+                  <th
+                    key={column.id}
+                    id={`${searchId}-column-${encodeURIComponent(column.id)}`}
+                    role="columnheader"
+                    scope="col"
+                    aria-sort={
+                      sortColumn?.id === column.id && sortState
+                        ? sortState.direction === 'asc'
+                          ? 'ascending'
+                          : 'descending'
+                        : undefined
+                    }
+                  >
+                    {column.sortable ? (
+                      <button
+                        className="data-grid-sort-button"
+                        type="button"
+                        onClick={() => handleSort(column.id)}
+                        aria-label={`Sort by ${column.header}`}
+                      >
+                        {column.header}
+                        {sortState?.columnId === column.id && (
+                          <span className="data-grid-sort-indicator" aria-hidden="true">
+                            {sortState.direction === 'asc' ? '↑' : '↓'}
+                          </span>
+                        )}
+                      </button>
+                    ) : (
+                      column.header
+                    )}
+                  </th>
+                ))}
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {visibleRows.length > 0 ? (
+                visibleRows.map((row) => {
+                  const rowId = getRowId(row)
+                  const isSelected = selectedRowId === rowId
+
+                  return (
+                    <tr
+                      key={rowId}
+                      role="row"
+                      className={isSelected ? 'data-grid-row--selected' : undefined}
+                      aria-selected={isSelected}
+                    >
+                      {columns.map((column) => {
+                        const value = row[column.field]
+                        const displayValue = column.formatValue
+                          ? column.formatValue(value, row)
+                          : String(value ?? '')
+
+                        return (
+                          <td
+                            key={column.id}
+                            role="gridcell"
+                            headers={`${searchId}-column-${encodeURIComponent(column.id)}`}
+                            ref={(element) => setCellRef(rowId, column.id, element)}
+                            tabIndex={
+                              activeCell?.rowId === rowId &&
+                              activeCell.columnId === column.id
+                                ? 0
+                                : -1
+                            }
+                            data-grid-cell="true"
+                            onFocus={() => setFocusedCell({ rowId, columnId: column.id })}
+                            onKeyDown={(event) =>
+                              handleCellKeyDown(event, row, column.id)
+                            }
+                          >
+                            {isSelected && column.id === columns[0]?.id && (
+                              <span className="data-grid-selection-label">
+                                Selected
+                              </span>
+                            )}
+                            {displayValue}
+                          </td>
+                        )
+                      })}
+                    </tr>
+                  )
+                })
+              ) : (
+                <tr role="row">
+                  <td role="gridcell" colSpan={Math.max(columns.length, 1)}>
+                    No records found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
       <nav className="data-grid-pagination" aria-label="Table pagination">
         <div
