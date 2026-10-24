@@ -1,5 +1,7 @@
+/** A single active sorting direction. A null DataGridState.sort means no sort. */
 export type SortDirection = 'asc' | 'desc'
 
+/** The sortable column and direction currently applied to the rows. */
 export interface SortState {
   columnId: string
   direction: SortDirection
@@ -34,9 +36,12 @@ export const DEFAULT_DATA_GRID_PAGE_SIZE = 10
  * (or DEFAULT_DATA_GRID_PAGE_SIZE), no focused cell, and no selected row.
  *
  * Transition rules for the DataGrid component:
- * - Filter rows by the query in filterable columns, sort the result, then paginate.
- * - Cycle sort as none -> ascending -> descending -> none; a new column starts ascending.
- *   Changing the query or sort resets the current page to 1.
+ * - Only a column with sortable: true can be sorted; one column is sorted at a time.
+ * - Clicking the active column cycles none -> ascending -> descending -> none.
+ *   Clicking a different sortable column starts it in ascending order.
+ * - Filter rows first, sort the filtered rows second, and paginate last. Changing
+ *   the filter query or sort resets the current page to 1.
+ * - Sort a copy of the source rows so sorting never mutates the rows prop.
  * - Keep the current page within 1..pageCount after data or page-size changes.
  *   Empty results stay on page 1 with no focused cell.
  * - Arrow keys move one visible cell; stop at grid edges without wrapping.
