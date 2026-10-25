@@ -17,11 +17,13 @@ export interface AudioPlaybackPipeline {
   readonly analyser: AnalyserNode
   start(): Promise<void>
   stop(): void
+  setOnEnded(callback: () => void): void
 }
 
 /** Downloads and decodes audio while reusing one lazily-created AudioContext. */
 export class AudioDecoder {
   private readonly options: AudioDecoderOptions
+  private readonly playbackPipelines = new Set<AudioPlaybackPipeline>()
   private audioContext: AudioContext | null = null
   private cleanupPromise: Promise<void> | null = null
   private isClosed = false
@@ -80,17 +82,50 @@ export class AudioDecoder {
     const audioContext = this.getAudioContext()
     const source = audioContext.createBufferSource()
     const analyser = audioContext.createAnalyser()
-    source.buffer = audioBuffer
-    analyser.fftSize = fftSize
-    source.connect(analyser)
-    analyser.connect(audioContext.destination)
+
+    try {
+      source.buffer = audioBuffer
+      analyser.fftSize = fftSize
+      source.connect(analyser)
+      analyser.connect(audioContext.destination)
+    } catch (error) {
+      releasePlaybackNodes(source, analyser)
+      throw error
+    }
 
     let started = false
     let stopped = false
     let startPromise: Promise<void> | null = null
+    let onEnded: (() => void) | null = null
+    let pipeline: AudioPlaybackPipeline | null = null
 
-    return {
+    const releaseNodes = () => {
+      try {
+        releasePlaybackNodes(source, analyser)
+      } finally {
+        if (pipeline) {
+          this.playbackPipelines.delete(pipeline)
+        }
+      }
+    }
+
+    source.onended = () => {
+      if (stopped) {
+        return
+      }
+
+      stopped = true
+      const endedCallback = onEnded
+      onEnded = null
+      releaseNodes()
+      endedCallback?.()
+    }
+
+    pipeline = {
       analyser,
+      setOnEnded(callback) {
+        onEnded = callback
+      },
       start() {
         if (stopped) {
           return Promise.reject(new Error('This audio pipeline has been stopped.'))
@@ -121,15 +156,25 @@ export class AudioDecoder {
         }
 
         stopped = true
+        onEnded = null
+        source.onended = null
 
-        if (started) {
-          source.stop()
+        try {
+          if (started) {
+            source.stop()
+          }
+        } catch (error) {
+          if (!isInvalidStateError(error)) {
+            throw error
+          }
+        } finally {
+          releaseNodes()
         }
-
-        source.disconnect()
-        analyser.disconnect()
       },
     }
+
+    this.playbackPipelines.add(pipeline)
+    return pipeline
   }
 
   /** Closes the shared context. Queue owners should stop the queue first. */
@@ -139,6 +184,15 @@ export class AudioDecoder {
     }
 
     this.isClosed = true
+    for (const pipeline of [...this.playbackPipelines]) {
+      try {
+        pipeline.stop()
+      } catch (error) {
+        console.error('Could not stop an audio pipeline during cleanup.', error)
+      }
+    }
+    this.playbackPipelines.clear()
+
     const audioContext = this.audioContext
     this.audioContext = null
 
@@ -262,4 +316,19 @@ function createAbortError(): DOMException {
 function isAbortError(error: unknown): boolean {
   return typeof error === 'object' && error !== null && 'name' in error
     && error.name === 'AbortError'
+}
+
+function isInvalidStateError(error: unknown): boolean {
+  return typeof error === 'object' && error !== null && 'name' in error
+    && error.name === 'InvalidStateError'
+}
+
+function releasePlaybackNodes(
+  source: AudioBufferSourceNode,
+  analyser: AnalyserNode,
+): void {
+  source.onended = null
+  source.disconnect()
+  analyser.disconnect()
+  source.buffer = null
 }

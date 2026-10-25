@@ -79,6 +79,14 @@
 
 ## M4 — Giao diện và quản lý tài nguyên
 
+**Status:** Implemented; real-browser verification pending.
+
+**Verification:** Mock checks passed for FIFO/serial execution, pending and active cancellation, stopping/replacing playback, natural playback end, source/analyser disconnection, buffer and callback release, decoder cleanup, shared `AudioContext`, FFT 256/512, and RAF cleanup during analyser changes and StrictMode-style setup/cleanup replay. SSR confirmed the initial controls and empty states; `npm run build`, `npm run lint`, and `git diff --check` passed.
+
+**Issue found and fixed:** Playback cleanup previously did not clear the ended callback or release the source's `AudioBuffer` reference; decoder cleanup also did not stop playback pipelines it had created. The decoder now tracks pipelines and disconnects/releases their nodes on stop, natural end, and cleanup.
+
+**Environment limit:** Chrome could not complete a headless launch because its GPU process crashed, and Node.js does not provide a real `AudioContext` or DOM. Real audio playback, mouse/keyboard interactions, and browser StrictMode behavior remain unverified.
+
 ### M4-01 — Xây giao diện quản lý audio và queue
 
 - **Mô tả:** Tạo giao diện semantic để thêm audio, xem trạng thái/thứ tự queue, phát/dừng và hủy task; cung cấp thông báo dễ hiểu.

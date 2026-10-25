@@ -1,41 +1,355 @@
 .app-shell {
-  display: grid;
   min-height: 100vh;
   min-height: 100svh;
-  padding: clamp(1rem, 5vw, 3rem);
-  place-items: center;
+  padding: clamp(1.25rem, 4vw, 3.5rem) 1rem;
 }
 
-.intro-card {
-  width: min(100%, 52rem);
-  padding: clamp(1.5rem, 5vw, 3rem);
-  border: 1px solid #d8dee8;
-  border-radius: 1rem;
-  background: #ffffff;
-  box-shadow: 0 0.75rem 2rem rgb(20 35 55 / 8%);
-  text-align: center;
+.app-content {
+  width: min(100%, 70rem);
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 1.75rem;
 }
 
 .eyebrow {
-  margin: 0 0 0.75rem;
-  color: #40526a;
-  font-size: 0.875rem;
-  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #365c57;
+  font-size: 0.82rem;
+  font-weight: 750;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.intro-card h1 {
+.page-header h1 {
+  max-width: 56rem;
   margin: 0;
-  color: #152238;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  line-height: 1.15;
+  color: #142b2b;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.1;
   overflow-wrap: anywhere;
 }
 
-.intro-card > p:last-child {
-  max-width: 38rem;
-  margin: 1.25rem auto 0;
-  color: #40526a;
-  line-height: 1.6;
+.page-description {
+  max-width: 45rem;
+  margin: 0.9rem 0 0;
+  color: #40565a;
+  font-size: 1.05rem;
+}
+
+.panel {
+  min-width: 0;
+  margin-top: 1rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border: 1px solid #cbd8d6;
+  border-radius: 1rem;
+  background: #ffffff;
+  box-shadow: 0 0.6rem 1.8rem rgb(20 43 43 / 6%);
+}
+
+.panel h2 {
+  margin: 0;
+  color: #142b2b;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.audio-form > label,
+.fft-control label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: #243e40;
+  font-weight: 700;
+}
+
+.audio-form__controls {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.audio-form input,
+.fft-control select {
+  min-height: 2.8rem;
+  border: 1px solid #829694;
+  border-radius: 0.55rem;
+  background: #ffffff;
+  color: #142b2b;
+  font: inherit;
+}
+
+.audio-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.65rem 0.8rem;
+}
+
+.audio-form input::placeholder {
+  color: #53696b;
+  opacity: 1;
+}
+
+.field-help {
+  margin: 0.5rem 0 0;
+  color: #40565a;
+  font-size: 0.9rem;
+}
+
+.button {
+  min-height: 2.65rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 0.55rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.button:focus-visible,
+.audio-form input:focus-visible,
+.fft-control select:focus-visible {
+  outline: 3px solid #b24b19;
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  border-color: #aab8b6;
+  background: #e7eceb;
+  color: #536563;
+  cursor: not-allowed;
+}
+
+.button--primary {
+  background: #155e57;
+  color: #ffffff;
+}
+
+.button--primary:hover:not(:disabled) {
+  background: #104b46;
+}
+
+.button--secondary {
+  border-color: #155e57;
+  background: #ffffff;
+  color: #124d47;
+}
+
+.button--secondary:hover:not(:disabled) {
+  background: #edf6f4;
+}
+
+.button--quiet {
+  border-color: #9b6a4b;
+  background: #ffffff;
+  color: #733812;
+}
+
+.button--quiet:hover:not(:disabled) {
+  background: #fff5ee;
+}
+
+.button--stop {
+  border-color: #9c453b;
+  background: #ffffff;
+  color: #7a2b23;
+}
+
+.button--stop:hover:not(:disabled) {
+  background: #fff2f0;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.section-heading p {
+  margin: 0.25rem 0 0;
+  color: #40565a;
+}
+
+.queue-count {
+  flex: none;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid #bdcfcb;
+  border-radius: 99rem;
+  background: #f0f6f4;
+  color: #204b46;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.empty-state {
+  margin: 1.25rem 0 0;
+  padding: 1rem;
+  border: 1px dashed #8da09d;
+  border-radius: 0.65rem;
+  color: #40565a;
+  text-align: center;
+}
+
+.task-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem;
+  border: 1px solid #d5e0de;
+  border-radius: 0.7rem;
+  background: #fbfdfc;
+}
+
+.task-card__content {
+  min-width: 0;
+}
+
+.task-card__title {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0;
+  color: #1a3435;
+  font-weight: 650;
+}
+
+.task-number {
+  display: inline-grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  flex: none;
+  place-items: center;
+  border-radius: 50%;
+  background: #e8f1ef;
+  color: #214e48;
+  font-size: 0.85rem;
+}
+
+.task-url {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.task-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0.45rem 0 0 2.3rem;
+}
+
+.task-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #35494a;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.task-status::before {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: currentColor;
+  content: '';
+}
+
+.task-status--pending::before {
+  color: #79520a;
+}
+
+.task-status--processing::before {
+  color: #075d83;
+}
+
+.task-status--completed::before {
+  color: #17633e;
+}
+
+.task-status--cancelled::before {
+  color: #58686a;
+  background: transparent;
+}
+
+.task-status--failed::before {
+  color: #922d26;
+}
+
+.task-error {
+  color: #762c25;
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.task-card__actions {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.playback-panel__heading {
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.playback-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.fft-control select {
+  min-width: 5.5rem;
+  padding: 0.5rem 0.65rem;
+}
+
+.fft-control label {
+  margin-bottom: 0.2rem;
+  font-size: 0.85rem;
+}
+
+.app-message {
+  min-height: 1.5rem;
+  margin: 1rem 0 0;
+  color: #30494b;
+  font-weight: 600;
+}
+
+@media (max-width: 42rem) {
+  .audio-form__controls,
+  .task-card,
+  .playback-panel__heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .audio-form__controls > .button {
+    width: 100%;
+  }
+
+  .task-card__actions {
+    justify-content: flex-start;
+  }
+
+  .playback-controls {
+    align-items: flex-end;
+    justify-content: space-between;
+  }
 }
