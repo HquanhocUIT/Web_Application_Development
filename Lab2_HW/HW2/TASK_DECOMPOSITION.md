@@ -45,6 +45,11 @@
 
 ## M2 — Web Audio API và Audio Decoding
 
+**Status:** Implemented; real-browser verification pending.
+
+**Verification:** Mock checks passed for FIFO load/decode, shared `AudioContext`, queued/fetch/decode cancellation, URL/network/HTTP/decode failures, cleanup, and pipeline wiring with FFT 256/512. `npm run build`, `npm run lint`, and `git diff --check` passed.
+
+**Environment limit:** Node.js has no real `AudioContext`; playback and analyser output from a real audio file have not been verified in a browser.
 ### M2-01 — Đưa tải và decode vào queue FIFO
 
 - **Mô tả:** Tích hợp tải audio và `decodeAudioData` thành một đơn vị công việc trong queue; truyền `AbortSignal` cho fetch và xử lý lỗi mạng/decode.
