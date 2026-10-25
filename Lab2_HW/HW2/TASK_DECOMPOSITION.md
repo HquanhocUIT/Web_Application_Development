@@ -1,0 +1,89 @@
+# Homework 2: Concurrent FIFO Audio Visualizer Queue Engine
+
+## Work Breakdown Structure
+
+### Quy trình thực hiện
+
+- Mỗi prompt chỉ thực hiện **một subtask**; không tự chuyển sang subtask tiếp theo.
+- Trước khi code, xác định props, state và hành vi liên quan.
+- Kiểm tra kết quả sau mỗi phần; chỉ commit **một lần sau khi hoàn tất toàn bộ milestone**.
+- Dùng React, TypeScript, HTML, CSS, JavaScript và Web Audio API; ưu tiên code dễ đọc, không dùng thư viện UI/audio để làm thay yêu cầu.
+- Chỉ ghi lỗi AI có thật và bằng chứng kiểm tra; screenshot phải là output thực tế của ứng dụng.
+
+## M0 — Chuẩn bị project
+
+**Trạng thái:** Hoàn thành.
+
+**Xác minh:** `npm install` cài dependencies; `npm run dev` khởi động Vite và các route của ứng dụng trả HTTP 200; `npm run build` và `npm run lint` thành công. `.gitignore` bỏ qua `node_modules` và `dist`.
+
+**Giới hạn:** Chưa xác minh giao diện bằng trình duyệt trực quan; chỉ xác minh server, module React được Vite chuyển đổi và production build.
+
+### M0-01 — Khảo sát thư mục và chốt phạm vi
+
+- **Mô tả:** Kiểm tra HW2, Git, hướng dẫn và tiêu chí bài; xác định phần nào đã có, phần nào cần làm.
+- **Hoàn thành khi:** WBS và cấu trúc hiện có được đối chiếu; không ghi đè hoặc xóa file không liên quan.
+
+### M0-02 — Khởi tạo và xác minh project
+
+- **Mô tả:** Nếu chưa có, khởi tạo React + TypeScript bằng Vite trong HW2; cài dependencies cần thiết và giữ cấu trúc đơn giản.
+- **Hoàn thành khi:** `npm run dev`, build và lint (nếu có script) chạy được; Git ignore `node_modules` và `dist`.
+
+## M1 — FIFO Queue và AbortController
+
+### M1-01 — Định nghĩa hợp đồng queue và trạng thái task
+
+- **Mô tả:** Xác định TypeScript types cho task, ID ổn định, trạng thái, kết quả/lỗi, `AbortSignal` và API của `AudioTaskQueue`.
+- **Hoàn thành khi:** Kiểu dữ liệu phân biệt được task chờ, đang chạy, hoàn thành, bị hủy và lỗi; không dùng `any`.
+
+### M1-02 — Triển khai FIFO và hủy task
+
+- **Mô tả:** Xây queue chạy tuần tự đúng thứ tự thêm vào; xử lý nhiều yêu cầu gần đồng thời và hủy task chờ hoặc đang chạy qua `AbortController`.
+- **Hoàn thành khi:** Kiểm tra được thứ tự FIFO; hủy một task không làm sai thứ tự hoặc ngăn các task còn lại chạy; trạng thái được cập nhật đúng.
+
+## M2 — Web Audio API và Audio Decoding
+
+### M2-01 — Đưa tải và decode vào queue FIFO
+
+- **Mô tả:** Tích hợp tải audio và `decodeAudioData` thành một đơn vị công việc trong queue; truyền `AbortSignal` cho fetch và xử lý lỗi mạng/decode.
+- **Hoàn thành khi:** Các yêu cầu đồng thời hoàn tất theo thứ tự FIFO; hủy fetch được xử lý rõ ràng và queue tiếp tục với task sau.
+
+### M2-02 — Thiết lập pipeline Web Audio
+
+- **Mô tả:** Tạo `AudioContext`, kết nối buffer source với `AnalyserNode` và output; đặt `fftSize` là 256 hoặc 512.
+- **Hoàn thành khi:** Audio đã decode có thể phát; analyser trả dữ liệu tần số hợp lệ; lỗi Audio API được hiển thị/xử lý rõ ràng.
+
+## M3 — Audio Visualizer
+
+### M3-01 — Xác định API và vẽ visualizer
+
+- **Mô tả:** Chốt props/state cần thiết rồi tạo visualizer bằng Canvas hoặc SVG, đọc dữ liệu từ `AnalyserNode`.
+- **Hoàn thành khi:** Visualizer phản ánh thay đổi âm thanh và hỗ trợ kích thước màn hình khác nhau.
+
+### M3-02 — Tối ưu vòng cập nhật và dừng animation
+
+- **Mô tả:** Dùng `requestAnimationFrame` để cập nhật mục tiêu gần 60 FPS; không cập nhật React state theo từng frame; dừng frame khi playback dừng hoặc component unmount.
+- **Hoàn thành khi:** Không có RAF lặp sau khi dừng/unmount; cập nhật hình ảnh không gây render React liên tục theo frame.
+
+## M4 — Giao diện và quản lý tài nguyên
+
+### M4-01 — Xây giao diện quản lý audio và queue
+
+- **Mô tả:** Tạo giao diện semantic để thêm audio, xem trạng thái/thứ tự queue, phát/dừng và hủy task; cung cấp thông báo dễ hiểu.
+- **Hoàn thành khi:** Người dùng thao tác được bằng chuột và bàn phím; trạng thái queue và lỗi được trình bày rõ ràng.
+
+### M4-02 — Hoàn thiện lifecycle và cleanup
+
+- **Mô tả:** Quản lý và giải phóng `AudioBufferSourceNode`, `AudioContext`, RAF, listener và tài nguyên liên quan khi dừng, hủy hoặc unmount.
+- **Hoàn thành khi:** Không phát chồng ngoài ý muốn hoặc để lại tài nguyên chạy sau cleanup; có thể chạy nhiều lượt mà không tích lũy source/frame cũ.
+
+## M5 — Kiểm thử, AI Failure Audit và hoàn thiện bài
+
+### M5-01 — Kiểm thử chức năng, accessibility và hiệu năng
+
+- **Mô tả:** Kiểm tra FIFO, yêu cầu đồng thời, cancellation, lỗi tải/decode, playback, cleanup, responsive và hiệu năng visualizer; sửa lỗi có bằng chứng.
+- **Hoàn thành khi:** Kết quả kiểm tra được ghi lại; xác nhận không còn lỗi nghiêm trọng hoặc ghi rõ giới hạn môi trường; có screenshot output thực tế chứng minh chức năng.
+
+### M5-02 — Lập AI Failure Audit và rà soát cuối
+
+- **Mô tả:** Tạo `AI_FAILURE_AUDIT.md` bằng tiếng Anh đơn giản, ghi ít nhất 3 lỗi AI thực tế cùng prompt liên quan, code lỗi, rủi ro, cách phát hiện/sửa và bằng chứng kiểm tra.
+- **Hoàn thành khi:** Mỗi lỗi có thể đối chiếu với code/commit/kiểm thử; không bịa lỗi; README, screenshot và các kiểm tra cuối được rà soát; commit milestone M5.
