@@ -99,6 +99,12 @@
 
 ## M5 — Kiểm thử, AI Failure Audit và hoàn thiện bài
 
+**M5-01 status:** Partial; mock and code-review checks passed, real-browser checks and screenshots are pending.
+
+**Current evidence:** See `TEST_RESULTS.md`. The dev server and application modules returned HTTP 200. FIFO, cancellation, decode errors, playback lifecycle, FFT sizing, Canvas drawing helpers, and RAF cleanup passed mock checks. No real screenshot was captured.
+
+**Environment limit:** Chrome and Edge headless both failed because the GPU process crashed. Real audio, direct UI interaction, actual viewport layout, browser memory, and measured FPS remain unverified.
+
 ### M5-01 — Kiểm thử chức năng, accessibility và hiệu năng
 
 - **Mô tả:** Kiểm tra FIFO, yêu cầu đồng thời, cancellation, lỗi tải/decode, playback, cleanup, responsive và hiệu năng visualizer; sửa lỗi có bằng chứng.
@@ -108,3 +114,7 @@
 
 - **Mô tả:** Tạo `AI_FAILURE_AUDIT.md` bằng tiếng Anh đơn giản, ghi ít nhất 3 lỗi AI thực tế cùng prompt liên quan, code lỗi, rủi ro, cách phát hiện/sửa và bằng chứng kiểm tra.
 - **Hoàn thành khi:** Mỗi lỗi có thể đối chiếu với code/commit/kiểm thử; không bịa lỗi; README, screenshot và các kiểm tra cuối được rà soát; commit milestone M5.
+
+**M5-02 status:** Complete; the audit records 3 evidence-backed implementation failures, final build/lint checks passed, and this milestone documentation is committed. M5 overall remains partial because M5-01 still lacks real-browser verification and genuine screenshots.
+
+**Evidence reviewed:** `TEST_RESULTS.md` records mock results and browser-only checks still marked Not Tested. `screenshots/` contains an explanatory README and no captured images. See `AI_FAILURE_AUDIT.md` for the three implementation issues and evidence.
