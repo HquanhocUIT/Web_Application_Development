@@ -62,6 +62,11 @@
 
 ## M3 — Audio Visualizer
 
+**Status:** Implemented; browser and FPS verification pending.
+
+**Verification:** Mock scheduler checks passed for recurring RAF, analyser changes, cleanup/unmount, and StrictMode-style setup/cleanup replay. Drawing helper checks passed for 128/256 bins. Code inspection confirms the null-analyser guard, DPR resizing, and no React state updates per frame. `npm run build`, `npm run lint`, and `git diff --check` passed.
+
+**Environment limit:** No browser/DOM test runtime is available here, so actual Canvas rendering and FPS were not measured.
 ### M3-01 — Xác định API và vẽ visualizer
 
 - **Mô tả:** Chốt props/state cần thiết rồi tạo visualizer bằng Canvas hoặc SVG, đọc dữ liệu từ `AnalyserNode`.

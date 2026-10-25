@@ -1,0 +1,30 @@
+.audio-visualizer {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+.audio-visualizer__canvas {
+  display: block;
+  width: 100%;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  background: #101827;
+}
+
+.audio-visualizer__caption {
+  margin-top: 0.5rem;
+  color: #40526a;
+  font-size: 0.875rem;
+}
+
+.audio-visualizer--empty {
+  display: grid;
+  min-height: 11.25rem;
+  padding: 1rem;
+  place-items: center;
+  border: 1px dashed #8997aa;
+  border-radius: 0.75rem;
+  color: #40526a;
+  text-align: center;
+}
