@@ -30,6 +30,9 @@
 
 ## M1 — FIFO Queue và AbortController
 
+**Status:** Complete.
+
+**Verification:** FIFO order and serial execution, queued and active cancellation, failure recovery, cleanup, and exactly-once Promise settlement passed with a fake processor. `npm run build`, `npm run lint`, and `git diff --check` passed.
 ### M1-01 — Định nghĩa hợp đồng queue và trạng thái task
 
 - **Mô tả:** Xác định TypeScript types cho task, ID ổn định, trạng thái, kết quả/lỗi, `AbortSignal` và API của `AudioTaskQueue`.
