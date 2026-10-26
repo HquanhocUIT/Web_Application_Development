@@ -26,12 +26,14 @@
 
 - [ ] **E1-05 — Tạo CSS Module và responsive 375px:** Tạo style riêng cho card/badge, không dùng inline style hoặc thêm global CSS không cần thiết.
   - **Hoàn thành khi:** Component dùng CSS Modules; bố cục và nội dung card hiển thị, đọc được ở viewport rộng 375px mà không tràn ngang.
+  - **Trạng thái hiện tại:** CSS Module đã hoàn thiện; build, lint, SSR và diff check đạt. Kiểm tra tĩnh xác nhận các quy tắc giới hạn chiều rộng và cho phép wrap; chưa đo giao diện trong browser tại 375px vì Chrome/Edge headless đều dừng do lỗi GPU, nên chưa xác nhận thực tế điều kiện không tràn ngang.
 
 - [ ] **E1-06 — Kiểm thử semantic, accessibility, responsive và ảnh:** Kiểm tra DOM, quan hệ nhãn, danh sách, ảnh lỗi và bố cục tại 375px bằng cách phù hợp với project.
   - **Hoàn thành khi:** Có kết quả kiểm tra xác nhận đủ semantic elements và không có `div` trong `DeveloperCard`; `aria-labelledby` trỏ đúng tiêu đề; các Fragment metadata có key; kỹ năng được render từ props; giao diện dùng được tại 375px; avatar chỉ dùng HTTPS, có kích thước rõ ràng và fallback hoạt động khi ảnh lỗi. Ghi rõ kiểm tra nào chưa thể chạy và lý do.
+  - **Trạng thái hiện tại:** SSR xác nhận semantic elements, `aria-labelledby`, metadata Fragment có key, skills, default props, HTTPS/96×96 và fallback khi URL HTTP bị loại; rà soát CSS xác nhận media query 375px, wrap và kích thước avatar. Chưa xác minh đo viewport/browser, lỗi tải ảnh thực tế kích hoạt `onError`, Accessibility Tree hoặc hành vi keyboard trong browser do trình duyệt headless không chạy được. Task vẫn chưa hoàn tất.
 
-- [ ] **E1-07 — Checkpoint commit 2:** Rà soát diff styling và kết quả kiểm tra, sau đó tạo commit `style(ex1): add responsive 375px CSS module`.
-  - **Hoàn thành khi:** Chỉ commit thay đổi CSS Module/responsive thuộc checkpoint; commit có đúng nội dung nêu trên và không tạo thêm commit nào.
+- [x] **E1-07 — Checkpoint commit 2:** Rà soát diff styling và kết quả kiểm tra, sau đó tạo commit `style(ex1): add responsive 375px CSS module`.
+  - **Hoàn thành khi:** Chỉ commit thay đổi CSS Module/responsive thuộc checkpoint; commit có đúng nội dung nêu trên và không tạo thêm commit nào. Đã tạo theo yêu cầu checkpoint hiện tại; E1-05/E1-06 vẫn để mở vì chưa xác minh trực quan ở browser và chưa kích hoạt lỗi ảnh thực tế.
 
 ## Hai checkpoint Git bắt buộc
 
