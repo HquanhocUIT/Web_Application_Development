@@ -22,6 +22,8 @@
 
 ### M1 — Thiết kế dữ liệu và Inventory State Machine
 
+**Trạng thái:** Hoàn thành — M1-01 và M1-02 đã đạt điều kiện hoàn thành.
+
 - **M1-01 — Khai báo mô hình dữ liệu:** Định nghĩa kiểu sản phẩm, tồn kho, reservation, thời hạn giữ hàng và trạng thái checkout bằng TypeScript.
   - **Hoàn thành khi:** Các kiểu dữ liệu thể hiện được số lượng tồn, số lượng đang giữ, mã reservation, thời điểm hết hạn và trạng thái cần thiết; có quy tắc để tồn kho khả dụng không âm.
 - **M1-02 — Xây dựng chuyển trạng thái tồn kho:** Cài đặt các thao tác giữ hàng, xác nhận checkout và giải phóng giữ hàng theo một luồng trạng thái dễ theo dõi.
