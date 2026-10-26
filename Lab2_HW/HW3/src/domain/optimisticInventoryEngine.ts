@@ -1,11 +1,14 @@
 import { transitionInventory } from './inventoryMachine.ts'
 import { checkoutReservation } from './checkoutWorkflow.ts'
+import { expireDueReservations } from './reservationExpiration.ts'
 import type { InventoryState, Product } from './flashSale.types'
 import type {
+  CancelReservationCommand,
   CheckoutCommand,
   InventoryCommandResult,
 } from './inventoryMachine.types'
 import type { CheckoutWorkflowResult } from './checkoutWorkflow'
+import type { ReservationExpirationResult } from './reservationExpiration'
 import type {
   InventoryStateMachineTransition,
   OptimisticInventoryLockContract,
@@ -49,6 +52,30 @@ function copyCheckoutResult(result: CheckoutWorkflowResult): CheckoutWorkflowRes
   }
 }
 
+function copyMachineResult(result: InventoryCommandResult): InventoryCommandResult {
+  if (result.status === 'applied') {
+    return {
+      ...result,
+      state: copyState(result.state),
+      events: result.events.map((event) => ({ ...event })),
+    }
+  }
+
+  return { ...result, state: copyState(result.state) }
+}
+
+function copyExpirationResult(result: ReservationExpirationResult): ReservationExpirationResult {
+  if (result.status === 'rejected') return { ...result, state: copyState(result.state) }
+
+  return {
+    ...result,
+    state: copyState(result.state),
+    expiredReservationIds: [...result.expiredReservationIds],
+    events: result.events.map((event) => ({ ...event })),
+    failures: result.failures.map((failure) => ({ ...failure })),
+  }
+}
+
 function requestFingerprint(request: OptimisticInventoryLockRequest): string {
   return JSON.stringify([
     request.reservationId,
@@ -87,6 +114,24 @@ export class OptimisticInventoryEngine implements OptimisticInventoryLockContrac
     const result = checkoutReservation(this.state, this.product, command)
     this.state = copyState(result.state)
     return copyCheckoutResult(result)
+  }
+
+  /** Cancel a reservation through the existing inventory state machine. */
+  cancelReservation(command: CancelReservationCommand): InventoryCommandResult {
+    const result = this.transition({
+      product: this.product,
+      currentState: this.state,
+      command,
+    })
+    if (result.status === 'applied') this.state = copyState(result.state)
+    return copyMachineResult(result)
+  }
+
+  /** Expire due reservations in this engine's shared product inventory. */
+  expireReservations(nowMs: number): ReservationExpirationResult {
+    const result = expireDueReservations(this.state, this.product, nowMs)
+    this.state = copyState(result.state)
+    return copyExpirationResult(result)
   }
 
   reserve(input: OptimisticInventoryLockInput): Promise<OptimisticInventoryLockResult> {

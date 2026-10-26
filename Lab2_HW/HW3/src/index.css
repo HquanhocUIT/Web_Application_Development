@@ -1,7 +1,7 @@
 :root {
   font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: #172335;
-  background: #f3f6fa;
+  color: #282d3b;
+  background: #f8f8fa;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -16,4 +16,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
 }

@@ -1,11 +1,13 @@
 import type {
   CheckoutCommand,
+  CancelReservationCommand,
   InventoryCommandResult,
   InventoryEvent,
   InventoryMachineInput,
   InventoryFailureReason,
 } from './inventoryMachine.types'
 import type { CheckoutWorkflowResult } from './checkoutWorkflow'
+import type { ReservationExpirationResult } from './reservationExpiration'
 import type { InventoryState, Reservation } from './flashSale.types'
 
 /** One buyer's request to reserve a product against the inventory version read. */
@@ -79,4 +81,6 @@ export interface OptimisticInventoryLockContract {
   getState(): InventoryState
   reserve(input: OptimisticInventoryLockInput): Promise<OptimisticInventoryLockResult>
   checkout(command: CheckoutCommand): CheckoutWorkflowResult
+  cancelReservation(command: CancelReservationCommand): InventoryCommandResult
+  expireReservations(nowMs: number): ReservationExpirationResult
 }

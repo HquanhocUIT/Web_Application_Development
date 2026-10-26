@@ -58,6 +58,8 @@
 
 ### M5 — Xây dựng giao diện Flash Sale
 
+**Trạng thái:** Hoàn thành — M5-01 và M5-02 đã đạt tiêu chí qua build, lint và 54 test Node. Giao diện dùng inventory engine trong một JavaScript runtime; chưa kiểm tra trực quan trên browser vì môi trường không có browser executable.
+
 - **M5-01 — Tạo giao diện phiên Flash Sale:** Hiển thị sản phẩm, giá, tồn kho khả dụng, countdown và nút mua với bố cục đơn giản.
   - **Hoàn thành khi:** Các dữ liệu chính đọc được trên giao diện và bố cục dùng được ở kích thước màn hình phổ biến.
 - **M5-02 — Kết nối thao tác người dùng:** Nối nút mua với luồng giữ hàng/checkout và hiển thị trạng thái đang xử lý, thành công, hết hàng hoặc thất bại.
