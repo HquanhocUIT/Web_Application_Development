@@ -40,6 +40,8 @@
 
 ### M3 — Optimistic Inventory Lock và xử lý concurrency
 
+**Trạng thái:** Hoàn thành — M3-01 và M3-02 đã đạt tiêu chí qua kiểm thử engine trong một JavaScript runtime. Đây là mô phỏng trong một instance frontend, không đồng bộ giữa thiết bị hoặc backend.
+
 - **M3-01 — Giữ hàng lạc quan:** Thực hiện kiểm tra tồn khả dụng và ghi reservation trong cùng một bước cập nhật trạng thái đồng bộ.
   - **Hoàn thành khi:** Một yêu cầu chỉ được giữ hàng nếu còn đủ tồn khả dụng; số lượng đang giữ tăng ngay khi chấp nhận và tổng lượng giữ không vượt tồn thực.
 - **M3-02 — Xử lý yêu cầu mua cạnh tranh:** Mô phỏng nhiều yêu cầu đến gần như đồng thời và trả kết quả rõ ràng cho từng yêu cầu.
