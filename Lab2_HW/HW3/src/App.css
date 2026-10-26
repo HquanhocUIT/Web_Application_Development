@@ -1,0 +1,49 @@
+.page {
+  box-sizing: border-box;
+  display: grid;
+  align-content: center;
+  min-height: 100svh;
+  width: min(100% - 2rem, 70rem);
+  margin: 0 auto;
+  padding: 3rem 0;
+}
+
+.page-header {
+  max-width: 58rem;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  border-inline-start: 0.35rem solid #f05a28;
+  background: #fff;
+  box-shadow: 0 1.25rem 3rem rgb(24 35 49 / 8%);
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  color: #a63b19;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+h1 {
+  max-width: 22ch;
+  margin: 0;
+  color: #172335;
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.intro {
+  max-width: 62ch;
+  margin: 1.5rem 0 0;
+  color: #465469;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  line-height: 1.7;
+}
+
+@media (max-width: 36rem) {
+  .page {
+    width: min(100% - 1.25rem, 70rem);
+    padding: 1.5rem 0;
+  }
+}
