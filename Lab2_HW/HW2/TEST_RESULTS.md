@@ -7,6 +7,10 @@
 - Chrome and Edge are installed, but both headless runs failed before rendering because the GPU process exited with code `-1073741790` and reported that the GPU process was unusable. No browser interaction or screenshot was completed.
 - Node.js does not provide a browser DOM or a real `AudioContext`, so audio and UI behavior below was checked with mocks where possible.
 
+## Follow-up owner verification (2026-10-26)
+
+The project owner reports that the remaining manual browser checks were completed successfully and that screenshots were captured in a separate document. That document is not present in the HW2 workspace, so its images and detailed observations could not be independently inspected here. The browser-only rows below are marked **Pass (owner-reported)** to distinguish this report from checks performed by the assistant.
+
 ## Checks
 
 | Check | Result | Method and evidence |
@@ -24,11 +28,11 @@
 | Canvas frequency bars | Pass | Drawing helper mocks verified 128 and 256 frequency bins were read and drawn. |
 | RAF cleanup, analyser change, and StrictMode-style replay | Pass | Mock scheduler verified loop cancellation on cleanup and one scheduled loop after setup-cleanup-setup. |
 | No React state update on each animation frame | Pass | Code review: the animation callback only reads analyser data and draws to Canvas; it does not call a React state setter. |
-| Responsive CSS structure | Partial | Code review found a 42rem stacking breakpoint, wrapping URLs, and flexible content sizing. Actual 320px, 375px, 768px, and 1280px viewport rendering was not tested. |
-| Keyboard and focus-visible behavior | Partial | Native form controls/buttons and `:focus-visible` styles are present. Tab/Enter/Space behavior was not exercised in a browser. |
-| Real audio loading, playback, and live analyser output | Not Tested | No working browser AudioContext was available; mock nodes do not prove audible output or live frequency values. |
-| DevTools memory/resource inspection and measured FPS | Not Tested | Browser DevTools could not be opened; no real FPS or memory profile was captured. |
-| Screenshots | Not Tested | No genuine browser screenshot could be captured. `screenshots/` contains an explanatory README only. |
+| Responsive layout at 320px, 375px, 768px, and 1280px | Pass (owner-reported) | Project owner reports manual viewport checks passed; screenshots are embedded in a separate document not present in this workspace. |
+| Keyboard controls and focus-visible behavior | Pass (owner-reported) | Project owner reports manual keyboard checks passed; not independently repeated in this environment. |
+| Real audio loading, playback, FFT selection, and live analyser output | Pass (owner-reported) | Project owner reports manual browser playback checks passed; not independently repeated in this environment. |
+| DevTools memory/resource inspection and measured FPS | Pass (owner-reported) | Project owner reports these checks passed; measurement values and the referenced document were not provided in HW2. |
+| Screenshot evidence | Pass (owner-reported) | Project owner reports genuine screenshots are embedded in a separate document. No screenshot file is stored in this repository. |
 
 ## Issues and handling
 
@@ -36,11 +40,8 @@
 - A lifecycle issue found and fixed during M4 (playback source retaining its callback and decoded buffer, and decoder cleanup not stopping owned pipelines) passed the M5 mock regression checks.
 - Browser GPU startup failures are environment limitations, not failures attributed to the application.
 
-## Manual checks still needed
+## Evidence limitations
 
-1. Open the app in a working Chrome or Edge browser and add several accessible audio URLs close together. Confirm queue order and visible status changes.
-2. Cancel one pending task and one task while it is fetching. If possible, also cancel after decode begins and confirm its result is discarded.
-3. Load a valid audio file, play it, change FFT 256/512, stop it, play a different task, and let one track end naturally. Confirm the Canvas bars follow the audio.
-4. Try an unsupported URL, a network failure, an HTTP error, and a non-audio file; confirm the task reports failed without blocking later tasks.
-5. Check keyboard operation and focus-visible, then inspect 320px, 375px, 768px, and 1280px layouts.
-6. Use DevTools to check console errors, remaining audio nodes/contexts after Stop and unmount, and actual animation FPS. Save genuine screenshots of the main page, multi-task queue, cancellation, and active playback/visualizer in `screenshots/`.
+- The project owner reports that the manual checks and screenshots are complete, but the separate document containing the screenshots was not supplied in the HW2 workspace and could not be reviewed here.
+- The earlier Chrome/Edge headless GPU failure remains the reason these manual results are attributed to the owner rather than to this automated session.
+- The exact FPS/memory values and browser version are not recorded in this repository.

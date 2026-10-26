@@ -45,11 +45,11 @@
 
 ## M2 — Web Audio API và Audio Decoding
 
-**Status:** Implemented; real-browser verification pending.
+**Status:** Implemented; project owner reports successful real-browser verification. This was not independently repeated in the assistant environment.
 
 **Verification:** Mock checks passed for FIFO load/decode, shared `AudioContext`, queued/fetch/decode cancellation, URL/network/HTTP/decode failures, cleanup, and pipeline wiring with FFT 256/512. `npm run build`, `npm run lint`, and `git diff --check` passed.
 
-**Environment limit:** Node.js has no real `AudioContext`; playback and analyser output from a real audio file have not been verified in a browser.
+**Environment limit:** Node.js has no real `AudioContext`. The project owner reports real-file playback and analyser checks passed; those checks were not independently repeated here.
 ### M2-01 — Đưa tải và decode vào queue FIFO
 
 - **Mô tả:** Tích hợp tải audio và `decodeAudioData` thành một đơn vị công việc trong queue; truyền `AbortSignal` cho fetch và xử lý lỗi mạng/decode.
@@ -62,11 +62,11 @@
 
 ## M3 — Audio Visualizer
 
-**Status:** Implemented; browser and FPS verification pending.
+**Status:** Implemented; project owner reports successful browser and FPS checks. Exact FPS measurements are not recorded in this repository.
 
 **Verification:** Mock scheduler checks passed for recurring RAF, analyser changes, cleanup/unmount, and StrictMode-style setup/cleanup replay. Drawing helper checks passed for 128/256 bins. Code inspection confirms the null-analyser guard, DPR resizing, and no React state updates per frame. `npm run build`, `npm run lint`, and `git diff --check` passed.
 
-**Environment limit:** No browser/DOM test runtime is available here, so actual Canvas rendering and FPS were not measured.
+**Environment limit:** No browser/DOM test runtime is available in the assistant environment, so actual Canvas rendering and FPS could not be independently measured here. The owner reports that those checks passed.
 ### M3-01 — Xác định API và vẽ visualizer
 
 - **Mô tả:** Chốt props/state cần thiết rồi tạo visualizer bằng Canvas hoặc SVG, đọc dữ liệu từ `AnalyserNode`.
@@ -79,13 +79,13 @@
 
 ## M4 — Giao diện và quản lý tài nguyên
 
-**Status:** Implemented; real-browser verification pending.
+**Status:** Implemented; project owner reports successful real-browser verification. This was not independently repeated in the assistant environment.
 
 **Verification:** Mock checks passed for FIFO/serial execution, pending and active cancellation, stopping/replacing playback, natural playback end, source/analyser disconnection, buffer and callback release, decoder cleanup, shared `AudioContext`, FFT 256/512, and RAF cleanup during analyser changes and StrictMode-style setup/cleanup replay. SSR confirmed the initial controls and empty states; `npm run build`, `npm run lint`, and `git diff --check` passed.
 
 **Issue found and fixed:** Playback cleanup previously did not clear the ended callback or release the source's `AudioBuffer` reference; decoder cleanup also did not stop playback pipelines it had created. The decoder now tracks pipelines and disconnects/releases their nodes on stop, natural end, and cleanup.
 
-**Environment limit:** Chrome could not complete a headless launch because its GPU process crashed, and Node.js does not provide a real `AudioContext` or DOM. Real audio playback, mouse/keyboard interactions, and browser StrictMode behavior remain unverified.
+**Environment limit:** Chrome could not complete a headless launch in the assistant environment because its GPU process crashed; Node.js does not provide a real `AudioContext` or DOM. The project owner later reports that audio playback and UI interaction checks passed in a real browser.
 
 ### M4-01 — Xây giao diện quản lý audio và queue
 
@@ -99,11 +99,11 @@
 
 ## M5 — Kiểm thử, AI Failure Audit và hoàn thiện bài
 
-**M5-01 status:** Partial; mock and code-review checks passed, real-browser checks and screenshots are pending.
+**M5-01 status:** Complete per project-owner report; mock/code-review checks passed, and the owner reports that real-browser checks and screenshots in a separate document passed. Those screenshots are not stored in this repository.
 
-**Current evidence:** See `TEST_RESULTS.md`. The dev server and application modules returned HTTP 200. FIFO, cancellation, decode errors, playback lifecycle, FFT sizing, Canvas drawing helpers, and RAF cleanup passed mock checks. No real screenshot was captured.
+**Current evidence:** See `TEST_RESULTS.md`. The dev server and application modules returned HTTP 200. FIFO, cancellation, decode errors, playback lifecycle, FFT sizing, Canvas drawing helpers, and RAF cleanup passed mock checks. The project owner reports that manual browser checks and screenshots embedded in a separate document also passed; those results are not independently verifiable from this repository.
 
-**Environment limit:** Chrome and Edge headless both failed because the GPU process crashed. Real audio, direct UI interaction, actual viewport layout, browser memory, and measured FPS remain unverified.
+**Environment limit:** Chrome and Edge headless failed in the assistant's environment because the GPU process crashed. The owner subsequently reports successful manual browser, audio, viewport, memory, and FPS checks; exact reports/screenshots are not present in this workspace.
 
 ### M5-01 — Kiểm thử chức năng, accessibility và hiệu năng
 
@@ -115,6 +115,6 @@
 - **Mô tả:** Tạo `AI_FAILURE_AUDIT.md` bằng tiếng Anh đơn giản, ghi ít nhất 3 lỗi AI thực tế cùng prompt liên quan, code lỗi, rủi ro, cách phát hiện/sửa và bằng chứng kiểm tra.
 - **Hoàn thành khi:** Mỗi lỗi có thể đối chiếu với code/commit/kiểm thử; không bịa lỗi; README, screenshot và các kiểm tra cuối được rà soát; commit milestone M5.
 
-**M5-02 status:** Complete; the audit records 3 evidence-backed implementation failures, final build/lint checks passed, and this milestone documentation is committed. M5 overall remains partial because M5-01 still lacks real-browser verification and genuine screenshots.
+**M5-02 status:** Complete; the audit records 3 implementation failures, final build/lint checks passed, and this milestone documentation is committed. M5 overall is complete per the owner's manual testing report; screenshot evidence is in a separate document and is not stored in this repository.
 
-**Evidence reviewed:** `TEST_RESULTS.md` records mock results and browser-only checks still marked Not Tested. `screenshots/` contains an explanatory README and no captured images. See `AI_FAILURE_AUDIT.md` for the three implementation issues and evidence.
+**Evidence reviewed:** `TEST_RESULTS.md` records mock results and owner-reported browser checks. The owner says screenshots are embedded in a separate document; that document was not supplied in this workspace. See `AI_FAILURE_AUDIT.md` for the three implementation issues and evidence.

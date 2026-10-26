@@ -38,11 +38,11 @@ This report records three real implementation problems found while building HW2.
 
 ## Environment limitation (not an AI failure)
 
-Chrome and Edge headless both failed before rendering because their GPU process exited with code `-1073741790`. Node.js in this environment does not provide a browser DOM or a real `AudioContext`. This prevented real browser interaction, real audio playback checks, viewport screenshots, DevTools memory checks, and measured FPS. These limits are recorded in `TEST_RESULTS.md`; they are not counted as AI-generated application defects. The `screenshots/` folder currently has an explanatory README only and no real screenshots.
+Chrome and Edge headless both failed before rendering because their GPU process exited with code `-1073741790`. Node.js in this environment does not provide a browser DOM or a real `AudioContext`. The project owner later reported successful manual browser tests and said screenshots are embedded in a separate document. That document was not supplied in this workspace, so the screenshots could not be inspected here. These environment limits are not counted as AI-generated application defects.
 
 ## Evidence summary
 
 - **AI implementation failures with evidence:** 3.
 - **Fixed:** 3.
-- **Real-browser verification of fixes:** Pending; mock regression checks cover the lifecycle fix, while browser-only checks remain listed as Not Tested in `TEST_RESULTS.md`.
-- **Screenshot evidence:** Pending. No screenshot has been fabricated or reported as captured.
+- **Real-browser verification of fixes:** The project owner reports that manual browser checks passed. They were not independently repeated in this environment; the mock regression checks cover the lifecycle fix.
+- **Screenshot evidence:** The project owner reports that genuine screenshots are embedded in a separate document. That document was not supplied in this workspace, so the images could not be inspected here.
