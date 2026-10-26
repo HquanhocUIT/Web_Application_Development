@@ -67,7 +67,7 @@
 
 ### M6 — Tích hợp hệ thống và kiểm thử
 
-**Trạng thái M6:** Hoàn thành phần triển khai và kiểm thử có thể thực hiện trong môi trường hiện tại — M6-01 và M6-02 đã xong; browser verification vẫn pending vì không có browser executable/DOM test runner. Xem `TEST_RESULTS.md`.
+**Trạng thái M6:** Hoàn thành phần triển khai và kiểm thử có thể thực hiện — M6-01 và M6-02 đã xong. M7-01 bổ sung kiểm tra giao diện trên Edge headless; kiểm thử React DevTools/FPS/Lighthouse và screen reader vẫn pending. Xem `TEST_RESULTS.md`.
 
 - **M6-01 — Tích hợp các luồng chính:** Kết nối countdown, kho, reservation, hết hạn, checkout và giao diện thành một luồng Flash Sale hoàn chỉnh.
   - **Hoàn thành khi:** Có thể bắt đầu phiên, giữ hàng, chờ reservation hết hạn hoặc checkout và quan sát tồn kho cùng trạng thái giao diện nhất quán.
@@ -76,10 +76,12 @@
 
 ### M7 — Screenshots, AI Failure Audit và tổng kết
 
+**Trạng thái M7:** Hoàn thành — M7-01 và M7-02 đã đạt tiêu chí tài liệu, audit và kiểm tra bằng chứng. Có 6 ảnh thật từ Edge headless; `06-stress-test.png` vẫn pending để người dùng tự chụp Terminal theo `screenshots/README.md`. React DevTools, FPS, Lighthouse, screen reader và browser không headless vẫn pending; xem `TEST_RESULTS.md`.
+
 - **M7-01 — Chuẩn bị ảnh chụp và hướng dẫn chạy:** Chụp các trạng thái giao diện tiêu biểu và hoàn thiện hướng dẫn khởi chạy/kiểm thử trong HW3.
   - **Hoàn thành khi:** Ảnh chụp được lưu trong HW3 và thể hiện các trạng thái quan trọng; hướng dẫn nêu được cách chạy và cách tái hiện các luồng chính.
-- **M7-02 — Ghi AI Failure Audit và tổng kết:** Ghi ít nhất 3 lỗi AI thực tế trong AI_FAILURE_AUDIT.md, kèm bằng chứng, ảnh hưởng và cách sửa.
-  - **Hoàn thành khi:** Có ít nhất 3 lỗi đã thực sự xảy ra, mỗi lỗi có bằng chứng kiểm chứng được (ví dụ diff/commit, log chạy hoặc kết quả kiểm tra), mô tả ảnh hưởng và bản sửa; tài liệu tổng kết đối chiếu yêu cầu với kết quả cuối.
+- **M7-02 — Ghi AI Failure Audit và tổng kết:** Rà soát các lỗi AI thực tế trong AI_FAILURE_AUDIT.md, kiểm tra bằng chứng screenshot/test và đối chiếu yêu cầu với kết quả cuối.
+  - **Hoàn thành khi:** Có ít nhất 3 lỗi đã thực sự xảy ra, mỗi lỗi có bằng chứng kiểm chứng được, ảnh hưởng, nguyên nhân, cách sửa và kết quả kiểm tra lại; tài liệu tổng kết nêu rõ Pass và Pending. Đạt: audit có 9 lỗi thực tế; build, lint, 61 Node tests và diff check đạt. Sáu screenshot thật đã được mở/kiểm tra; ảnh stress test và các công cụ/browser checks chưa thực hiện vẫn được ghi Pending.
 
 ## Kế hoạch commit
 

@@ -3,11 +3,9 @@
 ## Environment and commands
 
 - Runtime: Node.js native test runner with TypeScript type stripping.
-- `node --experimental-strip-types --test tests/*.test.mjs`: **Pass**, 61 tests, 61 passed, 0 failed.
-- `npm.cmd run build`: **Pass**, TypeScript build and Vite production bundle completed.
-- `npm.cmd run lint`: **Pass**, ESLint completed without findings.
-- `git diff --check`: **Pass**, no whitespace errors; Git emitted only LF-to-CRLF normalization warnings for two edited files.
-- No browser executable or DOM-based React test runner is configured in this environment. Results below that use Node or mocked scheduling do not represent a browser run.
+- M6 final checks: `node --experimental-strip-types --test tests/*.test.mjs` **Pass**, 61/61; `npm.cmd run build` **Pass**; `npm.cmd run lint` **Pass**; `git diff --check` **Pass** (Git only printed LF-to-CRLF normalization warnings).
+- M7-01 final checks: `node --experimental-strip-types --test tests/*.test.mjs` **Pass**, 61/61; `npm.cmd run build` **Pass**; `npm.cmd run lint` **Pass**; `git diff --check` **Pass** (same line-ending warnings).
+- M6 was verified with Node and mocked scheduling before the installed browser was discovered. M7-01 used Microsoft Edge 156 headless through Chrome DevTools Protocol; no DOM-based React test runner is configured. Browser results are listed separately below.
 - For M6-02, `src/components`, `src/domain`, `src/App.css`, `src/index.css`, and `src/components/FlashSaleCountdown.css` were reviewed statically. Static review does not establish rendered layout, browser accessibility behavior, or absence of console/runtime warnings.
 
 ## Results by group
@@ -27,8 +25,8 @@
 | Countdown upcoming, active, and ended states | Pass | Pure timestamp tests in `tests/flashSaleCountdown.test.mjs` cover before start, exact start, active countdown, exact end, and past deadline. |
 | Delayed callback / suspended tab / changed clock | Pass (Node/mock) | Countdown is recomputed from supplied timestamps after a simulated time jump; a backwards clock reading is also passed through the pure calculation. This does not reproduce browser throttling or an OS clock change. |
 | Animation frame cleanup and single-loop behavior | Pass (mock) | `tests/countdownAnimationLoop.test.mjs` uses a mocked scheduler for cleanup, stale callbacks, terminal state, and StrictMode-style setup/cleanup/setup. |
-| React state update frequency and actual StrictMode rerenders | Not Tested | Source uses display equality before setting countdown state, and keeps engines in a lazy state initializer. No mounted React renderer, browser, FPS trace, or React DevTools measurement was available. |
-| Responsive layout, keyboard interaction, and browser-visible statuses | Not Tested | No browser executable or browser automation dependency was available; these need manual or browser-based verification. |
+| React state update frequency and actual StrictMode rerenders | Not Tested at M6 | Source uses display equality before setting countdown state and keeps engines in a lazy state initializer. M7 browser interactions caused functional rerenders, but did not instrument component identity, frame counts, or React internals. |
+| Responsive layout, keyboard interaction, and browser-visible statuses | Not Tested at M6 | No browser executable was found during M6. See the M7-01 headless browser results below for subsequent viewport and keyboard checks. |
 | Cross-browser, multi-device, and server concurrency | Not Tested | The engine stress tests exercise one Node JavaScript runtime only; there is no backend or shared database in this project. |
 
 ## M6-02 review results
@@ -41,18 +39,58 @@
 | Countdown uses wall-clock timestamps and recovers after delayed callbacks | Pass (source + Node/mock) | Each animation callback obtains the scheduler's current time (`Date.now()` in production) and recalculates from sale timestamps. Mock tests advance time between callbacks and test cleanup; no real tab suspension or system clock change was performed. |
 | Inventory engine stability on rerender and StrictMode | Pass (static review; lifecycle Not Tested) | `FlashSalePage` stores the engine map in lazy state rather than constructing it during ordinary renders. `main.tsx` enables `StrictMode`. No mounted React lifecycle test was available to observe actual development double invocation or rerenders. |
 | RAF, interval, callback cleanup | Pass (source + mock) | Countdown effect returns the animation loop's stop function; expiration effect clears its interval. Mock RAF tests verify cancellation, stale callback behavior, and setup/cleanup/setup leaves one scheduled loop. Actual browser unmount was not tested. |
-| Responsive layout at 320, 375, 768, and 1280 px | Not Tested (static CSS review only) | CSS defines narrow, mobile, tablet, and wide grid rules, but no browser/viewport renderer was available to inspect overflow or visual layout at these exact widths. |
+| Responsive layout at 320, 375, 768, and 1280 px | Not Tested at M6 (static CSS review only) | CSS defines narrow, mobile, tablet, and wide grid rules. The M7-01 headless browser follow-up later measured these exact widths; see its results below. |
 | Semantic HTML and accessible control names | Pass (static source review) | Page uses `main`, `header`, `nav`, `section`, `article`, `footer`, native anchors and buttons, headings, live status text, and progress labels. Reservation action buttons now include the reservation ID in their accessible names. |
-| Keyboard navigation and focus-visible behavior | Pass (static CSS/source review); keyboard interaction Not Tested | Native anchors/buttons are used and `a:focus-visible`/`button:focus-visible` rules are present. Keyboard operation and visible focus were not exercised in a browser. |
-| Browser console, React warnings, runtime errors, FPS, Lighthouse, accessibility tooling | Not Tested | No browser executable, browser automation, or measurement tool was available. No claims are made for these checks. |
+| Keyboard navigation and focus-visible behavior | Pass (static CSS/source review); keyboard interaction Not Tested at M6 | Native anchors/buttons are used and `a:focus-visible`/`button:focus-visible` rules are present. M7-01 later exercised Tab and Enter in Edge; see results below. |
+| Browser console, React warnings, runtime errors, FPS, Lighthouse, accessibility tooling | Not Tested at M6 | Browser tooling was not available during M6. M7-01 later checked Edge console warnings/errors; FPS, Lighthouse, and screen-reader tooling remain untested. |
+
+## M7-01 browser verification
+
+| Check | Result | Method and evidence |
+| --- | --- | --- |
+| Development server startup | Pass | Started with `npm.cmd run dev -- --host 127.0.0.1`; Vite reported ready at port 5173 and an HTTP GET for `/` returned 200. |
+| Countdown display and update | Pass (headless browser) | Edge loaded the app; countdown seconds changed after a 1.2-second wait. The capture script also moved `Date.now()` before the sale start and past the sale end, confirmed phase transitions, then reloaded the page before purchase checks. |
+| Buy Now and reservation | Pass (headless browser) | CDP activated an enabled Buy Now button; the UI showed a new reservation, its expiry, and stock decreasing from 12 to 11. See `screenshots/02-reservation.png`. |
+| Checkout | Pass (headless browser) | CDP activated the reservation's checkout control; the order status showed checkout success. See `screenshots/03-checkout.png`. |
+| Cancellation | Pass (headless browser) | A second reservation was cancelled; the UI reported cancellation and stock was released. See `screenshots/04-cancellation.png`. |
+| Automatic expiration | Pass (headless browser) | The script waited for the actual 30-second reservation TTL and verified expiration feedback and released stock. See `screenshots/05-expiration.png`. |
+| Buy Now unavailable before/after the sale and when sold out | Pass (headless browser) | DOM `disabled` values were checked after moving `Date.now()` before/after the configured sale; the sold-out card was also checked in the active phase. |
+| Responsive widths 320, 375, 768, and 1280 px | Pass (headless browser) | Edge device metrics were set to each width; `document.documentElement.scrollWidth` was 320, 360, 753, and 1265 respectively, so none exceeded its viewport. A 375 px app screenshot is `screenshots/07-responsive.png`. |
+| Keyboard focus and purchase | Pass (headless browser) | CDP sent Tab until an enabled Buy Now button was focused, confirmed `:focus-visible`, then sent Enter and observed reservation success. The first Tab also focused the brand link with visible focus. |
+| Browser console errors and runtime exceptions | Pass (headless browser) | After the favicon correction, the capture run observed no Console warning/error entries or runtime exceptions. This was a headless Edge run, not a manual desktop session. |
+| Version conflict feedback through the UI | Not Tested | The engine version-conflict and retry cases pass in Node tests, but the UI exposes no test control to force a stale version. The message mapping was reviewed statically. |
+| Stress-test screenshot | Not Tested | Stress tests pass, including an isolated 1000-request Node run, but this environment has no terminal screenshot capture facility. No image was generated for `06-stress-test.png`; see `screenshots/README.md` for local capture steps. |
+| FPS, Lighthouse, desktop browser interaction, and screen-reader testing | Not Tested | These tools or manual desktop interaction were not used. |
+
+The actual app screenshots captured in Edge are `screenshots/01-flash-sale-ui.png`, `02-reservation.png`, `03-checkout.png`, `04-cancellation.png`, `05-expiration.png`, and `07-responsive.png`. `screenshots/capture_browser.mjs` reproduces the browser checks without external packages.
 
 ## Stress test scope
 
 Each stress case begins with `totalQuantity = 3`, `reservedQuantity = 0`, and `soldQuantity = 0`. Every unique request reads version 0, requests one unit, and uses `maxAttempts = 4`. The tests assert that exactly three requests reserve successfully, inventory version matches the committed holds, all results settle within the retry bound, and `soldQuantity + reservedQuantity <= totalQuantity`. The runs validate the in-memory engine's behavior; they are not throughput benchmarks or a guarantee across separate runtimes.
 
+## M7-02 final review
+
+| Check | Result | Method and evidence |
+| --- | --- | --- |
+| AI failure audit minimum and evidence fields | Pass | Reviewed 9 real entries in `AI_FAILURE_AUDIT.md`; each records observed evidence, impact, cause, correction, and recheck. No synthetic failures were added. |
+| Screenshots exist and are valid PNG images | Pass (6 files) | Enumerated `screenshots/*.png` and decoded each image with Windows System.Drawing. Files: 01, 02, 03, 04, 05, and 07. Visual review matched the recorded initial, reservation, checkout, cancellation, expiration, and 375 px responsive states. |
+| Stress-test screenshot `06-stress-test.png` | Pending | No real terminal capture facility was available. `screenshots/README.md` gives the command and manual Snipping Tool steps. The 10/100/1000 request stress cases themselves pass in the Node suite. |
+| Milestone commits M0–M6 | Pass | Git history contains one non-empty Conventional Commit for each milestone: 6bc35f4, dacd0a4, bd7376d, 4696dda, 680aa25, b76d3d4, and f4155a9. M7's final documentation commit is created after this review. |
+| Final build | Pass | `npm.cmd run build`; TypeScript compilation and Vite production build completed successfully. |
+| Final lint | Pass | `npm.cmd run lint`; ESLint completed with exit code 0. |
+| Full Node test suite | Pass | `node --experimental-strip-types --test tests/*.test.mjs`; 61 passed, 0 failed, including 10/100/1000 concurrent request cases. |
+| Whitespace validation | Pass | `git diff --check`; no whitespace errors. Git may report line-ending normalization warnings for Windows checkouts. |
+
+### Final verification limits
+
+- Edge headless checks documented in M7-01 are real browser evidence. A non-headless/manual browser run was not performed.
+- Version conflict UI was not forced in the browser; its behavior is verified by Node tests and static UI mapping.
+- React DevTools lifecycle inspection, FPS measurement, Lighthouse, screen-reader testing, and actual tab suspension/OS clock changes remain Not Tested.
+- The concurrency tests model one Node/JavaScript runtime and are not a multi-device or backend concurrency test.
+
 ## Limitations and remaining checks
 
-- Run the app in a real browser and manually inspect upcoming/active/ended sale states, responsive breakpoints at 320/375/768/1280 px, keyboard focus, and reservation/checkout feedback.
-- Verify actual React mount/unmount and StrictMode behavior in a browser or DOM test environment, including that visible countdown updates happen only when the displayed second or phase changes.
-- Inspect browser console and runtime behavior. No FPS, Lighthouse, or automated accessibility measurement was performed.
-- Browser-based verification remains pending; this does not block the M6 work that could be performed in the available Node/static-review environment.
+- Capture `06-stress-test.png` from a visible terminal using the command in `screenshots/README.md`.
+- Verify React mount/unmount and StrictMode timer cleanup with React DevTools or a DOM test runner; the current browser run checked functional rerenders but did not instrument React internals or count animation loops.
+- Version-conflict UI feedback remains verified by Node domain tests and static UI mapping, not by forcing a conflict in the browser.
+- No FPS, Lighthouse, or screen-reader audit was performed.

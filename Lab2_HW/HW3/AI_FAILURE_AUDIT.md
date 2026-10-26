@@ -1,6 +1,6 @@
-# AI Failure Audit (ongoing)
+# AI Failure Audit
 
-This is an evidence log for real implementation mistakes. Complete the final audit in M7; these entries do not claim the minimum final count has been reached.
+Final audit for M7-02: this file records 9 implementation mistakes that actually occurred. Each entry includes observed evidence, impact, cause, correction, and a check after correction. The entries are limited to errors observed during this project; no fabricated failures were added.
 
 ## M3-02
 
@@ -67,3 +67,27 @@ This is an evidence log for real implementation mistakes. Complete the final aud
 - **Cause:** The actions were rendered in a repeated list item, but their labels were written as standalone text and did not include the reservation identifier.
 - **Correction:** Added an `aria-label` to each action containing its operation and reservation ID.
 - **Recheck:** Source review confirms each repeated action now has a reservation-specific accessible name. Build, lint, and Node test results are recorded in `TEST_RESULTS.md`; browser screen-reader behavior remains untested in this environment.
+
+## M7-01
+
+### 8. Left the app's default favicon request unresolved
+
+- **Evidence:** The first Edge headless run logged `Failed to load resource: the server responded with a status of 404 (Not Found)`. A direct request to `http://127.0.0.1:5173/favicon.ico` also returned HTTP 404 while no favicon was declared in `index.html`.
+- **Impact:** The browser console showed a failed resource request during an otherwise successful app run.
+- **Cause:** The HTML did not declare a favicon, so the browser attempted its default `/favicon.ico` request.
+- **Correction:** Declared an empty data favicon in `index.html` to stop the browser from requesting a nonexistent asset.
+- **Recheck:** Re-ran the Edge headless interaction/capture script; it reported no Console warnings/errors or runtime exceptions. The app root returned HTTP 200.
+
+### 9. Wrote invalid nested quotes in the browser capture script
+
+- **Evidence:** The first `node --check screenshots/capture_browser.mjs` run failed with `SyntaxError: missing ) after argument list` at the selector expression containing `[aria-live="polite"]`.
+- **Impact:** The browser interaction script could not start, delaying M7-01 screenshot capture.
+- **Cause:** JavaScript string delimiters were reused inside a quoted selector expression without escaping.
+- **Correction:** Changed the CDP expressions to use valid unquoted attribute selector values such as `[aria-live=polite]` and `[aria-label^=Checkout]`.
+- **Recheck:** `node --check screenshots/capture_browser.mjs` passed, and the subsequent Edge capture run completed all interactions and produced the six listed PNG files.
+
+## M7-02 final review
+
+- **Evidence count:** 9 documented implementation mistakes, spanning M3-02 through M7-01. Each entry has an observed error or source finding, impact, cause, correction, and recheck result above.
+- **Final recheck:** `npm.cmd run build` passed; `npm.cmd run lint` passed; `node --experimental-strip-types --test tests/*.test.mjs` passed all 61 tests; `git diff --check` passed.
+- **Evidence limits:** browser evidence is from Edge headless. `06-stress-test.png` has not been captured, and React DevTools, FPS, Lighthouse, screen-reader, and non-headless browser checks remain pending as recorded in `TEST_RESULTS.md`.
