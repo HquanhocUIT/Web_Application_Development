@@ -31,6 +31,8 @@
 
 ### M2 — Zero-Drift Countdown Timer
 
+**Trạng thái:** Hoàn thành — M2-01 và M2-02 đã đạt tiêu chí qua build, lint và kiểm thử logic/mocked RAF. Chưa kiểm tra trực tiếp trên browser hoặc mount/unmount React thật vì môi trường không có browser executable hay DOM test runner.
+
 - **M2-01 — Tính thời gian còn lại theo đồng hồ chuẩn:** Tính countdown từ thời điểm kết thúc và Date.now(), không cộng/trừ thời gian dựa trên số lần setInterval chạy.
   - **Hoàn thành khi:** Mỗi lần cập nhật đều suy ra thời gian còn lại từ timestamp; countdown dừng ở 0 và xử lý đúng khi thời gian kết thúc đã qua.
 - **M2-02 — Cập nhật giao diện countdown:** Dùng requestAnimationFrame khi phù hợp để hiển thị countdown mượt và dọn vòng lặp khi component bị gỡ.

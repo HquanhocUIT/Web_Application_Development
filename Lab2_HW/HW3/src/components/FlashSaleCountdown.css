@@ -1,0 +1,51 @@
+.flash-sale-countdown {
+  width: min(100%, 34rem);
+  padding: 1rem;
+  border: 1px solid #f1b4a1;
+  border-radius: 0.75rem;
+  background: #fff7f3;
+  color: #542115;
+  font-family: Arial, sans-serif;
+}
+
+.flash-sale-countdown__status {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.flash-sale-countdown__time {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.flash-sale-countdown__unit {
+  padding: 0.6rem 0.35rem;
+  border-radius: 0.5rem;
+  background: #b52f16;
+  color: #fff;
+  text-align: center;
+}
+
+.flash-sale-countdown__unit dt {
+  font-size: 0.75rem;
+}
+
+.flash-sale-countdown__unit dd {
+  margin: 0 0 0.2rem;
+  font-size: clamp(1.1rem, 5vw, 1.6rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+@media (max-width: 24rem) {
+  .flash-sale-countdown {
+    padding: 0.75rem;
+  }
+
+  .flash-sale-countdown__time {
+    gap: 0.3rem;
+  }
+}
