@@ -67,6 +67,8 @@
 
 ### M6 — Tích hợp hệ thống và kiểm thử
 
+**Trạng thái M6:** Hoàn thành phần triển khai và kiểm thử có thể thực hiện trong môi trường hiện tại — M6-01 và M6-02 đã xong; browser verification vẫn pending vì không có browser executable/DOM test runner. Xem `TEST_RESULTS.md`.
+
 - **M6-01 — Tích hợp các luồng chính:** Kết nối countdown, kho, reservation, hết hạn, checkout và giao diện thành một luồng Flash Sale hoàn chỉnh.
   - **Hoàn thành khi:** Có thể bắt đầu phiên, giữ hàng, chờ reservation hết hạn hoặc checkout và quan sát tồn kho cùng trạng thái giao diện nhất quán.
 - **M6-02 — Kiểm tra các tình huống biên:** Kiểm tra cạnh tranh tài nguyên, hết hàng, hết hạn giữ hàng, checkout thành công và checkout thất bại.

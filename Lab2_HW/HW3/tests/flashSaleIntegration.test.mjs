@@ -167,3 +167,107 @@ test('a held last unit cannot be sold through an additional reservation', async 
   assert.equal(getAvailableQuantity(engine.getState()), 0)
   assertInventoryInvariant(engine.getState())
 })
+
+test('two requests with the same expected version cannot hold the last unit twice', async () => {
+  const engine = createSession().get('two')
+  const sharedVersion = engine.getState().inventory.version
+  const [first, second] = await Promise.all([
+    reserve(engine, 'two', 'same-version-a', { expectedVersion: sharedVersion }),
+    reserve(engine, 'two', 'same-version-b', { expectedVersion: sharedVersion }),
+  ])
+
+  assert.equal([first, second].filter((result) => result.status === 'reserved').length, 1)
+  assert.equal(engine.getState().inventory.reservedQuantity, 1)
+  assert.equal(getAvailableQuantity(engine.getState()), 0)
+  assertInventoryInvariant(engine.getState())
+})
+
+test('a concurrent purchase retries after cancellation releases a reservation', async () => {
+  const engine = createSession().get('two')
+  await reserve(engine, 'two', 'cancel-race-original')
+  const initialVersion = engine.getState().inventory.version
+  const purchase = engine.reserve({
+    request: {
+      requestId: 'cancel-race-purchase-request',
+      reservationId: 'cancel-race-purchase',
+      productId: 'two',
+      quantity: 1,
+      expectedVersion: initialVersion,
+      requestedAt: 2500,
+      reservationExpiresAt: 50000,
+    },
+    retryPolicy: { maxAttempts: 3 },
+  })
+  const cancelled = engine.cancelReservation({
+    type: 'cancel_reservation',
+    reservationId: 'cancel-race-original',
+    expectedVersion: initialVersion,
+    cancelledAt: 2500,
+  })
+  const purchaseResult = await purchase
+
+  assert.equal(cancelled.status, 'applied')
+  assert.equal(purchaseResult.status, 'reserved')
+  assert.equal(purchaseResult.attempts, 2)
+  assert.equal(engine.getState().inventory.reservedQuantity, 1)
+  assert.equal(getAvailableQuantity(engine.getState()), 0)
+  assertInventoryInvariant(engine.getState())
+})
+
+test('a concurrent purchase retries after expiration releases a reservation', async () => {
+  const engine = createSession().get('two')
+  await reserve(engine, 'two', 'expiration-race-original', { expiresAt: 3500 })
+  const initialVersion = engine.getState().inventory.version
+  const purchase = engine.reserve({
+    request: {
+      requestId: 'expiration-race-purchase-request',
+      reservationId: 'expiration-race-purchase',
+      productId: 'two',
+      quantity: 1,
+      expectedVersion: initialVersion,
+      requestedAt: 3500,
+      reservationExpiresAt: 50000,
+    },
+    retryPolicy: { maxAttempts: 3 },
+  })
+  const expiration = engine.expireReservations(3500)
+  const purchaseResult = await purchase
+
+  assert.deepEqual(expiration.expiredReservationIds, ['expiration-race-original'])
+  assert.equal(purchaseResult.status, 'reserved')
+  assert.equal(purchaseResult.attempts, 2)
+  assert.equal(engine.getState().reservations.find((item) =>
+    item.id === 'expiration-race-original').status, 'expired')
+  assert.equal(engine.getState().inventory.reservedQuantity, 1)
+  assert.equal(getAvailableQuantity(engine.getState()), 0)
+  assertInventoryInvariant(engine.getState())
+})
+
+test('payment failure releases a reservation and a repeated checkout changes nothing', async () => {
+  const engine = createSession().get('one')
+  await reserve(engine, 'one', 'payment-failure-hold')
+  const declined = engine.checkout({
+    type: 'checkout',
+    reservationId: 'payment-failure-hold',
+    expectedVersion: engine.getState().inventory.version,
+    checkedOutAt: 3000,
+    paymentStatus: 'declined',
+  })
+
+  assert.equal(declined.status, 'payment_declined')
+  assert.equal(engine.getState().inventory.reservedQuantity, 0)
+  assert.equal(engine.getState().inventory.soldQuantity, 0)
+  assert.equal(getAvailableQuantity(engine.getState()), 2)
+  const afterDecline = engine.getState()
+  const repeated = engine.checkout({
+    type: 'checkout',
+    reservationId: 'payment-failure-hold',
+    expectedVersion: afterDecline.inventory.version,
+    checkedOutAt: 4000,
+    paymentStatus: 'approved',
+  })
+
+  assert.equal(repeated.status, 'rejected')
+  assert.deepEqual(engine.getState(), afterDecline)
+  assertInventoryInvariant(engine.getState())
+})

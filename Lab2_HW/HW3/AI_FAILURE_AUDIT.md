@@ -57,3 +57,13 @@ This is an evidence log for real implementation mistakes. Complete the final aud
 - **Cause:** The engine ref was read while deriving initial React state, and the effect synchronously caused state updates instead of waiting for an external timer callback.
 - **Correction:** Kept the per-product engine map in a lazy React state initializer so it remains stable across rerenders; retained refs only for event-time request tracking; started expiration scans from the interval callback and kept cleanup with `clearInterval`.
 - **Recheck:** The subsequent `npm.cmd run build`, `npm.cmd run lint`, and all 54 Node tests passed.
+
+## M6-02
+
+### 7. Repeated reservation actions had ambiguous accessible names
+
+- **Evidence:** Static review of `src/components/ReservationPanel.tsx` found that every reservation rendered the same button names (`Checkout`, `Từ chối thanh toán`, and `Hủy giữ hàng`) without a reservation-specific accessible label.
+- **Impact:** With more than one active reservation, assistive technology users could encounter identical action names without knowing which reservation each button would affect.
+- **Cause:** The actions were rendered in a repeated list item, but their labels were written as standalone text and did not include the reservation identifier.
+- **Correction:** Added an `aria-label` to each action containing its operation and reservation ID.
+- **Recheck:** Source review confirms each repeated action now has a reservation-specific accessible name. Build, lint, and Node test results are recorded in `TEST_RESULTS.md`; browser screen-reader behavior remains untested in this environment.

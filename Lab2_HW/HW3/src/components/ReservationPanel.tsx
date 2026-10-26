@@ -29,13 +29,25 @@ export function ReservationPanel({
               <code>{reservation.id}</code>
             </div>
             <div className="reservation-panel__actions" aria-label={`Thao tác reservation ${reservation.id}`}>
-              <button type="button" onClick={() => onCheckout(reservation.id, 'approved')}>
+              <button
+                type="button"
+                aria-label={`Checkout reservation ${reservation.id}`}
+                onClick={() => onCheckout(reservation.id, 'approved')}
+              >
                 Checkout
               </button>
-              <button type="button" onClick={() => onCheckout(reservation.id, 'declined')}>
+              <button
+                type="button"
+                aria-label={`Từ chối thanh toán reservation ${reservation.id}`}
+                onClick={() => onCheckout(reservation.id, 'declined')}
+              >
                 Từ chối thanh toán
               </button>
-              <button type="button" onClick={() => onCancel(reservation.id)}>
+              <button
+                type="button"
+                aria-label={`Hủy giữ hàng reservation ${reservation.id}`}
+                onClick={() => onCancel(reservation.id)}
+              >
                 Hủy giữ hàng
               </button>
             </div>
