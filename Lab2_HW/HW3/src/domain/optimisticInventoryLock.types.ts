@@ -1,9 +1,11 @@
 import type {
+  CheckoutCommand,
   InventoryCommandResult,
   InventoryEvent,
   InventoryMachineInput,
   InventoryFailureReason,
 } from './inventoryMachine.types'
+import type { CheckoutWorkflowResult } from './checkoutWorkflow'
 import type { InventoryState, Reservation } from './flashSale.types'
 
 /** One buyer's request to reserve a product against the inventory version read. */
@@ -76,4 +78,5 @@ export type OptimisticInventoryLockResult =
 export interface OptimisticInventoryLockContract {
   getState(): InventoryState
   reserve(input: OptimisticInventoryLockInput): Promise<OptimisticInventoryLockResult>
+  checkout(command: CheckoutCommand): CheckoutWorkflowResult
 }

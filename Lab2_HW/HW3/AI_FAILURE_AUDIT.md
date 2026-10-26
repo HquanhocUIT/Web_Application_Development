@@ -19,3 +19,13 @@ This is an evidence log for real implementation mistakes. Complete the final aud
 - **Cause:** The engine inferred the reservation type and did not need the explicit import.
 - **Correction:** Removed `Reservation` from the engine import list.
 - **Recheck:** The final `npm.cmd run build`, `npm.cmd run lint`, and all 34 Node tests passed.
+
+## M4-01
+
+### 3. Used an extensionless runtime import in the expiration module
+
+- **Evidence:** The first `node --experimental-strip-types --test tests/*.test.mjs` run failed loading `tests/reservationExpiration.test.mjs` with `ERR_MODULE_NOT_FOUND`, naming `src/domain/inventoryMachine` imported from `src/domain/reservationExpiration.ts`. The same run showed the existing 34 tests passing before the new test file failed to load.
+- **Impact:** The expiration tests could not run under the project's Node test command, even though the TypeScript build and lint passed.
+- **Cause:** Node's native TypeScript stripping resolves the runtime import as an ES module and requires the explicit `.ts` extension used by this test setup.
+- **Correction:** Changed the runtime import to `./inventoryMachine.ts`.
+- **Recheck:** `npm.cmd run build`, `npm.cmd run lint`, and the full Node test suite passed; the suite reported 41 tests, 41 passed, 0 failed.

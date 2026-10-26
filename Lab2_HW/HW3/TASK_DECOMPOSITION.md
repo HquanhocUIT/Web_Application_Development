@@ -49,6 +49,8 @@
 
 ### M4 — Reservation Expiration và Checkout
 
+**Trạng thái:** Hoàn thành — M4-01 và M4-02 đã đạt tiêu chí qua build, lint và kiểm thử domain. Checkout xử lý các reservation hết hạn trước khi thanh toán; M4 vẫn là mô phỏng trong một JavaScript runtime, không phải giao dịch backend.
+
 - **M4-01 — Hết hạn và giải phóng reservation:** Theo dõi thời điểm hết hạn, đổi trạng thái reservation và trả lượng hàng đã giữ về tồn khả dụng.
   - **Hoàn thành khi:** Reservation hết hạn không thể checkout; lượng hàng của nó được giải phóng đúng một lần và không bị giải phóng lặp.
 - **M4-02 — Hoàn tất hoặc thất bại checkout:** Cài đặt các nhánh checkout thành công/thất bại, gồm cập nhật tồn kho và giải phóng giữ hàng phù hợp.

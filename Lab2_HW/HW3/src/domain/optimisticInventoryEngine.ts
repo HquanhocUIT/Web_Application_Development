@@ -1,8 +1,11 @@
 import { transitionInventory } from './inventoryMachine.ts'
+import { checkoutReservation } from './checkoutWorkflow.ts'
 import type { InventoryState, Product } from './flashSale.types'
 import type {
+  CheckoutCommand,
   InventoryCommandResult,
 } from './inventoryMachine.types'
+import type { CheckoutWorkflowResult } from './checkoutWorkflow'
 import type {
   InventoryStateMachineTransition,
   OptimisticInventoryLockContract,
@@ -38,6 +41,14 @@ function copyResult(result: OptimisticInventoryLockResult): OptimisticInventoryL
   return { ...result, state: copyState(result.state) }
 }
 
+function copyCheckoutResult(result: CheckoutWorkflowResult): CheckoutWorkflowResult {
+  return {
+    ...result,
+    state: copyState(result.state),
+    events: result.events.map((event) => ({ ...event })),
+  }
+}
+
 function requestFingerprint(request: OptimisticInventoryLockRequest): string {
   return JSON.stringify([
     request.reservationId,
@@ -69,6 +80,13 @@ export class OptimisticInventoryEngine implements OptimisticInventoryLockContrac
   /** Return a snapshot so callers cannot mutate the engine's current state. */
   getState(): InventoryState {
     return copyState(this.state)
+  }
+
+  /** Checkout mutates the same in-memory inventory protected by reserve(). */
+  checkout(command: CheckoutCommand): CheckoutWorkflowResult {
+    const result = checkoutReservation(this.state, this.product, command)
+    this.state = copyState(result.state)
+    return copyCheckoutResult(result)
   }
 
   reserve(input: OptimisticInventoryLockInput): Promise<OptimisticInventoryLockResult> {
