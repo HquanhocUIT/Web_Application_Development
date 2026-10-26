@@ -1,5 +1,7 @@
 # TASK DECOMPOSITION — Homework 3: High-Concurrency Flash-Sale E-Commerce Engine
 
+## Link chat: https://chatgpt.com/s/cx_6adee7067fb88191b94187af6c4965d7
+
 ## Quy tắc thực hiện
 
 - Thực hiện lần lượt từng subtask; chỉ bắt đầu subtask kế tiếp sau khi subtask hiện tại hoàn thành.
@@ -76,12 +78,12 @@
 
 ### M7 — Screenshots, AI Failure Audit và tổng kết
 
-**Trạng thái M7:** Hoàn thành — M7-01 và M7-02 đã đạt tiêu chí tài liệu, audit và kiểm tra bằng chứng. Có 6 ảnh thật từ Edge headless; `06-stress-test.png` vẫn pending để người dùng tự chụp Terminal theo `screenshots/README.md`. React DevTools, FPS, Lighthouse, screen reader và browser không headless vẫn pending; xem `TEST_RESULTS.md`.
+**Trạng thái M7:** Hoàn thành tại commit M7 — khi rà soát đã kiểm tra 6 ảnh thật từ Edge headless; thư mục ảnh sau đó được xóa theo yêu cầu người dùng. `06-stress-test.png` chưa từng được tạo. React DevTools, FPS, Lighthouse, screen reader và browser không headless vẫn pending; xem `TEST_RESULTS.md`.
 
 - **M7-01 — Chuẩn bị ảnh chụp và hướng dẫn chạy:** Chụp các trạng thái giao diện tiêu biểu và hoàn thiện hướng dẫn khởi chạy/kiểm thử trong HW3.
   - **Hoàn thành khi:** Ảnh chụp được lưu trong HW3 và thể hiện các trạng thái quan trọng; hướng dẫn nêu được cách chạy và cách tái hiện các luồng chính.
 - **M7-02 — Ghi AI Failure Audit và tổng kết:** Rà soát các lỗi AI thực tế trong AI_FAILURE_AUDIT.md, kiểm tra bằng chứng screenshot/test và đối chiếu yêu cầu với kết quả cuối.
-  - **Hoàn thành khi:** Có ít nhất 3 lỗi đã thực sự xảy ra, mỗi lỗi có bằng chứng kiểm chứng được, ảnh hưởng, nguyên nhân, cách sửa và kết quả kiểm tra lại; tài liệu tổng kết nêu rõ Pass và Pending. Đạt: audit có 9 lỗi thực tế; build, lint, 61 Node tests và diff check đạt. Sáu screenshot thật đã được mở/kiểm tra; ảnh stress test và các công cụ/browser checks chưa thực hiện vẫn được ghi Pending.
+  - **Hoàn thành khi:** Có ít nhất 3 lỗi đã thực sự xảy ra, mỗi lỗi có bằng chứng kiểm chứng được, ảnh hưởng, nguyên nhân, cách sửa và kết quả kiểm tra lại; tài liệu tổng kết nêu rõ Pass và Pending. Đạt: audit có 9 lỗi thực tế; build, lint, 61 Node tests và diff check đạt. Sáu screenshot thật đã được mở/kiểm tra trước khi thư mục screenshots bị xóa theo yêu cầu người dùng; ảnh stress test và các công cụ/browser checks chưa thực hiện vẫn Pending.
 
 ## Kế hoạch commit
 

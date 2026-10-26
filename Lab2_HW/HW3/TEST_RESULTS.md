@@ -50,19 +50,19 @@
 | --- | --- | --- |
 | Development server startup | Pass | Started with `npm.cmd run dev -- --host 127.0.0.1`; Vite reported ready at port 5173 and an HTTP GET for `/` returned 200. |
 | Countdown display and update | Pass (headless browser) | Edge loaded the app; countdown seconds changed after a 1.2-second wait. The capture script also moved `Date.now()` before the sale start and past the sale end, confirmed phase transitions, then reloaded the page before purchase checks. |
-| Buy Now and reservation | Pass (headless browser) | CDP activated an enabled Buy Now button; the UI showed a new reservation, its expiry, and stock decreasing from 12 to 11. See `screenshots/02-reservation.png`. |
-| Checkout | Pass (headless browser) | CDP activated the reservation's checkout control; the order status showed checkout success. See `screenshots/03-checkout.png`. |
-| Cancellation | Pass (headless browser) | A second reservation was cancelled; the UI reported cancellation and stock was released. See `screenshots/04-cancellation.png`. |
-| Automatic expiration | Pass (headless browser) | The script waited for the actual 30-second reservation TTL and verified expiration feedback and released stock. See `screenshots/05-expiration.png`. |
+| Buy Now and reservation | Pass (headless browser) | CDP activated an enabled Buy Now button; the UI showed a new reservation, its expiry, and stock decreasing from 12 to 11. Its screenshot was captured during M7-01 and later removed at the user's request. |
+| Checkout | Pass (headless browser) | CDP activated the reservation's checkout control; the order status showed checkout success. Its screenshot was captured during M7-01 and later removed at the user's request. |
+| Cancellation | Pass (headless browser) | A second reservation was cancelled; the UI reported cancellation and stock was released. Its screenshot was captured during M7-01 and later removed at the user's request. |
+| Automatic expiration | Pass (headless browser) | The script waited for the actual 30-second reservation TTL and verified expiration feedback and released stock. Its screenshot was captured during M7-01 and later removed at the user's request. |
 | Buy Now unavailable before/after the sale and when sold out | Pass (headless browser) | DOM `disabled` values were checked after moving `Date.now()` before/after the configured sale; the sold-out card was also checked in the active phase. |
-| Responsive widths 320, 375, 768, and 1280 px | Pass (headless browser) | Edge device metrics were set to each width; `document.documentElement.scrollWidth` was 320, 360, 753, and 1265 respectively, so none exceeded its viewport. A 375 px app screenshot is `screenshots/07-responsive.png`. |
+| Responsive widths 320, 375, 768, and 1280 px | Pass (headless browser) | Edge device metrics were set to each width; `document.documentElement.scrollWidth` was 320, 360, 753, and 1265 respectively, so none exceeded its viewport. A 375 px screenshot was captured during M7-01 and later removed at the user's request. |
 | Keyboard focus and purchase | Pass (headless browser) | CDP sent Tab until an enabled Buy Now button was focused, confirmed `:focus-visible`, then sent Enter and observed reservation success. The first Tab also focused the brand link with visible focus. |
 | Browser console errors and runtime exceptions | Pass (headless browser) | After the favicon correction, the capture run observed no Console warning/error entries or runtime exceptions. This was a headless Edge run, not a manual desktop session. |
 | Version conflict feedback through the UI | Not Tested | The engine version-conflict and retry cases pass in Node tests, but the UI exposes no test control to force a stale version. The message mapping was reviewed statically. |
-| Stress-test screenshot | Not Tested | Stress tests pass, including an isolated 1000-request Node run, but this environment has no terminal screenshot capture facility. No image was generated for `06-stress-test.png`; see `screenshots/README.md` for local capture steps. |
+| Stress-test screenshot | Not Created | Stress tests pass, including an isolated 1000-request Node run, but no terminal screenshot was captured. The local capture instructions were removed with the screenshots folder at the user's request. |
 | FPS, Lighthouse, desktop browser interaction, and screen-reader testing | Not Tested | These tools or manual desktop interaction were not used. |
 
-The actual app screenshots captured in Edge are `screenshots/01-flash-sale-ui.png`, `02-reservation.png`, `03-checkout.png`, `04-cancellation.png`, `05-expiration.png`, and `07-responsive.png`. `screenshots/capture_browser.mjs` reproduces the browser checks without external packages.
+At the time of M7-01, six actual app screenshots were captured in Edge and the capture script reproduced the browser checks without external packages. After M7-02 was committed, the entire `screenshots` folder (including the images, script, and README) was removed at the user's request. Those artifacts are not present in the current working tree.
 
 ## Stress test scope
 
@@ -73,8 +73,8 @@ Each stress case begins with `totalQuantity = 3`, `reservedQuantity = 0`, and `s
 | Check | Result | Method and evidence |
 | --- | --- | --- |
 | AI failure audit minimum and evidence fields | Pass | Reviewed 9 real entries in `AI_FAILURE_AUDIT.md`; each records observed evidence, impact, cause, correction, and recheck. No synthetic failures were added. |
-| Screenshots exist and are valid PNG images | Pass (6 files) | Enumerated `screenshots/*.png` and decoded each image with Windows System.Drawing. Files: 01, 02, 03, 04, 05, and 07. Visual review matched the recorded initial, reservation, checkout, cancellation, expiration, and 375 px responsive states. |
-| Stress-test screenshot `06-stress-test.png` | Pending | No real terminal capture facility was available. `screenshots/README.md` gives the command and manual Snipping Tool steps. The 10/100/1000 request stress cases themselves pass in the Node suite. |
+| Screenshots existed, opened, and matched their recorded states | Pass at review time; artifacts later removed | Six PNGs were enumerated, decoded with Windows System.Drawing, and visually reviewed. The whole `screenshots` directory was subsequently deleted at the user's request, so the images are no longer available in the project. |
+| Stress-test screenshot `06-stress-test.png` | Not created | No screenshot was synthesized. The 10/100/1000 request stress cases themselves pass in the Node suite. The capture instructions were in the deleted screenshots README. |
 | Milestone commits M0–M6 | Pass | Git history contains one non-empty Conventional Commit for each milestone: 6bc35f4, dacd0a4, bd7376d, 4696dda, 680aa25, b76d3d4, and f4155a9. M7's final documentation commit is created after this review. |
 | Final build | Pass | `npm.cmd run build`; TypeScript compilation and Vite production build completed successfully. |
 | Final lint | Pass | `npm.cmd run lint`; ESLint completed with exit code 0. |
@@ -90,7 +90,7 @@ Each stress case begins with `totalQuantity = 3`, `reservedQuantity = 0`, and `s
 
 ## Limitations and remaining checks
 
-- Capture `06-stress-test.png` from a visible terminal using the command in `screenshots/README.md`.
+- `06-stress-test.png` was not captured. The screenshot directory and its manual capture instructions were later deleted at the user's request.
 - Verify React mount/unmount and StrictMode timer cleanup with React DevTools or a DOM test runner; the current browser run checked functional rerenders but did not instrument React internals or count animation loops.
 - Version-conflict UI feedback remains verified by Node domain tests and static UI mapping, not by forcing a conflict in the browser.
 - No FPS, Lighthouse, or screen-reader audit was performed.

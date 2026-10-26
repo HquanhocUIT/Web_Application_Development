@@ -84,10 +84,10 @@ Final audit for M7-02: this file records 9 implementation mistakes that actually
 - **Impact:** The browser interaction script could not start, delaying M7-01 screenshot capture.
 - **Cause:** JavaScript string delimiters were reused inside a quoted selector expression without escaping.
 - **Correction:** Changed the CDP expressions to use valid unquoted attribute selector values such as `[aria-live=polite]` and `[aria-label^=Checkout]`.
-- **Recheck:** `node --check screenshots/capture_browser.mjs` passed, and the subsequent Edge capture run completed all interactions and produced the six listed PNG files.
+- **Recheck:** `node --check screenshots/capture_browser.mjs` passed, and the subsequent Edge capture run completed all interactions and produced six PNG files. The capture script and PNGs were later removed at the user's request; the recorded run was real.
 
 ## M7-02 final review
 
 - **Evidence count:** 9 documented implementation mistakes, spanning M3-02 through M7-01. Each entry has an observed error or source finding, impact, cause, correction, and recheck result above.
 - **Final recheck:** `npm.cmd run build` passed; `npm.cmd run lint` passed; `node --experimental-strip-types --test tests/*.test.mjs` passed all 61 tests; `git diff --check` passed.
-- **Evidence limits:** browser evidence is from Edge headless. `06-stress-test.png` has not been captured, and React DevTools, FPS, Lighthouse, screen-reader, and non-headless browser checks remain pending as recorded in `TEST_RESULTS.md`.
+- **Evidence limits:** browser evidence is from Edge headless. `06-stress-test.png` has not been captured. The screenshot directory was removed at the user's request. React DevTools, FPS, Lighthouse, screen-reader, and non-headless browser checks remain pending as recorded in `TEST_RESULTS.md`.
