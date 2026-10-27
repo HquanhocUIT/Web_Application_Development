@@ -23,11 +23,13 @@
 - [x] **E2-04 — Checkpoint commit 1:** Rà soát thay đổi setup/schema và tạo commit `feat(ex2): normalize smartPeople schema with stable IDs`.
   - **Hoàn thành khi:** Commit có đúng message; chỉ gồm thay đổi cần thiết cho setup và chuẩn hóa dữ liệu trong Exercise2; không chứa file build/dependency cache hoặc thay đổi ngoài phạm vi.
 
-- [ ] **E2-05 — Xây dựng Search và IQ Filter:** Thêm điều khiển có label truy cập được và tính kết quả tìm kiếm/lọc từ state.
+- [x] **E2-05 — Xây dựng Search và IQ Filter:** Thêm điều khiển có label truy cập được và tính kết quả tìm kiếm/lọc từ state.
   - **Hoàn thành khi:** `useId()` kết hợp `label`/`htmlFor`; tìm tên không phân biệt hoa thường; input number đọc bằng `valueAsNumber`; giá trị rỗng không loại nhầm mọi kết quả; không dùng `useEffect` hay state riêng cho kết quả.
+  - **Trạng thái:** Search, IQ Filter và theo yêu cầu cụ thể của subtask này cả Sort/`output` đã được triển khai. Kiểm tra logic và SSR đạt; chưa kiểm tra tương tác trực tiếp, responsive trực quan hoặc React DevTools Profiler trong browser. E2-06 vẫn chưa được đánh dấu hoàn thành.
 
-- [ ] **E2-06 — Xây dựng Sort và danh sách dẫn xuất:** Hoàn thiện lựa chọn sắp xếp theo IQ hoặc Age, danh sách hiển thị và thông báo số kết quả.
+- [x] **E2-06 — Xây dựng Sort và danh sách dẫn xuất:** Hoàn thiện lựa chọn sắp xếp theo IQ hoặc Age, danh sách hiển thị và thông báo số kết quả.
   - **Hoàn thành khi:** `visiblePeople` được tính trực tiếp từ state qua filter và `.toSorted()` mà không mutate `people`; danh sách dùng key theo id; số kết quả được thông báo bằng `<output role="status" aria-live="polite">` hoặc cấu trúc tương đương đúng ngữ nghĩa; nhập một ký tự không gây render loop.
+  - **Trạng thái:** Kiểm thử logic/SSR xác nhận Search, IQ/Age sort giảm dần, lọc kết hợp, empty state, source không bị mutate, status output và key ổn định. Chrome headless ở viewport 375 CSS px cho `scrollWidth === clientWidth === 375`; gõ một ký tự `z` cập nhật về 0 kết quả, empty state xuất hiện, mutations dừng sau khi render ổn định và không có key/update-depth warning. React DevTools Profiler chưa khả dụng trong project; tiêu chí render loop đã được kiểm tra bằng browser.
 
 - [ ] **E2-07 — Checkpoint commit 2:** Rà soát logic Search, IQ Filter, Sort và tạo commit `feat(ex2): add search, IQ filter & toSorted`.
   - **Hoàn thành khi:** Commit có đúng message; chỉ chứa tính năng tìm kiếm/lọc/sắp xếp đã kiểm tra trong Exercise2; chưa gộp Delete/Reset.

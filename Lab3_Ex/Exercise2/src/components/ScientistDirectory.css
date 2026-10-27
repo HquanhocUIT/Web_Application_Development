@@ -10,6 +10,51 @@
   line-height: 1.2;
 }
 
+.directoryControls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 1rem;
+  margin: 0 0 1rem;
+}
+
+.controlGroup {
+  display: grid;
+  min-width: 0;
+  gap: 0.4rem;
+}
+
+.controlGroup label {
+  color: #263b55;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.controlGroup input,
+.controlGroup select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0.7rem 0.75rem;
+  color: #1c2c40;
+  background: #ffffff;
+  border: 1px solid #aebed0;
+  border-radius: 0.5rem;
+  font: inherit;
+}
+
+.controlGroup input:focus-visible,
+.controlGroup select:focus-visible {
+  outline: 3px solid #2866a6;
+  outline-offset: 2px;
+}
+
+.resultCount {
+  display: block;
+  margin: 0 0 0.9rem;
+  color: #43566d;
+  font-size: 0.95rem;
+}
+
 .peopleList {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
@@ -17,6 +62,15 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.emptyMessage {
+  margin: 1rem 0;
+  padding: 1rem;
+  color: #344a63;
+  background: #ffffff;
+  border: 1px solid #d8e1ec;
+  border-radius: 0.75rem;
 }
 
 .personCard {
@@ -40,4 +94,15 @@
   margin: 0;
   color: #4d5f74;
   line-height: 1.5;
+}
+
+@media (max-width: 375px) {
+  .directoryControls {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .peopleList {
+    gap: 0.75rem;
+  }
 }
