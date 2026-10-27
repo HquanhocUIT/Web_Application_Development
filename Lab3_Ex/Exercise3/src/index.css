@@ -1,0 +1,95 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #edf2f4;
+  background: #101820;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+.page {
+  width: min(100%, 58rem);
+  margin-inline: auto;
+  padding: clamp(1rem, 5vw, 2.5rem);
+}
+
+.pageHeader {
+  margin-bottom: 1.75rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #56c5d0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.pageHeader h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+}
+
+.pageIntro {
+  color: #b7c5cc;
+}
+
+.squadPicker {
+  display: grid;
+  max-width: 28rem;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.squadPicker label {
+  font-weight: 700;
+}
+
+.squadPicker select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem 0.75rem;
+  color: #edf2f4;
+  background: #1b2a34;
+  border: 1px solid #60747f;
+  border-radius: 0.5rem;
+}
+
+.squadPicker select:focus-visible {
+  outline: 3px solid #56c5d0;
+  outline-offset: 2px;
+}
+
+.telemetryPanel {
+  padding: 1.25rem;
+  background: #1b2a34;
+  border: 1px solid #334a56;
+  border-radius: 0.75rem;
+}
+
+.telemetryPanel h2 {
+  margin: 0 0 1rem;
+}
+
+.telemetryState {
+  color: #56c5d0;
+  font-weight: 700;
+}
+
+.selectedSquad {
+  color: #b7c5cc;
+}
