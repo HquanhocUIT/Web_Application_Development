@@ -4,11 +4,11 @@
 
 ### T01 – Project Setup & Drum UI
 
-- [ ] **T01.1: Set up React 19, Vite and TypeScript.**
+- [x] **T01.1: Set up React 19, Vite and TypeScript.**
   - **Acceptance:** The Lab3_HW project is configured to run with React 19, Vite and TypeScript.
-- [ ] **T01.2: Create 7 drum pads (W, A, S, D, J, K, L).**
+- [x] **T01.2: Create 7 drum pads (W, A, S, D, J, K, L).**
   - **Acceptance:** Seven pads are present and each shows its assigned key.
-- [ ] **T01.3: Build the basic layout with CSS Modules.**
+- [x] **T01.3: Build the basic layout with CSS Modules.**
   - **Acceptance:** The drum kit uses CSS Modules for its component styling.
 
 ### T02 – Drum Audio & Keyboard Controls
