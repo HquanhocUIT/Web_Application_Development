@@ -1,18 +1,18 @@
-:global(*) {
+* {
   box-sizing: border-box;
 }
 
-:global(html) {
+html {
   min-width: 320px;
   background: #10141d;
 }
 
-:global(body) {
+body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
 }
 
-:global(button) {
+button {
   font: inherit;
 }

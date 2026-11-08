@@ -31,9 +31,9 @@
 
 ### T04 – Testing, Audit & Submission
 
-- [ ] **T04.1: Run functional tests, lint, typecheck and build.**
+- [x] **T04.1: Run functional tests, lint, typecheck and build.**
   - **Acceptance:** Each check completes successfully, with any limitations recorded.
-- [ ] **T04.2: Run Lighthouse, fix accessibility issues and save screenshots.**
+- [x] **T04.2: Run Lighthouse, fix accessibility issues and save screenshots.**
   - **Acceptance:** Lighthouse findings are addressed and screenshots of the completed UI are saved.
 - [ ] **T04.3: Create `AI_FAILURE_AUDIT.md` with 3 verified AI bugs and prepare submission evidence.**
   - **Acceptance:** The audit documents three evidence-backed bugs and the submission evidence is collected.

@@ -31,7 +31,7 @@ export class DrumAudioEngine {
   }
 
   dispose(): void {
-    for (const voice of [...this.activeVoices]) {
+    for (const voice of this.activeVoices) {
       this.releaseVoice(voice, true)
     }
 
