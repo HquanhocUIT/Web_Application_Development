@@ -35,5 +35,5 @@
   - **Acceptance:** Each check completes successfully, with any limitations recorded.
 - [x] **T04.2: Run Lighthouse, fix accessibility issues and save screenshots.**
   - **Acceptance:** Lighthouse findings are addressed and screenshots of the completed UI are saved.
-- [ ] **T04.3: Create `AI_FAILURE_AUDIT.md` with 3 verified AI bugs and prepare submission evidence.**
+- [x] **T04.3: Create `AI_FAILURE_AUDIT.md` with 3 verified AI bugs and prepare submission evidence.**
   - **Acceptance:** The audit documents three evidence-backed bugs and the submission evidence is collected.
