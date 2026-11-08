@@ -34,6 +34,6 @@
 - [x] **T04.1: Run functional tests, lint, typecheck and build.**
   - **Acceptance:** Each check completes successfully, with any limitations recorded.
 - [x] **T04.2: Run Lighthouse, fix accessibility issues and save screenshots.**
-  - **Acceptance:** Production mobile reports, screenshots and console-source findings are saved; the final clean run scores 100 in all four categories and remaining score-neutral audits are documented.
+  - **Acceptance:** Production Mobile audits score 100 in all categories; the render-blocking CSS request is removed and before/after metrics plus remaining diagnostics are documented.
 - [x] **T04.3: Create `AI_FAILURE_AUDIT.md` with 3 verified AI bugs and prepare submission evidence.**
   - **Acceptance:** The audit documents three evidence-backed bugs and the submission evidence is collected.
