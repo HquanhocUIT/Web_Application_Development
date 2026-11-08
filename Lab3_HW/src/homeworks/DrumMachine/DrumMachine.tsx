@@ -23,7 +23,6 @@ export default function DrumMachine() {
   const [pressedKey, setPressedKey] = useState<string | null>(null)
   const [focusedPadIndex, setFocusedPadIndex] = useState(0)
   const [history, setHistory] = useState<DrumHit[]>([])
-  const [decibels, setDecibels] = useState(-60)
 
   const playPad = useCallback((pad: (typeof DRUM_PADS)[number]) => {
     audioEngineRef.current ??= new DrumAudioEngine()
@@ -71,13 +70,6 @@ export default function DrumMachine() {
       audioEngineRef.current = null
     }
   }, [playPad])
-
-  useEffect(() => {
-    const meterTimerId = window.setInterval(() => {
-      setDecibels(audioEngineRef.current?.getDecibels() ?? -60)
-    }, 100)
-    return () => window.clearInterval(meterTimerId)
-  }, [])
 
   function handlePadNavigation(
     event: ReactKeyboardEvent<HTMLButtonElement>,
@@ -182,24 +174,7 @@ export default function DrumMachine() {
             </div>
           </section>
 
-          <section className={styles.meterPanel} aria-labelledby="meter-title">
-            <div className={styles.toolHeading}>
-              <h2 id="meter-title">OUTPUT LEVEL</h2>
-              <output className={styles.meterValue}>{Math.round(decibels)} dBFS</output>
-            </div>
-            <meter
-              className={styles.meter}
-              min={-60}
-              max={0}
-              low={-36}
-              high={-6}
-              optimum={-12}
-              value={decibels}
-              aria-label="Output level in decibels"
-              aria-valuetext={`${Math.round(decibels)} dBFS`}
-            />
-            <p className={styles.meterScale} aria-hidden="true"><span>-60 dB</span><span>0 dB</span></p>
-          </section>
+          <OutputMeter audioEngineRef={audioEngineRef} />
         </div>
 
         <footer className={styles.footer}>
@@ -208,6 +183,39 @@ export default function DrumMachine() {
         </footer>
       </section>
     </main>
+  )
+}
+
+function OutputMeter({ audioEngineRef }: { audioEngineRef: { current: DrumAudioEngine | null } }) {
+  const [decibels, setDecibels] = useState(-60)
+
+  useEffect(() => {
+    const meterTimerId = window.setInterval(() => {
+      const nextDecibels = audioEngineRef.current?.getDecibels() ?? -60
+      setDecibels((currentDecibels) => currentDecibels === nextDecibels ? currentDecibels : nextDecibels)
+    }, 100)
+    return () => window.clearInterval(meterTimerId)
+  }, [audioEngineRef])
+
+  return (
+    <section className={styles.meterPanel} aria-labelledby="meter-title">
+      <div className={styles.toolHeading}>
+        <h2 id="meter-title">OUTPUT LEVEL</h2>
+        <output className={styles.meterValue}>{Math.round(decibels)} dBFS</output>
+      </div>
+      <meter
+        className={styles.meter}
+        min={-60}
+        max={0}
+        low={-36}
+        high={-6}
+        optimum={-12}
+        value={decibels}
+        aria-label="Output level in decibels"
+        aria-valuetext={`${Math.round(decibels)} dBFS`}
+      />
+      <p className={styles.meterScale} aria-hidden="true"><span>-60 dB</span><span>0 dB</span></p>
+    </section>
   )
 }
 
