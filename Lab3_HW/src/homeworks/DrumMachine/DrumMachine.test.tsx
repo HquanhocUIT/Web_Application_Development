@@ -106,7 +106,7 @@ describe('drum pad controls', () => {
     for (const pad of DRUM_PADS) {
       const context = FakeAudioContext.instances[0]
       const before = context?.sources.length ?? 0
-      fireEvent.click(screen.getByRole('button', { name: `${pad.name}, ${pad.key} key` }))
+      fireEvent.click(screen.getByRole('button', { name: new RegExp(pad.name) }))
       const expectedSources = pad.key === 'A' ? 2 : 1
       expect(FakeAudioContext.instances[0]?.sources).toHaveLength(before + expectedSources)
       expect(FakeAudioContext.instances[0]?.sources.slice(before).every((source) => source.start.mock.calls.length === 1)).toBe(true)
@@ -117,7 +117,7 @@ describe('drum pad controls', () => {
     FakeAudioContext.initialState = 'suspended'
     render(<DrumMachine />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Kick, W key' }))
+    fireEvent.click(screen.getByRole('button', { name: /Kick/ }))
     const context = FakeAudioContext.instances[0]
     expect(context?.resume).toHaveBeenCalledOnce()
     expect(context?.sources).toHaveLength(0)
@@ -131,7 +131,7 @@ describe('drum pad controls', () => {
 
   it('keeps rapid repeated hits as overlapping voices', () => {
     render(<DrumMachine />)
-    const kick = screen.getByRole('button', { name: 'Kick, W key' })
+    const kick = screen.getByRole('button', { name: /Kick/ })
 
     fireEvent.click(kick)
     fireEvent.click(kick)
@@ -178,7 +178,7 @@ describe('drum pad controls', () => {
     const removeListener = vi.spyOn(window, 'removeEventListener')
     const { unmount } = render(<DrumMachine />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Kick, W key' }))
+    fireEvent.click(screen.getByRole('button', { name: /Kick/ }))
     const context = FakeAudioContext.instances[0]
     const listener = addListener.mock.calls.find(([type]) => type === 'keydown')?.[1]
     unmount()
@@ -193,7 +193,7 @@ describe('drum pad controls', () => {
   it('announces hits and exposes a temporary pressed state', () => {
     vi.useFakeTimers()
     render(<DrumMachine />)
-    const kick = screen.getByRole('button', { name: 'Kick, W key' })
+    const kick = screen.getByRole('button', { name: /Kick/ })
     const log = screen.getByRole('log', { name: 'Recent drum hits' })
 
     expect(kick.getAttribute('aria-pressed')).toBe('false')
@@ -210,7 +210,7 @@ describe('drum pad controls', () => {
   it('updates the accessible decibel meter from the analyser signal', () => {
     vi.useFakeTimers()
     render(<DrumMachine />)
-    fireEvent.click(screen.getByRole('button', { name: 'Kick, W key' }))
+    fireEvent.click(screen.getByRole('button', { name: /Kick/ }))
     const analyser = FakeAudioContext.instances[0]?.analyser
     if (!analyser) throw new Error('The audio analyser was not created.')
     analyser.amplitude = 0.5
@@ -223,7 +223,7 @@ describe('drum pad controls', () => {
 
   it('supports roving arrow, Home and End navigation across pads', () => {
     render(<DrumMachine />)
-    const buttons = DRUM_PADS.map(({ name, key }) => screen.getByRole('button', { name: `${name}, ${key} key` }))
+    const buttons = DRUM_PADS.map(({ name }) => screen.getByRole('button', { name: new RegExp(name) }))
     expect(buttons[0]?.getAttribute('tabindex')).toBe('0')
     expect(buttons[1]?.getAttribute('tabindex')).toBe('-1')
 
@@ -246,7 +246,7 @@ describe('drum pad controls', () => {
   it('clears visual-feedback and meter timers when unmounted', () => {
     vi.useFakeTimers()
     const { unmount } = render(<DrumMachine />)
-    fireEvent.click(screen.getByRole('button', { name: 'Kick, W key' }))
+    fireEvent.click(screen.getByRole('button', { name: /Kick/ }))
     expect(vi.getTimerCount()).toBe(2)
     unmount()
     expect(vi.getTimerCount()).toBe(0)

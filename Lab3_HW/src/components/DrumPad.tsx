@@ -26,7 +26,6 @@ export default function DrumPad({
       ref={buttonRef}
       className={`${styles.pad} ${styles[pad.tone]}`}
       type="button"
-      aria-label={`${pad.name}, ${pad.key} key`}
       aria-pressed={pressed}
       tabIndex={tabIndex}
       onClick={() => onPlay(pad)}
@@ -36,7 +35,16 @@ export default function DrumPad({
       <span className={styles.key}>{pad.key}</span>
       <span className={styles.name}>{pad.name}</span>
       <span className={styles.kind}>{pad.kind}</span>
-      <span className={styles.corner} aria-hidden="true">↗</span>
+      <svg className={styles.corner} aria-hidden="true" focusable="false" viewBox="0 0 16 16">
+        <path
+          d="M4 12 12 4M5 4h7v7"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </button>
   )
 }
