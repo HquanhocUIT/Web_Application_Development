@@ -15,10 +15,18 @@ export class DrumAudioEngine {
     const context = this.getContext()
     if (!context) return
 
-    if (context.state === 'suspended') {
-      void context.resume().catch(() => undefined)
+    if (context.state !== 'running') {
+      void context.resume().then(() => {
+        if (this.context !== context || context.state !== 'running') return
+        this.playPadSound(context, pad)
+      }).catch(() => undefined)
+      return
     }
 
+    this.playPadSound(context, pad)
+  }
+
+  private playPadSound(context: AudioContext, pad: DrumPadDefinition): void {
     switch (pad.key) {
       case 'W': this.playKick(context); break
       case 'A': this.playSnare(context); break

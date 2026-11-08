@@ -37,14 +37,15 @@ class FakeAnalyser extends FakeNode {
 
 class FakeAudioContext {
   static instances: FakeAudioContext[] = []
-  readonly state: AudioContextState = 'running'
+  static initialState: AudioContextState = 'running'
+  state: AudioContextState = FakeAudioContext.initialState
   readonly currentTime = 1
   readonly sampleRate = 8000
   readonly destination = new FakeNode()
   readonly sources: FakeSource[] = []
   analyser: FakeAnalyser | null = null
   close = vi.fn(async () => undefined)
-  resume = vi.fn(async () => undefined)
+  resume = vi.fn(async () => { this.state = 'running' })
 
   constructor() {
     FakeAudioContext.instances.push(this)
@@ -88,6 +89,7 @@ class FakeAudioContext {
 describe('drum pad controls', () => {
   beforeEach(() => {
     FakeAudioContext.instances = []
+    FakeAudioContext.initialState = 'running'
     vi.stubGlobal('AudioContext', FakeAudioContext)
   })
 
@@ -109,6 +111,35 @@ describe('drum pad controls', () => {
       expect(FakeAudioContext.instances[0]?.sources).toHaveLength(before + expectedSources)
       expect(FakeAudioContext.instances[0]?.sources.slice(before).every((source) => source.start.mock.calls.length === 1)).toBe(true)
     }
+  })
+
+  it('waits for a suspended audio context to resume before starting the first sound', async () => {
+    FakeAudioContext.initialState = 'suspended'
+    render(<DrumMachine />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Kick, W key' }))
+    const context = FakeAudioContext.instances[0]
+    expect(context?.resume).toHaveBeenCalledOnce()
+    expect(context?.sources).toHaveLength(0)
+
+    await act(async () => { await Promise.resolve() })
+
+    expect(context?.state).toBe('running')
+    expect(context?.sources).toHaveLength(1)
+    expect(context?.sources[0]?.start).toHaveBeenCalledOnce()
+  })
+
+  it('keeps rapid repeated hits as overlapping voices', () => {
+    render(<DrumMachine />)
+    const kick = screen.getByRole('button', { name: 'Kick, W key' })
+
+    fireEvent.click(kick)
+    fireEvent.click(kick)
+
+    const sources = FakeAudioContext.instances[0]?.sources
+    expect(sources).toHaveLength(2)
+    expect(sources?.every((source) => source.start.mock.calls.length === 1)).toBe(true)
+    expect(sources?.every((source) => source.stop.mock.calls.length === 1)).toBe(true)
   })
 
   it('plays each mapped sound from e.code and ignores repeats and typing targets', () => {
