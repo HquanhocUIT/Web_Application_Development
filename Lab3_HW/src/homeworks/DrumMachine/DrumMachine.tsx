@@ -1,8 +1,34 @@
+import { useCallback, useEffect, useRef } from 'react'
 import DrumPad from '../../components/DrumPad'
 import { DRUM_PADS } from './drumPads'
+import { DrumAudioEngine } from './drumAudio'
 import styles from './DrumMachine.module.css'
 
 export default function DrumMachine() {
+  const audioEngineRef = useRef<DrumAudioEngine | null>(null)
+
+  const playPad = useCallback((pad: (typeof DRUM_PADS)[number]) => {
+    audioEngineRef.current ??= new DrumAudioEngine()
+    audioEngineRef.current.play(pad)
+  }, [])
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.repeat || isTypingTarget(event.target)) return
+
+      const pad = DRUM_PADS.find(({ key }) => event.code === `Key${key}`)
+      if (pad) playPad(pad)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      audioEngineRef.current?.dispose()
+      audioEngineRef.current = null
+    }
+  }, [playPad])
+
   return (
     <main className={styles.page}>
       <section className={styles.studio} aria-labelledby="studio-title">
@@ -32,7 +58,7 @@ export default function DrumMachine() {
             <span>CHOOSE A PAD</span>
           </div>
           <div className={styles.padGrid}>
-            {DRUM_PADS.map((pad) => <DrumPad key={pad.key} pad={pad} />)}
+            {DRUM_PADS.map((pad) => <DrumPad key={pad.key} pad={pad} onPlay={playPad} />)}
           </div>
         </div>
 
@@ -43,4 +69,9 @@ export default function DrumMachine() {
       </section>
     </main>
   )
+}
+
+function isTypingTarget(target: EventTarget | null): boolean {
+  return target instanceof HTMLElement
+    && target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])') !== null
 }

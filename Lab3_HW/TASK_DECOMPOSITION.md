@@ -13,11 +13,11 @@
 
 ### T02 – Drum Audio & Keyboard Controls
 
-- [ ] **T02.1: Add drum sounds for mouse and keyboard.**
+- [x] **T02.1: Add drum sounds for mouse and keyboard.**
   - **Acceptance:** Clicking a pad or activating its key plays that pad's sound.
-- [ ] **T02.2: Handle keyboard events using `e.code`, prevent `e.repeat`, and ignore typing inside form elements.**
+- [x] **T02.2: Handle keyboard events using `e.code`, prevent `e.repeat`, and ignore typing inside form elements.**
   - **Acceptance:** Only the intended first key press triggers a sound; form editing remains unaffected.
-- [ ] **T02.3: Clean up keyboard listeners and audio resources.**
+- [x] **T02.3: Clean up keyboard listeners and audio resources.**
   - **Acceptance:** Listeners and audio resources are released when no longer needed.
 
 ### T03 – Visual Feedback & Accessibility
