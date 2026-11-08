@@ -155,6 +155,178 @@
   gap: 0.8rem;
 }
 
+.keyboardHint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+  margin: 0.9rem 0 0;
+  color: #c3c6ce;
+  font-size: 0.78rem;
+  line-height: 1.8;
+}
+
+.keyboardHint kbd {
+  display: inline-grid;
+  min-width: 1.45rem;
+  min-height: 1.4rem;
+  margin: 0 0.08rem;
+  padding: 0.05rem 0.25rem;
+  place-items: center;
+  border: 1px solid #596171;
+  border-radius: 0.3rem;
+  background: #282e3b;
+  color: #fff;
+  font-family: 'Cascadia Mono', 'Consolas', monospace;
+  font-size: 0.68rem;
+  line-height: 1;
+}
+
+.playKeys {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.sessionTools {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(13rem, 0.7fr);
+  gap: 0.8rem;
+  margin-top: 1.4rem;
+}
+
+.historyPanel,
+.meterPanel {
+  min-width: 0;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid rgb(255 255 255 / 9%);
+  border-radius: 1rem;
+  background: rgb(12 15 22 / 25%);
+}
+
+.toolHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #aeb4c0;
+  font-family: 'Cascadia Mono', 'Consolas', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.09em;
+}
+
+.toolHeading h2 {
+  margin: 0;
+  color: #e5e6e9;
+  font: inherit;
+}
+
+.toolHeading > span {
+  color: #c4c7cf;
+}
+
+.historyLog {
+  min-height: 3.15rem;
+  margin-top: 0.65rem;
+}
+
+.emptyHistory {
+  margin: 0;
+  padding: 0.85rem 0;
+  color: #c3c6ce;
+  font-size: 0.82rem;
+}
+
+.hitList {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hit {
+  display: grid;
+  grid-template-columns: 1.8rem 1fr auto;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.1rem;
+  color: #f1f1ef;
+  font-size: 0.8rem;
+}
+
+.hitKey {
+  display: grid;
+  width: 1.7rem;
+  height: 1.7rem;
+  place-items: center;
+  border-radius: 0.45rem;
+  background: #343b49;
+  color: #f5cf86;
+  font-family: 'Cascadia Mono', 'Consolas', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.hitName {
+  font-weight: 650;
+}
+
+.hitTime {
+  color: #c3c6ce;
+  font-family: 'Cascadia Mono', 'Consolas', monospace;
+  font-size: 0.65rem;
+}
+
+.meterValue {
+  color: #f5cf86;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.meter {
+  display: block;
+  width: 100%;
+  height: 0.85rem;
+  margin-top: 1.25rem;
+  border: 0;
+  border-radius: 999px;
+  background: #3c4350;
+  accent-color: #9ad1ad;
+}
+
+.meter::-webkit-meter-bar {
+  border: 1px solid #596171;
+  border-radius: 999px;
+  background: #303744;
+}
+
+.meter::-webkit-meter-optimum-value {
+  border-radius: 999px;
+  background: #9ad1ad;
+}
+
+.meter::-webkit-meter-suboptimum-value {
+  border-radius: 999px;
+  background: #f2c16d;
+}
+
+.meter::-webkit-meter-even-less-good-value {
+  border-radius: 999px;
+  background: #ec8c79;
+}
+
+.meterScale {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.35rem 0 0;
+  color: #c3c6ce;
+  font-family: 'Cascadia Mono', 'Consolas', monospace;
+  font-size: 0.62rem;
+}
+
 .footer {
   gap: 1rem;
   margin-top: 1.5rem;
@@ -193,7 +365,20 @@
   }
 
   .intro {
+    align-items: center;
     padding: 3.25rem 0 2.4rem;
+  }
+
+  .intro > div:first-child {
+    min-width: 0;
+  }
+
+  .intro h1 {
+    font-size: clamp(2.25rem, 10.5vw, 2.75rem);
+  }
+
+  .description {
+    max-width: 17rem;
   }
 
   .sessionBadge {
@@ -208,6 +393,15 @@
   .padGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.65rem;
+  }
+
+  .sessionTools {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .historyPanel,
+  .meterPanel {
+    padding: 1rem;
   }
 
   .footer {

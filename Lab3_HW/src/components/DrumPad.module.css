@@ -31,8 +31,14 @@
   transform: translateY(1px) scale(0.99);
 }
 
+.pad[aria-pressed="true"] {
+  transform: translateY(-3px) scale(1.015);
+  border-color: var(--pad-glow);
+  box-shadow: 0 0 0 2px var(--pad-glow), 0 0 1.8rem var(--pad-glow), 0 15px 30px rgb(0 0 0 / 24%);
+}
+
 .pad:focus-visible {
-  outline: 3px solid #f5c85b;
+  outline: 3px solid #ffd56a;
   outline-offset: 3px;
 }
 
@@ -60,7 +66,7 @@
 }
 
 .kind {
-  color: rgb(247 246 242 / 67%);
+  color: #e0e0dc;
   font-size: 0.71rem;
   font-weight: 650;
   letter-spacing: 0.13em;

@@ -22,11 +22,11 @@
 
 ### T03 – Visual Feedback & Accessibility
 
-- [ ] **T03.1: Add visual hit effects, hit history and decibel meter.**
+- [x] **T03.1: Add visual hit effects, hit history and decibel meter.**
   - **Acceptance:** Hits produce visible feedback, appear in history and update the meter.
-- [ ] **T03.2: Apply semantic HTML, `aria-pressed`, `aria-live` and keyboard accessibility.**
+- [x] **T03.2: Apply semantic HTML, `aria-pressed`, `aria-live` and keyboard accessibility.**
   - **Acceptance:** Pads expose their state and hit updates are announced; all pad actions are keyboard accessible.
-- [ ] **T03.3: Make the UI responsive at 375px and follow WCAG 2.2 AA.**
+- [x] **T03.3: Make the UI responsive at 375px and follow WCAG 2.2 AA.**
   - **Acceptance:** The interface remains usable at 375px and meets applicable WCAG 2.2 AA criteria.
 
 ### T04 – Testing, Audit & Submission

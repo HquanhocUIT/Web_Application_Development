@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import DrumMachine from './DrumMachine'
 import { DRUM_PADS } from './drumPads'
@@ -26,6 +26,15 @@ class FakeSource extends FakeNode {
   buffer: unknown
 }
 
+class FakeAnalyser extends FakeNode {
+  fftSize = 32
+  amplitude = 0
+
+  getFloatTimeDomainData(samples: Float32Array) {
+    samples.fill(this.amplitude)
+  }
+}
+
 class FakeAudioContext {
   static instances: FakeAudioContext[] = []
   readonly state: AudioContextState = 'running'
@@ -33,6 +42,7 @@ class FakeAudioContext {
   readonly sampleRate = 8000
   readonly destination = new FakeNode()
   readonly sources: FakeSource[] = []
+  analyser: FakeAnalyser | null = null
   close = vi.fn(async () => undefined)
   resume = vi.fn(async () => undefined)
 
@@ -63,6 +73,11 @@ class FakeAudioContext {
     return { getChannelData: () => samples }
   }
 
+  createAnalyser() {
+    this.analyser = new FakeAnalyser()
+    return this.analyser
+  }
+
   private makeSource() {
     const source = new FakeSource()
     this.sources.push(source)
@@ -80,6 +95,7 @@ describe('drum pad controls', () => {
     cleanup()
     vi.restoreAllMocks()
     vi.unstubAllGlobals()
+    vi.useRealTimers()
   })
 
   it('plays each of the seven sounds from its mouse pad', () => {
@@ -141,5 +157,67 @@ describe('drum pad controls', () => {
     expect(context?.close).toHaveBeenCalledOnce()
     expect(context?.sources[0]?.stop).toHaveBeenCalledTimes(2)
     expect(context?.sources[0]?.disconnect).toHaveBeenCalledOnce()
+  })
+
+  it('announces hits and exposes a temporary pressed state', () => {
+    vi.useFakeTimers()
+    render(<DrumMachine />)
+    const kick = screen.getByRole('button', { name: 'Kick, W key' })
+    const log = screen.getByRole('log', { name: 'Recent drum hits' })
+
+    expect(kick.getAttribute('aria-pressed')).toBe('false')
+    expect(log.getAttribute('aria-live')).toBe('polite')
+    fireEvent.click(kick)
+
+    expect(kick.getAttribute('aria-pressed')).toBe('true')
+    expect(log.textContent).toContain('W')
+    expect(log.textContent).toContain('Kick')
+    act(() => { vi.advanceTimersByTime(200) })
+    expect(kick.getAttribute('aria-pressed')).toBe('false')
+  })
+
+  it('updates the accessible decibel meter from the analyser signal', () => {
+    vi.useFakeTimers()
+    render(<DrumMachine />)
+    fireEvent.click(screen.getByRole('button', { name: 'Kick, W key' }))
+    const analyser = FakeAudioContext.instances[0]?.analyser
+    if (!analyser) throw new Error('The audio analyser was not created.')
+    analyser.amplitude = 0.5
+
+    act(() => { vi.advanceTimersByTime(100) })
+
+    expect(screen.getByRole('meter', { name: 'Output level in decibels' })
+      .getAttribute('aria-valuetext')).toBe('-6 dBFS')
+  })
+
+  it('supports roving arrow, Home and End navigation across pads', () => {
+    render(<DrumMachine />)
+    const buttons = DRUM_PADS.map(({ name, key }) => screen.getByRole('button', { name: `${name}, ${key} key` }))
+    expect(buttons[0]?.getAttribute('tabindex')).toBe('0')
+    expect(buttons[1]?.getAttribute('tabindex')).toBe('-1')
+
+    buttons[0]?.focus()
+    fireEvent.keyDown(buttons[0] as HTMLButtonElement, { key: 'ArrowRight', code: 'ArrowRight' })
+    expect(document.activeElement).toBe(buttons[1])
+    expect(buttons[1]?.getAttribute('tabindex')).toBe('0')
+
+    fireEvent.keyDown(buttons[1] as HTMLButtonElement, { key: 'End', code: 'End' })
+    expect(document.activeElement).toBe(buttons[6])
+    fireEvent.keyDown(buttons[6] as HTMLButtonElement, { key: 'ArrowRight', code: 'ArrowRight' })
+    expect(document.activeElement).toBe(buttons[0])
+
+    fireEvent.keyDown(buttons[0] as HTMLButtonElement, { key: 'ArrowDown', code: 'ArrowDown' })
+    expect(document.activeElement).toBe(buttons[4])
+    fireEvent.keyDown(buttons[4] as HTMLButtonElement, { key: 'ArrowUp', code: 'ArrowUp' })
+    expect(document.activeElement).toBe(buttons[0])
+  })
+
+  it('clears visual-feedback and meter timers when unmounted', () => {
+    vi.useFakeTimers()
+    const { unmount } = render(<DrumMachine />)
+    fireEvent.click(screen.getByRole('button', { name: 'Kick, W key' }))
+    expect(vi.getTimerCount()).toBe(2)
+    unmount()
+    expect(vi.getTimerCount()).toBe(0)
   })
 })

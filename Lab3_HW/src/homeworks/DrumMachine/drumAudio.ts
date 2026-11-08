@@ -8,6 +8,7 @@ type ActiveVoice = {
 /** Lazily creates one Web Audio context and releases every voice on disposal. */
 export class DrumAudioEngine {
   private context: AudioContext | null = null
+  private analyser: AnalyserNode | null = null
   private readonly activeVoices = new Set<ActiveVoice>()
 
   play(pad: DrumPadDefinition): void {
@@ -36,9 +37,23 @@ export class DrumAudioEngine {
 
     const context = this.context
     this.context = null
+    this.analyser?.disconnect()
+    this.analyser = null
     if (context && context.state !== 'closed') {
       void context.close().catch(() => undefined)
     }
+  }
+
+  getDecibels(): number {
+    if (!this.analyser) return -60
+
+    const samples = new Float32Array(this.analyser.fftSize)
+    this.analyser.getFloatTimeDomainData(samples)
+    let sumOfSquares = 0
+    for (const sample of samples) sumOfSquares += sample * sample
+    const rms = Math.sqrt(sumOfSquares / samples.length)
+    if (rms === 0) return -60
+    return Math.max(-60, Math.min(0, 20 * Math.log10(rms)))
   }
 
   private getContext(): AudioContext | null {
@@ -46,7 +61,19 @@ export class DrumAudioEngine {
     if (typeof AudioContext === 'undefined') return null
 
     this.context = new AudioContext()
+    this.analyser = this.context.createAnalyser()
+    this.analyser.fftSize = 1024
+    this.analyser.connect(this.context.destination)
     return this.context
+  }
+
+  private getOutput(context: AudioContext): AnalyserNode {
+    if (!this.analyser) {
+      this.analyser = context.createAnalyser()
+      this.analyser.fftSize = 1024
+      this.analyser.connect(context.destination)
+    }
+    return this.analyser
   }
 
   private playKick(context: AudioContext): void {
@@ -58,7 +85,7 @@ export class DrumAudioEngine {
     oscillator.frequency.exponentialRampToValueAtTime(44, now + 0.2)
     envelope.gain.setValueAtTime(0.9, now)
     envelope.gain.exponentialRampToValueAtTime(0.001, now + 0.22)
-    oscillator.connect(envelope).connect(context.destination)
+    oscillator.connect(envelope).connect(this.getOutput(context))
     this.startVoice(oscillator, [envelope], now, 0.23)
   }
 
@@ -72,7 +99,7 @@ export class DrumAudioEngine {
     oscillator.frequency.setValueAtTime(185, now)
     envelope.gain.setValueAtTime(0.36, now)
     envelope.gain.exponentialRampToValueAtTime(0.001, now + 0.13)
-    oscillator.connect(envelope).connect(context.destination)
+    oscillator.connect(envelope).connect(this.getOutput(context))
     this.startVoice(oscillator, [envelope], now, 0.14)
   }
 
@@ -85,7 +112,7 @@ export class DrumAudioEngine {
     oscillator.frequency.exponentialRampToValueAtTime(82, now + 0.29)
     envelope.gain.setValueAtTime(0.56, now)
     envelope.gain.exponentialRampToValueAtTime(0.001, now + 0.3)
-    oscillator.connect(envelope).connect(context.destination)
+    oscillator.connect(envelope).connect(this.getOutput(context))
     this.startVoice(oscillator, [envelope], now, 0.31)
   }
 
@@ -107,7 +134,7 @@ export class DrumAudioEngine {
     filter.frequency.setValueAtTime(cutoff, now)
     envelope.gain.setValueAtTime(volume, now)
     envelope.gain.exponentialRampToValueAtTime(0.001, now + duration)
-    source.connect(filter).connect(envelope).connect(context.destination)
+    source.connect(filter).connect(envelope).connect(this.getOutput(context))
     this.startVoice(source, [filter, envelope], now, duration)
   }
 
