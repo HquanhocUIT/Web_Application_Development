@@ -1,0 +1,98 @@
+.header {
+  display: flex;
+  min-height: 4.8rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0 3.2vw;
+  border-bottom: 1px solid rgb(230 237 243 / 9%);
+  background: rgb(11 14 19 / 88%);
+}
+
+.brand {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.7rem;
+  color: #f2f4f6;
+  text-decoration: none;
+}
+
+.brandMark {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 1px solid #ff963d;
+  border-radius: 0.5rem;
+  background: linear-gradient(145deg, #ffb347, #e65a2e);
+  color: #17130e;
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 950;
+}
+
+.brandText {
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.07em;
+}
+
+.brandText i { color: #ff9c45; font-style: normal; }
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.7rem);
+}
+
+.nav a {
+  color: #aeb7c1;
+  font-size: 0.79rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+
+.nav a:hover { color: #ffad58; }
+
+.eventBadge {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #393128;
+  border-radius: 999px;
+  color: #d7c5ad;
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.eventBadge span {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: #ff963d;
+  box-shadow: 0 0 0 3px rgb(255 150 61 / 12%);
+}
+
+.nav a:focus-visible,
+.brand:focus-visible {
+  outline: 3px solid #ffc064;
+  outline-offset: 4px;
+  border-radius: 0.2rem;
+}
+
+@media (max-width: 780px) {
+  .header { flex-wrap: wrap; gap: 0.6rem 1rem; padding: 0.8rem 1rem; }
+  .nav { order: 3; width: 100%; justify-content: space-between; padding-top: 0.7rem; border-top: 1px solid rgb(230 237 243 / 8%); }
+  .eventBadge { margin-left: auto; font-size: 0.55rem; }
+}
+
+@media (max-width: 390px) {
+  .brandText { font-size: 0.67rem; }
+  .eventBadge { padding: 0.45rem 0.55rem; font-size: 0.5rem; }
+  .nav a { font-size: 0.72rem; }
+}

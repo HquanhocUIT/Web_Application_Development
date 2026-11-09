@@ -80,12 +80,12 @@
 
 ### T01 – Project Setup & PUBG Arena UI
 
-- [ ] **T01.1: Set up the PUBG Arena folder, components and `/hw3` route.**
-  - **Acceptance:** `src/homeworks/PUBGArena/` contains the HW3 screen and components; `/hw3` loads it directly.
-- [ ] **T01.2: Create PUBG squad, airdrop and ticket datasets with TypeScript interfaces.**
-  - **Acceptance:** Typed datasets represent squads, airdrops and tickets without untyped records.
-- [ ] **T01.3: Build a modern responsive esports dashboard.**
-  - **Acceptance:** The arena dashboard is usable on mobile and desktop with its main content visible.
+- [x] **T01.1: Set up the PUBG Arena folder, components and `/hw3` route.**
+  - **Acceptance:** `src/homeworks/PUBGArena/` contains the HW3 screen and reusable components; production preview serves `/hw3` directly with HTTP 200.
+- [x] **T01.2: Create PUBG squad, airdrop and ticket datasets with TypeScript interfaces.**
+  - **Acceptance:** `PubgPhase`, `PubgCrateDrop`, `PubgTicket` and `PubgVnSquadStanding` type the clearly labeled local mock datasets; no claim API is connected.
+- [x] **T01.3: Build a modern responsive esports dashboard.**
+  - **Acceptance:** Championship, countdown preview, reward inventory/prices and four-squad leaderboard render at 375px and 1440px without horizontal page overflow; loading, empty and error UI states are provided.
 
 ### T02 – Anti-Drift Countdown
 
