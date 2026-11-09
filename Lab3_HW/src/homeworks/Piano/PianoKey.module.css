@@ -1,0 +1,15 @@
+.key {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  touch-action: none;
+  user-select: none;
+}
+
+.key:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+.pressed {
+  filter: brightness(0.82);
+}

@@ -51,12 +51,12 @@
 
 ### T02 – Polyphonic Audio Engine
 
-- [ ] **T02.1: Implement sound generation using Web Audio API.**
-  - **Acceptance:** Activating a key produces its corresponding pitch through Web Audio.
-- [ ] **T02.2: Support up to 8 simultaneous voices with FIFO voice stealing.**
-  - **Acceptance:** Up to eight notes sound together; each additional note releases the oldest voice first.
-- [ ] **T02.3: Implement smooth ADSR release, audio cleanup and active voice tracking.**
-  - **Acceptance:** Voices release smoothly, active voices are tracked, and audio resources are cleaned up.
+- [x] **T02.1: Implement sound generation using Web Audio API.**
+  - **Acceptance:** Audio initializes or resumes on user input; MIDI notes 21–108 produce their formula-correct pitches.
+- [x] **T02.2: Support up to 8 simultaneous voices with FIFO voice stealing.**
+  - **Acceptance:** An insertion-ordered `Map` tracks at most eight active voices; duplicates are ignored and the ninth distinct note releases the oldest.
+- [x] **T02.3: Implement smooth ADSR release, audio cleanup and active voice tracking.**
+  - **Acceptance:** Gain envelopes release smoothly; pointer, touch and keyboard releases stop notes; oscillators, gains and the audio context are cleaned up. Focused tests pass.
 
 ### T03 – Performance, Recording & Replay
 
