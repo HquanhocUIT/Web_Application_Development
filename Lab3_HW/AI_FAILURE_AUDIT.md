@@ -2,7 +2,7 @@
 
 ## Scope and findings
 
-This folder contains both Homework 1 and Homework 2. The three verified defects below were found in the AI-generated Homework 1 Drum Kit and fixed in commit `c02bc1f`; they are not piano bugs. Review of the Homework 2 history (`2821898`, `3ffab41`, `bb76236`, `0b6e342`) found no separate AI-generated defect with enough test, browser, or fix-commit evidence to report. I have not counted unverified suspicions as bugs.
+This shared folder contains Homework 1, Homework 2 and Homework 3. The first three verified defects below belong to the AI-generated Homework 1 Drum Kit and were fixed in commit `c02bc1f`; they are not piano bugs. Homework 3 has three additional, Lighthouse-verified accessibility defects documented below. Review of the Homework 2 history (`2821898`, `3ffab41`, `bb76236`, `0b6e342`) found no separate AI-generated defect with enough test, browser, or fix-commit evidence to report. I have not counted unverified suspicions as bugs.
 
 The Homework 2 review recorded in commit `9238623` found a submission gap: `src/App.tsx` mounted only the Drum Machine, and the Piano directory had no generated 88-key keyboard or mounted piano screen. This was a missing feature, not a verified AI-generated bug. The route and initial Piano screen were added in `c779a54`; the current redesign adds a reusable, tested `PianoKeyboard` and a scrollable studio layout.
 
@@ -35,10 +35,43 @@ The three existing, evidence-backed Homework 1 defects are retained below to pre
 - **Why the generated code was incorrect:** No robots file existed, and the SPA fallback returned the application document for the crawler path.
 - **Evidence:** The final Lighthouse JSON marks `robots-txt` as passing and SEO 100. The production preview serves the two valid directives.
 
+## Homework 3: KRAFTON x PUBG Vietnam Arena
+
+The three defects below were found in the HW3 production mobile Lighthouse baseline and fixed in commit `472926c`. The baseline scored 96 in Accessibility and 96 in Best Practices; after the fixes, Mobile Lighthouse scored 100 in all four categories. The original findings and metrics are recorded in the T04.2 acceptance entry in `TASK_DECOMPOSITION.md`.
+
+### 4. Muted UI labels failed WCAG contrast
+
+- **Affected files:** `src/homeworks/PUBGArena/PUBGArena.module.css`, `src/homeworks/PUBGArena/components/LeaderboardPanel.module.css`, `src/homeworks/PUBGArena/components/RewardCard.module.css`.
+- **What went wrong:** Several gray labels did not meet the 4.5:1 contrast requirement for normal text. Lighthouse measured examples at 4.17:1 for overview labels, 3.51:1 for the season label and 3.45:1 for the points hint.
+- **How it was found:** The production Mobile Lighthouse baseline failed the `color-contrast` accessibility audit.
+- **Why the generated code was incorrect:** The dark theme used muted text colors selected for appearance without checking the contrast ratio against each card background.
+- **How it was fixed:** Raised the text contrast for the affected overview, leaderboard and reward labels while retaining the dark color scheme.
+- **Evidence:** Commit `472926c` contains the color changes. The final Mobile Lighthouse Accessibility score is 100 with no weighted accessibility audit failures; the 64-test suite, lint, typecheck and build pass.
+
+### 5. Accessible names omitted visible button and brand labels
+
+- **Affected files:** `src/homeworks/PUBGArena/components/RewardCard.tsx`, `src/homeworks/PUBGArena/components/ChampionshipHeader.tsx`, `src/App.test.tsx`, `src/homeworks/PUBGArena/PUBGArena.test.tsx`.
+- **What went wrong:** The header link's `aria-label` replaced its visible brand text, and claim buttons had names such as “Claim Grand Finals VIP Pass” while their visible warmup label said “CLAIMS OPEN WHEN LIVE”.
+- **How it was found:** The production Mobile Lighthouse baseline failed `label-content-name-mismatch` for the brand link and all four claim buttons.
+- **Why the generated code was incorrect:** Explicit accessible names did not include the controls' visible text, which can make voice-control and speech-input labels inconsistent with what users see.
+- **How it was fixed:** Removed the redundant brand `aria-label`; claim buttons now build their accessible names from the actual visible action label plus the reward name. Tests assert the resulting role names.
+- **Evidence:** Commit `472926c` contains the code and regression-test updates. All 64 tests pass, and final Mobile Lighthouse Accessibility is 100.
+
+### 6. Small text was not legible at mobile size
+
+- **Affected files:** `src/homeworks/PUBGArena/PUBGArena.module.css`, `src/homeworks/PUBGArena/components/AirdropCountdownPanel.module.css`, `src/homeworks/PUBGArena/components/ChampionshipHeader.module.css`, `src/homeworks/PUBGArena/components/LeaderboardPanel.module.css`, `src/homeworks/PUBGArena/components/RewardCard.module.css`, `src/homeworks/PUBGArena/components/RewardGrid.module.css`.
+- **What went wrong:** Many mobile labels used 7–11px type. Lighthouse found only 36.76% of the page text at 12px or larger and failed its legible-font-size Best Practices audit.
+- **How it was found:** The production Mobile Lighthouse baseline reported Best Practices 96 and identified the high-coverage footnote, eyebrows, claim labels and metric labels as undersized.
+- **Why the generated code was incorrect:** The typography scaled down small uppercase labels to preserve the compact dashboard composition, reducing readability on mobile.
+- **How it was fixed:** Raised the affected functional labels and supporting text to at least 12px and adjusted responsive rules to retain fit.
+- **Evidence:** Commit `472926c` contains the responsive typography changes. The final Mobile Lighthouse Best Practices score is 100; production Chrome reported no horizontal page overflow at 375px or 1440px.
+
+The HW3 timer and claim implementation were also reviewed. Tests verified absolute-time countdown behavior, visibility synchronization, all four phases, 409 rollback, duplicate prevention, concurrent inventory, cancellation and stale-response protection. No separate timer-drift or claim-race defect was confirmed, so none is presented here as a bug.
+
 ## Verification
 
-- `npm run lint`, `npm run typecheck`, `npm test` (7 tests), and `npm run build` pass.
-- Final Lighthouse scores: Performance 100, Accessibility 100, Best Practices 100, SEO 100.
+- Homework 1 verification: `npm run lint`, `npm run typecheck`, `npm test` (7 tests), and `npm run build` pass. Its final Lighthouse scores were Performance 100, Accessibility 100, Best Practices 100 and SEO 100.
+- Homework 3 verification: 64 automated tests pass; lint, typecheck and production build pass. Final Mobile Lighthouse scores were Performance 100, Accessibility 100, Best Practices 100 and SEO 100.
 - Browser screenshots and the Lighthouse HTML/JSON report are saved in `screenshots/`.
-- The verification and Lighthouse evidence above belong to Homework 1. This final Homework 2 documentation pass does not add or capture screenshots.
-- At the time of the earlier submission review, Homework 2 had four meaningful commits. Later route and UI work is recorded separately in Git. No placeholder commits were added to inflate commit counts.
+- Homework 1 screenshots and Lighthouse artifacts referenced above predate the Homework 3 work. No screenshot was created for the HW3 verification.
+- Homework 3 has six meaningful atomic commits: WBS, project rules, dashboard, countdown, claims/leaderboard and accessibility fixes (`de4b004`, `d3b3011`, `5e6efce`, `bf04e8c`, `2f14f3d`, `472926c`). No placeholder commits were added to inflate the count.
