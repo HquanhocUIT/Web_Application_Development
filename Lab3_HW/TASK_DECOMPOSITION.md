@@ -75,3 +75,41 @@
   - **Acceptance:** Headless Chrome verifies the 375px and 1440px layouts, internal keyboard scrolling, C4 initial centering, and pointer/keyboard operation. The task remains open until React DevTools Profiler and Lighthouse evidence are recorded.
 - [x] **T04.3: Create `AI_FAILURE_AUDIT.md` with at least 3 verified AI-generated bugs and review submission requirements.**
   - **Acceptance:** The audit retains three evidence-backed Homework 1 defects with affected files, discovery, fixes and commit/report evidence. The Homework 2 history was reviewed; no additional verified piano defect was found. The piano screen and key generator are implemented, T04.1 is verified, browser responsive and input checks are recorded, and T04.2 remains open pending React DevTools Profiler and Lighthouse evidence; screenshots are left for manual capture.
+
+## Homework 3: Lab 3 – KRAFTON x PUBG Vietnam Championship & Airdrop Arena
+
+### T01 – Project Setup & PUBG Arena UI
+
+- [ ] **T01.1: Set up the PUBG Arena folder, components and `/hw3` route.**
+  - **Acceptance:** `src/homeworks/PUBGArena/` contains the HW3 screen and components; `/hw3` loads it directly.
+- [ ] **T01.2: Create PUBG squad, airdrop and ticket datasets with TypeScript interfaces.**
+  - **Acceptance:** Typed datasets represent squads, airdrops and tickets without untyped records.
+- [ ] **T01.3: Build a modern responsive esports dashboard.**
+  - **Acceptance:** The arena dashboard is usable on mobile and desktop with its main content visible.
+
+### T02 – Anti-Drift Countdown
+
+- [ ] **T02.1: Create the `usePubgAirdropTimer` hook using `Date.now()` and an absolute target timestamp.**
+  - **Acceptance:** Countdown values derive from the current time and target timestamp, not accumulated intervals.
+- [ ] **T02.2: Add `visibilitychange` synchronization and proper timer cleanup.**
+  - **Acceptance:** Returning to a visible tab refreshes remaining time; listeners and timers are cleaned up.
+- [ ] **T02.3: Display the live countdown and unlock airdrops when time expires.**
+  - **Acceptance:** The countdown updates onscreen and expired airdrops become claimable.
+
+### T03 – Airdrop Claims & Leaderboard
+
+- [ ] **T03.1: Implement optimistic ticket and crate claiming.**
+  - **Acceptance:** Successful claim actions update the displayed ticket and crate inventory immediately.
+- [ ] **T03.2: Prevent duplicate requests and roll back inventory on HTTP 409 conflicts.**
+  - **Acceptance:** Repeated claims are blocked while pending; a 409 restores the prior inventory and reports the conflict.
+- [ ] **T03.3: Create the PUBG Vietnam leaderboard with filtering and sorting.**
+  - **Acceptance:** Squad standings can be filtered and sorted using the displayed leaderboard controls.
+
+### T04 – Testing, Audit & Submission
+
+- [ ] **T04.1: Test countdown accuracy, claiming, rollback and leaderboard.**
+  - **Acceptance:** Automated tests cover target-time accuracy, claims, duplicate prevention, 409 rollback, filtering and sorting.
+- [ ] **T04.2: Verify responsive design, WCAG 2.2 AA, Lighthouse and production build.**
+  - **Acceptance:** Mobile and desktop checks, accessibility review, Lighthouse results and production build are recorded.
+- [ ] **T04.3: Create `AI_FAILURE_AUDIT.md` with at least 3 verified AI-generated bugs and prepare the final submission.**
+  - **Acceptance:** The audit documents three evidence-backed bugs and final deliverables are reviewed against requirements.
