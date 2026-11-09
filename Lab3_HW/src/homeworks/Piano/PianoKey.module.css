@@ -1,5 +1,6 @@
 .key {
-  min-width: 2.5rem;
+  width: 100%;
+  min-width: 0;
   min-height: 2.5rem;
   touch-action: none;
   user-select: none;

@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
-import type { KeyboardEvent, PointerEvent } from 'react'
+import type { CSSProperties, KeyboardEvent, PointerEvent } from 'react'
 import { PianoAudioEngine } from './PianoAudioEngine'
 import type { PianoVoiceHandle } from './PianoAudioEngine'
 import styles from './PianoKey.module.css'
@@ -10,9 +10,11 @@ type PianoKeyProps = {
   engine: PianoAudioEngine
   onNoteStart?: (midi: number) => void
   onNoteEnd?: (midi: number) => void
+  className?: string
+  style?: CSSProperties
 }
 
-function PianoKey({ midi, label, engine, onNoteStart, onNoteEnd }: PianoKeyProps) {
+function PianoKey({ midi, label, engine, onNoteStart, onNoteEnd, className, style }: PianoKeyProps) {
   const heldInputs = useRef(new Set<string>())
   const voiceHandle = useRef<PianoVoiceHandle | null>(null)
   const onNoteStartRef = useRef(onNoteStart)
@@ -82,7 +84,8 @@ function PianoKey({ midi, label, engine, onNoteStart, onNoteEnd }: PianoKeyProps
 
   return (
     <button
-      className={`${styles.key} ${pressed ? styles.pressed : ''}`}
+      className={`${styles.key} ${pressed ? styles.pressed : ''} ${className ?? ''}`}
+      style={style}
       type="button"
       aria-label={label}
       aria-pressed={pressed}

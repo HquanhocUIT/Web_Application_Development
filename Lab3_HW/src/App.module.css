@@ -1,0 +1,73 @@
+.home,
+.placeholder {
+  width: min(100% - 2rem, 64rem);
+  margin: 0 auto;
+  padding: clamp(3rem, 10vw, 7rem) 0;
+  color: #f5f6fa;
+}
+
+.home h1,
+.placeholder h1 {
+  margin: 0;
+  font-size: clamp(2.5rem, 7vw, 4.75rem);
+  letter-spacing: -0.055em;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  color: #8ee7c1;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.intro {
+  margin: 0.75rem 0 2rem;
+  color: #c2c8d5;
+}
+
+.homeworkLinks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+}
+
+.homeworkLinks a {
+  display: grid;
+  min-height: 9rem;
+  align-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #384252;
+  border-radius: 1rem;
+  background: #171d28;
+  color: inherit;
+  text-decoration: none;
+}
+
+.homeworkLinks a:hover {
+  border-color: #8ee7c1;
+  background: #1c2531;
+}
+
+.homeworkLinks a:focus-visible,
+.placeholder a:focus-visible {
+  outline: 3px solid #8ee7c1;
+  outline-offset: 3px;
+}
+
+.homeworkLinks span {
+  color: #aab4c3;
+  font-size: 0.85rem;
+}
+
+.homeworkLinks strong {
+  font-size: 1.2rem;
+}
+
+.placeholder a {
+  display: inline-block;
+  margin-top: 1.5rem;
+  color: #8ee7c1;
+}

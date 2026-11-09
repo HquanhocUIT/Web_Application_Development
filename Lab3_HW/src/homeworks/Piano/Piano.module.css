@@ -1,0 +1,127 @@
+.page {
+  width: min(100% - 2rem, 80rem);
+  margin: 0 auto;
+  padding: clamp(1.5rem, 5vw, 3.5rem) 0;
+  color: #f4f5f8;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  letter-spacing: -0.05em;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #8ee7c1;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.description,
+.hint,
+.recordedNotes p {
+  color: #bac3d0;
+  line-height: 1.5;
+}
+
+.description {
+  max-width: 42rem;
+  margin: 0.75rem 0 0;
+}
+
+.homeLink {
+  flex: none;
+  color: #8ee7c1;
+}
+
+.homeLink:focus-visible {
+  outline: 3px solid #8ee7c1;
+  outline-offset: 3px;
+}
+
+.instrument,
+.recordedNotes {
+  margin-bottom: 1.5rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid #384252;
+  border-radius: 1rem;
+  background: #171d28;
+}
+
+.instrument h2,
+.recordedNotes h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.hint {
+  margin: 0.35rem 0 1rem;
+  font-size: 0.9rem;
+}
+
+.keyboardViewport {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 0.25rem 0.25rem 0.75rem;
+  overscroll-behavior-inline: contain;
+}
+
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(52, minmax(0, 1fr));
+  grid-template-rows: 12rem;
+  min-width: 59rem;
+  padding: 0.25rem 0.5rem 0;
+}
+
+.whiteKey {
+  z-index: 0;
+  align-self: stretch;
+  height: 100%;
+  min-height: 0;
+  padding: 0 0 0.4rem;
+  border: 1px solid #bec4ce;
+  border-radius: 0 0 0.3rem 0.3rem;
+  background: linear-gradient(#fff, #e5e8ed);
+  color: #252c37;
+  font-size: 0.55rem;
+}
+
+.blackKey {
+  z-index: 1;
+  width: 150%;
+  height: 67%;
+  min-height: 0;
+  justify-self: end;
+  align-self: start;
+  margin-right: -50%;
+  padding: 0.3rem 0;
+  border: 1px solid #080a0e;
+  border-radius: 0 0 0.3rem 0.3rem;
+  background: linear-gradient(#343b48, #11151c);
+  color: #f4f5f8;
+  font-size: 0.5rem;
+}
+
+.recordedNotes p {
+  overflow-wrap: anywhere;
+  margin: 0.5rem 0 0;
+}
+
+@media (max-width: 520px) {
+  .header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
