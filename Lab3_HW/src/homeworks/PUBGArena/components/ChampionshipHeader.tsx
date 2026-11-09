@@ -4,7 +4,7 @@ import styles from './ChampionshipHeader.module.css'
 export default function ChampionshipHeader() {
   return (
     <header className={styles.header}>
-      <Link className={styles.brand} to="/" aria-label="Lab 3 homeworks">
+      <Link className={styles.brand} to="/">
         <span className={styles.brandMark} aria-hidden="true">P</span>
         <span className={styles.brandText}>KRAFTON <i>×</i> PUBG VIETNAM</span>
       </Link>

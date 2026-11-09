@@ -35,7 +35,7 @@ describe('homework routing', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'KRAFTON × PUBG Vietnam' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Airdrop rewards' })).toBeTruthy()
     expect(screen.getByRole('timer').getAttribute('aria-label')).toContain('days')
-    expect(screen.getByRole('button', { name: /Claim Grand Finals VIP Pass/ }).hasAttribute('disabled')).toBe(true)
+    expect(screen.getByRole('button', { name: /CLAIMS OPEN WHEN LIVE: Grand Finals VIP Pass/ }).hasAttribute('disabled')).toBe(true)
     expect(screen.getByText('Grand Finals VIP Pass')).toBeTruthy()
     expect(screen.getByText('5,000 G-COIN')).toBeTruthy()
     expect(screen.getByRole('heading', { name: /leaderboard/ })).toBeTruthy()

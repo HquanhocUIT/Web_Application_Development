@@ -52,11 +52,11 @@ describe('PUBG Arena dashboard states', () => {
       }],
     }
     const { rerender } = render(<RewardGrid drops={drops} tickets={{ status: 'empty' }} {...claimProps} />)
-    const claimButton = screen.getByRole('button', { name: /Claim Test Drop/ })
+    const claimButton = screen.getByRole('button', { name: /CLAIMS OPEN WHEN LIVE: Test Drop/ })
     expect(claimButton.hasAttribute('disabled')).toBe(true)
 
     rerender(<RewardGrid drops={drops} tickets={{ status: 'empty' }} {...claimProps} canClaim />)
-    expect(screen.getByRole('button', { name: /Claim Test Drop/ }).hasAttribute('disabled')).toBe(false)
+    expect(screen.getByRole('button', { name: /CLAIM REWARD: Test Drop/ }).hasAttribute('disabled')).toBe(false)
   })
 
   it('formats VND values using the Vietnamese locale', () => {

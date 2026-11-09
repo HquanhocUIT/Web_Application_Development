@@ -12,6 +12,7 @@ export default function RewardCard({ reward, kind, inventory, canClaim, isPendin
   const subtitle = isDrop ? reward.subtitle : 'ARENA ACCESS'
   const description = reward.description
   const tier = isDrop ? reward.tier : 'ENTRY'
+  const actionLabel = isPending ? 'CLAIMING…' : inventory <= 0 ? 'SOLD OUT' : canClaim ? 'CLAIM REWARD' : 'CLAIMS OPEN WHEN LIVE'
 
   return (
     <article className={`${styles.card} ${isDrop ? styles.dropCard : styles.ticketCard}`}>
@@ -41,9 +42,9 @@ export default function RewardCard({ reward, kind, inventory, canClaim, isPendin
         type="button"
         disabled={!canClaim || inventory <= 0 || isPending}
         onClick={() => { void onClaim(reward.id) }}
-        aria-label={isPending ? `Claiming ${title}` : `Claim ${title}`}
+        aria-label={`${actionLabel}: ${title}`}
       >
-        {isPending ? 'CLAIMING…' : inventory <= 0 ? 'SOLD OUT' : canClaim ? 'CLAIM REWARD' : 'CLAIMS OPEN WHEN LIVE'}
+        {actionLabel}
         <span aria-hidden="true">↗</span>
       </button>
     </article>

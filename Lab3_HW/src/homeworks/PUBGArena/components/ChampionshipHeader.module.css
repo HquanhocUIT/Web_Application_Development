@@ -33,7 +33,7 @@
 }
 
 .brandText {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 850;
   letter-spacing: 0.07em;
 }
@@ -48,7 +48,7 @@
 
 .nav a {
   color: #aeb7c1;
-  font-size: 0.79rem;
+  font-size: 0.75rem;
   font-weight: 650;
   text-decoration: none;
   transition: color 140ms ease;
@@ -65,7 +65,7 @@
   border: 1px solid #393128;
   border-radius: 999px;
   color: #d7c5ad;
-  font-size: 0.61rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.1em;
 }
@@ -88,11 +88,11 @@
 @media (max-width: 780px) {
   .header { flex-wrap: wrap; gap: 0.6rem 1rem; padding: 0.8rem 1rem; }
   .nav { order: 3; width: 100%; justify-content: space-between; padding-top: 0.7rem; border-top: 1px solid rgb(230 237 243 / 8%); }
-  .eventBadge { margin-left: auto; font-size: 0.55rem; }
+  .eventBadge { margin-left: auto; font-size: 0.75rem; }
 }
 
 @media (max-width: 390px) {
-  .brandText { font-size: 0.67rem; }
-  .eventBadge { padding: 0.45rem 0.55rem; font-size: 0.5rem; }
-  .nav a { font-size: 0.72rem; }
+  .brandText { font-size: 0.75rem; }
+  .eventBadge { padding: 0.45rem 0.55rem; font-size: 0.75rem; }
+  .nav a { font-size: 0.75rem; }
 }

@@ -107,9 +107,9 @@
 
 ### T04 – Testing, Audit & Submission
 
-- [ ] **T04.1: Test countdown accuracy, claiming, rollback and leaderboard.**
-  - **Acceptance:** Automated tests cover target-time accuracy, claims, duplicate prevention, 409 rollback, filtering and sorting.
-- [ ] **T04.2: Verify responsive design, WCAG 2.2 AA, Lighthouse and production build.**
-  - **Acceptance:** Mobile and desktop checks, accessibility review, Lighthouse results and production build are recorded.
+- [x] **T04.1: Test countdown accuracy, claiming, rollback and leaderboard.**
+  - **Acceptance:** All 64 automated tests pass, covering all four timer phases, absolute-time/visibility synchronization and cleanup, claim success/409/deduplication/concurrency/network failure/cancellation, leaderboard filters/sorts and direct `/hw3` rendering. Production Chrome confirms live claims, inventory reconciliation, keyboard focus order and visible focus indicators.
+- [x] **T04.2: Verify responsive design, WCAG 2.2 AA, Lighthouse and production build.**
+  - **Acceptance:** Production preview has no horizontal page overflow at 375px or 1440px. Mobile Lighthouse improved from 100/96/96/100 to 100/100/100/100 (Performance/Accessibility/Best Practices/SEO); FCP 1.3s→1.2s, LCP 1.4s→1.4s, TBT 30ms→10ms, CLS 0, Speed Index 1.5s→1.2s, with no weighted accessibility or best-practice audit failures. Lint, typecheck and production build pass.
 - [ ] **T04.3: Create `AI_FAILURE_AUDIT.md` with at least 3 verified AI-generated bugs and prepare the final submission.**
   - **Acceptance:** The audit documents three evidence-backed bugs and final deliverables are reviewed against requirements.
