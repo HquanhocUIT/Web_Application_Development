@@ -1,87 +1,102 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import PianoKey from './PianoKey'
 import { PianoAudioEngine } from './PianoAudioEngine'
+import PianoKeyboard from './PianoKeyboard'
 import PianoRecordingControls from './PianoRecordingControls'
 import { usePianoRecording } from './usePianoRecording'
+import type { RecordedPianoNote } from './PianoRecorder'
 import styles from './Piano.module.css'
 
 const NOTE_NAMES = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B']
-const BLACK_PITCH_CLASSES = new Set([1, 3, 6, 8, 10])
 
 function midiToLabel(midi: number): string {
   return `${NOTE_NAMES[midi % 12]}${Math.floor(midi / 12) - 1}`
 }
 
-export type PianoNote = {
-  midi: number
-  label: string
-  isBlack: boolean
-  whitePosition: number
-}
-
-export function generatePianoNotes(): PianoNote[] {
-  let whitePosition = 0
-  return Array.from({ length: 88 }, (_, index) => {
-    const midi = index + 21
-    const pitchClass = midi % 12
-    const isBlack = BLACK_PITCH_CLASSES.has(pitchClass)
-    if (!isBlack) whitePosition += 1
-    return {
-      midi,
-      label: midiToLabel(midi),
-      isBlack,
-      whitePosition,
-    }
-  })
-}
-
-const PIANO_NOTES = generatePianoNotes()
-
 function PianoInstrument({ engine }: { engine: PianoAudioEngine }) {
   const recording = usePianoRecording(engine)
-  const keyElements = useMemo(() => PIANO_NOTES.map((note) => (
-    <PianoKey
-      key={note.midi}
-      midi={note.midi}
-      label={note.label}
-      engine={engine}
-      onNoteStart={recording.onNoteStart}
-      onNoteEnd={recording.onNoteEnd}
-      className={note.isBlack ? styles.blackKey : styles.whiteKey}
-      style={{ gridColumn: String(note.whitePosition), gridRow: '1' }}
-    />
-  )), [engine, recording.onNoteEnd, recording.onNoteStart])
+  const status = recording.isRecording
+    ? 'Recording'
+    : recording.isPlaying
+      ? 'Playing back'
+      : recording.notes.length > 0
+        ? 'Take saved'
+        : 'Ready'
+  const latestNoteTime = useMemo(
+    () => Math.max(1, ...recording.notes.map((note) => note.startOffset + note.duration)),
+    [recording.notes],
+  )
 
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <div>
-          <p className={styles.eyebrow}>Homework 2 · Polyphonic instrument</p>
-          <h1>88-Key Piano</h1>
-          <p className={styles.description}>Play a key with pointer, touch, or keyboard focus. Audio starts after your first interaction.</p>
+        <div className={styles.brandLine}>
+          <span className={styles.brandMark} aria-hidden="true">D</span>
+          <span>Digital instruments <span aria-hidden="true">/</span> Lab 03</span>
         </div>
-        <Link className={styles.homeLink} to="/">All homeworks</Link>
-      </header>
-
-      <section className={styles.instrument} aria-label="Piano instrument">
-        <h2>Keyboard</h2>
-        <p className={styles.hint}>A0 to C8 · up to eight simultaneous notes</p>
-        <div className={styles.keyboardViewport}>
-          <div className={styles.keyboard} role="group" aria-label="88 piano keys from A0 to C8">
-            {keyElements}
+        <div className={styles.titleRow}>
+          <div>
+            <p className={styles.eyebrow}>Homework 2 · Polyphonic instrument</p>
+            <h1>Digital Piano <span>Studio</span></h1>
+            <p className={styles.description}>An expressive 88-key instrument with a concurrent recording sequencer.</p>
+          </div>
+          <div className={`${styles.status} ${recording.isRecording ? styles.statusRecording : ''}`} role="status" aria-live="polite">
+            <span className={styles.statusDot} aria-hidden="true" />
+            {status}
           </div>
         </div>
-      </section>
+      </header>
 
-      <PianoRecordingControls controller={recording} />
-      {recording.notes.length > 0 && (
-        <section className={styles.recordedNotes} aria-label="Recorded piano notes">
-          <h2>Recording</h2>
-          <p>{recording.notes.length} notes · {recording.notes.map((note) => midiToLabel(note.midi)).join(', ')}</p>
+      <PianoKeyboard
+        engine={engine}
+        onNoteStart={recording.onNoteStart}
+        onNoteEnd={recording.onNoteEnd}
+      />
+
+      <div className={styles.workspace}>
+        <PianoRecordingControls controller={recording} />
+        <section className={styles.recordingPanel} aria-labelledby="recording-list-title">
+          <header className={styles.recordingHeader}>
+            <div>
+              <p className={styles.eyebrow}>Session</p>
+              <h2 id="recording-list-title">Recorded notes</h2>
+            </div>
+            <span className={styles.noteCount}>{recording.notes.length} <span>notes</span></span>
+          </header>
+          {recording.notes.length === 0 ? (
+            <p className={styles.emptyRecording}>Start a recording, then play a few notes to build a take.</p>
+          ) : (
+            <ol className={styles.noteTimeline} aria-label="Recorded note timeline">
+              {recording.notes.map((note) => (
+                <RecordedNoteRow key={note.id} note={note} totalDuration={latestNoteTime} />
+              ))}
+            </ol>
+          )}
         </section>
-      )}
+      </div>
+
+      <footer className={styles.footer}>
+        <span>Scroll the keyboard to explore A0–C8</span>
+        <Link to="/">All homeworks</Link>
+      </footer>
     </main>
+  )
+}
+
+function RecordedNoteRow({ note, totalDuration }: { note: RecordedPianoNote; totalDuration: number }) {
+  const left = Math.min(100, Math.max(0, (note.startOffset / totalDuration) * 100))
+  const width = Math.min(100 - left, Math.max(1.5, (note.duration / totalDuration) * 100))
+
+  return (
+    <li className={styles.timelineRow}>
+      <div className={styles.timelineMeta}>
+        <strong>{midiToLabel(note.midi)}</strong>
+        <span>{(note.startOffset / 1000).toFixed(2)}s · {(note.duration / 1000).toFixed(2)}s</span>
+      </div>
+      <div className={styles.timelineTrack} aria-hidden="true">
+        <span className={styles.timelineNote} style={{ left: `${left}%`, width: `${width}%` }} />
+      </div>
+    </li>
   )
 }
 

@@ -207,7 +207,7 @@ describe('Piano key memoization and transport controls', () => {
     const { rerender } = render(<PianoRecordingControls controller={controller} />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Start Recording' }))
-    fireEvent.change(screen.getByLabelText('Replay speed'), { target: { value: '2' } })
+    fireEvent.change(screen.getByRole('combobox', { name: 'Playback speed' }), { target: { value: '2' } })
     fireEvent.click(screen.getByRole('button', { name: 'Replay' }))
 
     controller.isRecording = true
@@ -224,7 +224,7 @@ describe('Piano key memoization and transport controls', () => {
     expect(controller.setPlaybackSpeed).toHaveBeenCalledWith(2)
     expect(controller.replay).toHaveBeenCalledOnce()
     expect(controller.stopPlayback).toHaveBeenCalledOnce()
-    expect(screen.getByRole('status').textContent).toBe('Replaying recording')
+    expect(screen.getByRole('status').textContent).toBe('Playing your take')
   })
 })
 

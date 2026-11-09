@@ -42,11 +42,11 @@
 
 ### T01 – Project Setup & 88-Key Piano UI
 
-- [ ] **T01.1: Set up React 19, Vite and TypeScript.**
+- [x] **T01.1: Set up React 19, Vite and TypeScript.**
   - **Acceptance:** The Homework 2 app runs with React 19, Vite and TypeScript.
-- [ ] **T01.2: Generate all 88 piano keys (A0–C8) algorithmically using MIDI values and frequency calculation.**
+- [x] **T01.2: Generate all 88 piano keys (A0–C8) algorithmically using MIDI values and frequency calculation.**
   - **Acceptance:** MIDI-based generation produces 88 keys from A0 through C8 with correct frequencies.
-- [ ] **T01.3: Create reusable PianoKeyboard and PianoKey components with a responsive layout.**
+- [x] **T01.3: Create reusable PianoKeyboard and PianoKey components with a responsive layout.**
   - **Acceptance:** All keys render through reusable components and remain usable on mobile and desktop.
 
 ### T02 – Polyphonic Audio Engine
@@ -69,9 +69,9 @@
 
 ### T04 – Testing, Audit & Submission
 
-- [ ] **T04.1: Test piano functions, FIFO behavior, recording, replay and cleanup.**
+- [x] **T04.1: Test piano functions, FIFO behavior, recording, replay and cleanup.**
   - **Acceptance:** Tests verify key generation, polyphony, FIFO stealing, recording, playback order and cleanup.
 - [ ] **T04.2: Check responsive design, accessibility, React Profiler and Lighthouse.**
-  - **Acceptance:** Mobile and desktop checks, accessibility review, Profiler evidence and Lighthouse results are recorded.
+  - **Acceptance:** Headless Chrome verifies the 375px and 1440px layouts, internal keyboard scrolling, C4 initial centering, and pointer/keyboard operation. The task remains open until React DevTools Profiler and Lighthouse evidence are recorded.
 - [x] **T04.3: Create `AI_FAILURE_AUDIT.md` with at least 3 verified AI-generated bugs and review submission requirements.**
-  - **Acceptance:** The audit retains three evidence-backed Homework 1 defects with affected files, discovery, fixes and commit/report evidence. The Homework 2 history was reviewed; no additional verified piano defect was found. Final review records that the piano UI/key generator is missing, Homework 2 T04.1/T04.2 remain incomplete, and screenshots are left for manual capture.
+  - **Acceptance:** The audit retains three evidence-backed Homework 1 defects with affected files, discovery, fixes and commit/report evidence. The Homework 2 history was reviewed; no additional verified piano defect was found. The piano screen and key generator are implemented, T04.1 is verified, browser responsive and input checks are recorded, and T04.2 remains open pending React DevTools Profiler and Lighthouse evidence; screenshots are left for manual capture.

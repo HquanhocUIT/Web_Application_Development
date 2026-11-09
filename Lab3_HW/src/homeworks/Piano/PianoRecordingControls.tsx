@@ -16,44 +16,74 @@ export default function PianoRecordingControls({
   }
 
   const status = controller.isRecording
-    ? 'Recording notes'
+    ? 'Recording in progress'
     : controller.isPlaying
-      ? 'Replaying recording'
-      : `${controller.notes.length} recorded notes`
+      ? 'Playing your take'
+      : `${controller.notes.length} notes in this take`
 
   return (
-    <section className={styles.controls} aria-label="Piano recording and playback">
-      <div className={styles.recordingButtons}>
-        <button type="button" onClick={controller.startRecording} disabled={controller.isRecording}>
-          Start Recording
-        </button>
-        <button type="button" onClick={controller.stopRecording} disabled={!controller.isRecording}>
-          Stop Recording
-        </button>
-      </div>
+    <section className={styles.panel} aria-labelledby="transport-title">
+      <header className={styles.header}>
+        <div>
+          <p className={styles.kicker}>Transport</p>
+          <h2 id="transport-title">Recording & playback</h2>
+        </div>
+        <p className={`${styles.status} ${controller.isRecording ? styles.recording : ''}`} role="status" aria-live="polite">
+          <span className={styles.statusDot} aria-hidden="true" />
+          {status}
+        </p>
+      </header>
 
-      <label className={styles.speedControl}>
-        Replay speed
-        <select value={controller.playbackSpeed} onChange={handleSpeedChange}>
-          {PLAYBACK_SPEEDS.map((speed) => (
-            <option key={speed} value={speed}>{speed}x</option>
-          ))}
-        </select>
-      </label>
+      <div className={styles.controlRow}>
+        <div className={styles.buttonGroup} role="group" aria-label="Recording controls">
+          <button
+            className={styles.recordButton}
+            type="button"
+            onClick={controller.startRecording}
+            disabled={controller.isRecording}
+            aria-pressed={controller.isRecording}
+          >
+            <span className={styles.recordIcon} aria-hidden="true" />
+            Start Recording
+          </button>
+          <button
+            className={styles.secondaryButton}
+            type="button"
+            onClick={controller.stopRecording}
+            disabled={!controller.isRecording}
+          >
+            Stop Recording
+          </button>
+        </div>
 
-      <div className={styles.playbackButtons}>
-        <button
-          type="button"
-          onClick={controller.replay}
-          disabled={controller.isRecording || controller.notes.length === 0 || controller.isPlaying}
-        >
-          Replay
-        </button>
-        <button type="button" onClick={controller.stopPlayback} disabled={!controller.isPlaying}>
-          Stop Playback
-        </button>
+        <div className={styles.speedControl}>
+          <label htmlFor="piano-playback-speed">Playback speed</label>
+          <select id="piano-playback-speed" value={controller.playbackSpeed} onChange={handleSpeedChange}>
+            {PLAYBACK_SPEEDS.map((speed) => (
+              <option key={speed} value={speed}>{speed}x</option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.buttonGroup} role="group" aria-label="Playback controls">
+          <button
+            className={styles.playButton}
+            type="button"
+            onClick={controller.replay}
+            disabled={controller.isRecording || controller.notes.length === 0 || controller.isPlaying}
+          >
+            Replay
+          </button>
+          <button
+            className={styles.secondaryButton}
+            type="button"
+            onClick={controller.stopPlayback}
+            disabled={!controller.isPlaying}
+          >
+            Stop Playback
+          </button>
+        </div>
       </div>
-      <p className={styles.status} role="status" aria-live="polite">{status}</p>
     </section>
   )
 }

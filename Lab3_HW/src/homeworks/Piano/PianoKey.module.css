@@ -4,13 +4,22 @@
   min-height: 2.5rem;
   touch-action: none;
   user-select: none;
+  transition: filter 120ms ease, transform 100ms ease, box-shadow 120ms ease;
 }
 
 .key:focus-visible {
-  outline: 3px solid currentColor;
+  z-index: 3;
+  outline: 3px solid #42e2ac;
   outline-offset: 2px;
 }
 
 .pressed {
-  filter: brightness(0.82);
+  filter: brightness(0.86);
+  transform: translateY(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .key {
+    transition: none;
+  }
 }

@@ -12,9 +12,10 @@ type PianoKeyProps = {
   onNoteEnd?: (midi: number) => void
   className?: string
   style?: CSSProperties
+  visualLabel?: string
 }
 
-function PianoKey({ midi, label, engine, onNoteStart, onNoteEnd, className, style }: PianoKeyProps) {
+function PianoKey({ midi, label, engine, onNoteStart, onNoteEnd, className, style, visualLabel = label }: PianoKeyProps) {
   const heldInputs = useRef(new Set<string>())
   const voiceHandle = useRef<PianoVoiceHandle | null>(null)
   const onNoteStartRef = useRef(onNoteStart)
@@ -87,6 +88,7 @@ function PianoKey({ midi, label, engine, onNoteStart, onNoteEnd, className, styl
       className={`${styles.key} ${pressed ? styles.pressed : ''} ${className ?? ''}`}
       style={style}
       type="button"
+      data-midi={midi}
       aria-label={label}
       aria-pressed={pressed}
       onPointerDown={handlePointerDown}
@@ -97,7 +99,7 @@ function PianoKey({ midi, label, engine, onNoteStart, onNoteEnd, className, styl
       onKeyUp={handleKeyUp}
       onBlur={handleBlur}
     >
-      {label}
+      {visualLabel}
     </button>
   )
 }

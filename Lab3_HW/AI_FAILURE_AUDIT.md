@@ -4,7 +4,7 @@
 
 This folder contains both Homework 1 and Homework 2. The three verified defects below were found in the AI-generated Homework 1 Drum Kit and fixed in commit `c02bc1f`; they are not piano bugs. Review of the Homework 2 history (`2821898`, `3ffab41`, `bb76236`, `0b6e342`) found no separate AI-generated defect with enough test, browser, or fix-commit evidence to report. I have not counted unverified suspicions as bugs.
 
-The final Homework 2 review also found a submission gap: `src/App.tsx` still mounts the Drum Machine, and the Piano directory has no generated 88-key keyboard or mounted piano screen. This is an incomplete feature, not a verified AI-generated bug, so it is reported here as a limitation rather than added to the defect count.
+The Homework 2 review recorded in commit `9238623` found a submission gap: `src/App.tsx` mounted only the Drum Machine, and the Piano directory had no generated 88-key keyboard or mounted piano screen. This was a missing feature, not a verified AI-generated bug. The route and initial Piano screen were added in `c779a54`; the current redesign adds a reusable, tested `PianoKeyboard` and a scrollable studio layout.
 
 The three existing, evidence-backed Homework 1 defects are retained below to preserve the audit history for this shared project folder.
 
@@ -41,4 +41,4 @@ The three existing, evidence-backed Homework 1 defects are retained below to pre
 - Final Lighthouse scores: Performance 100, Accessibility 100, Best Practices 100, SEO 100.
 - Browser screenshots and the Lighthouse HTML/JSON report are saved in `screenshots/`.
 - The verification and Lighthouse evidence above belong to Homework 1. This final Homework 2 documentation pass does not add or capture screenshots.
-- Homework 2 has four meaningful commits in its own history so far; the shared `Lab3_HW` history includes the earlier Homework 1 commits as well. No placeholder commits were added to inflate either count.
+- At the time of the earlier submission review, Homework 2 had four meaningful commits. Later route and UI work is recorded separately in Git. No placeholder commits were added to inflate commit counts.
