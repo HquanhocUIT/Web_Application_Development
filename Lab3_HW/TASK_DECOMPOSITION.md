@@ -56,7 +56,7 @@
 - [x] **T02.2: Support up to 8 simultaneous voices with FIFO voice stealing.**
   - **Acceptance:** An insertion-ordered `Map` tracks at most eight active voices; duplicates are ignored and the ninth distinct note releases the oldest.
 - [x] **T02.3: Implement smooth ADSR release, audio cleanup and active voice tracking.**
-  - **Acceptance:** Gain envelopes release smoothly; pointer, touch and keyboard releases stop notes; oscillators, gains and the audio context are cleaned up. Focused tests pass.
+  - **Acceptance:** Gain envelopes release smoothly; pointer, touch and keyboard releases stop notes and clear the active highlight; overlapping inputs do not duplicate notes. Oscillators, gains and the audio context are cleaned up. Focused tests pass.
 
 ### T03 – Performance, Recording & Replay
 
@@ -70,7 +70,7 @@
 ### T04 – Testing, Audit & Submission
 
 - [x] **T04.1: Test piano functions, FIFO behavior, recording, replay and cleanup.**
-  - **Acceptance:** Tests verify key generation, polyphony, FIFO stealing, recording, playback order and cleanup.
+  - **Acceptance:** 38 automated tests pass, verifying key generation, polyphony, FIFO stealing, recording, playback order, cleanup, pressed-state feedback and input deduplication. Production Chrome verifies C4 schedules at 261.63 Hz and the highlight resets on release with no application console errors.
 - [ ] **T04.2: Check responsive design, accessibility, React Profiler and Lighthouse.**
   - **Acceptance:** Headless Chrome verifies the 375px and 1440px layouts, internal keyboard scrolling, C4 initial centering, and pointer/keyboard operation. The task remains open until React DevTools Profiler and Lighthouse evidence are recorded.
 - [x] **T04.3: Create `AI_FAILURE_AUDIT.md` with at least 3 verified AI-generated bugs and review submission requirements.**

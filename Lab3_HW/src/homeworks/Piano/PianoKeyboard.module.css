@@ -115,6 +115,18 @@
   font-weight: 600;
 }
 
+.whiteKey[aria-pressed='true'] {
+  border-color: #43c99b;
+  background: linear-gradient(110deg, #d9fff0 0%, #a7f0d4 68%, #75d6b2 100%);
+  box-shadow: inset 0 0 0 2px rgb(40 176 132 / 46%), inset 0 -5px 0 rgb(24 112 83 / 20%), 0 1px 2px rgb(0 0 0 / 28%);
+}
+
+.blackKey[aria-pressed='true'] {
+  border-color: #5ce5b5;
+  background: linear-gradient(100deg, #287d6a 0%, #145747 45%, #0b302b 100%);
+  box-shadow: inset 0 0 0 1px rgb(125 255 209 / 38%), inset 0 -4px 0 #08251f, 0 3px 4px rgb(0 0 0 / 42%);
+}
+
 .middleC {
   box-shadow: inset 0 0 0 2px #75dec0, inset 0 -5px 0 rgb(112 108 97 / 12%), 0 3px 3px rgb(0 0 0 / 28%);
 }

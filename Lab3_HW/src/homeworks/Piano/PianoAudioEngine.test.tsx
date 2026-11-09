@@ -222,6 +222,27 @@ describe('PianoKey input handling', () => {
     fireEvent.keyUp(key, { key: ' ' })
     expect(engine.releaseVoiceHandle).toHaveBeenCalledOnce()
   })
+
+  it('keeps one voice active when pointer and keyboard input overlap', () => {
+    const engine = {
+      startVoice: vi.fn(() => ({ midi: 60, token: Symbol('test-voice') })),
+      releaseVoiceHandle: vi.fn(),
+    } as unknown as PianoAudioEngine
+    render(<PianoKey midi={60} label="C4" engine={engine} />)
+    const key = screen.getByRole('button', { name: 'C4' })
+
+    fireEvent.pointerDown(key, { pointerId: 5, pointerType: 'mouse', button: 0 })
+    fireEvent.keyDown(key, { key: 'Enter', repeat: false })
+    fireEvent.pointerUp(key, { pointerId: 5, pointerType: 'mouse', button: 0 })
+
+    expect(engine.startVoice).toHaveBeenCalledOnce()
+    expect(engine.releaseVoiceHandle).not.toHaveBeenCalled()
+    expect(key.getAttribute('aria-pressed')).toBe('true')
+
+    fireEvent.keyUp(key, { key: 'Enter' })
+    expect(engine.releaseVoiceHandle).toHaveBeenCalledOnce()
+    expect(key.getAttribute('aria-pressed')).toBe('false')
+  })
 })
 
 function getCreatedContext(): FakeAudioContext {
