@@ -29,3 +29,20 @@
 - Test each task before marking it complete; commit after each completed main task.
 - Do not modify Lab 2 projects.
 - Do not create a screenshots folder or capture screenshots; screenshots will be provided manually.
+
+# Homework 3 Project Rules
+
+- Use React 19, Vite, TypeScript and functional components.
+- Use semantic HTML, CSS Modules and WCAG 2.2 AA practices.
+- Prefer immutable state updates; avoid unnecessary `useEffect` calls.
+- Calculate countdowns with `Date.now()` and an absolute target timestamp, not only a decrementing counter.
+- Synchronize on `visibilitychange` and clean up timers and event listeners.
+- Model airdrop status with `WARMUP`, `AIRDROP_LIVE`, `LOOTED_OUT` and `EXPIRED` states.
+- Update inventory optimistically, roll back on HTTP 409, and prevent duplicate pending claims.
+- Format VND prices with `Intl.NumberFormat('vi-VN')`.
+- Use stable IDs, pure derived filtering and immutable sorting for leaderboards.
+- Handle asynchronous errors and prevent stale responses from updating state.
+- Follow `TASK_DECOMPOSITION.md`; verify each main task before marking it complete.
+- Run tests, lint, typecheck and build before committing each milestone.
+- Avoid unnecessary changes to Homework 1, Homework 2 and Lab 2 code.
+- Do not create a screenshots folder or capture screenshots; screenshots will be provided manually.
