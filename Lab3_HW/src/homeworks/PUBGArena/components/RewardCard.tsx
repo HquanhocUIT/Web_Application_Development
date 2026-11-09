@@ -3,10 +3,10 @@ import { formatVnd } from '../formatVnd'
 import styles from './RewardCard.module.css'
 
 type Props =
-  | { reward: PubgCrateDrop; kind: 'drop'; canClaim: boolean }
-  | { reward: PubgTicket; kind: 'ticket'; canClaim: boolean }
+  | { reward: PubgCrateDrop; kind: 'drop'; inventory: number; canClaim: boolean; isPending: boolean; onClaim: (itemId: string) => Promise<void> }
+  | { reward: PubgTicket; kind: 'ticket'; inventory: number; canClaim: boolean; isPending: boolean; onClaim: (itemId: string) => Promise<void> }
 
-export default function RewardCard({ reward, kind, canClaim }: Props) {
+export default function RewardCard({ reward, kind, inventory, canClaim, isPending, onClaim }: Props) {
   const isDrop = kind === 'drop'
   const title = reward.name
   const subtitle = isDrop ? reward.subtitle : 'ARENA ACCESS'
@@ -33,16 +33,18 @@ export default function RewardCard({ reward, kind, canClaim }: Props) {
         </div>
         <div className={styles.stock}>
           <span className={styles.priceLabel}>AVAILABLE</span>
-          <strong>{reward.inventory.toLocaleString('vi-VN')} <small>units</small></strong>
+          <strong>{inventory.toLocaleString('vi-VN')} <small>units</small></strong>
         </div>
       </div>
       <button
         className={styles.claimButton}
         type="button"
-        disabled={!canClaim}
-        aria-label={canClaim ? `Claim ${title}; claim service arrives in T03` : `Claim ${title} unavailable until the airdrop is live`}
+        disabled={!canClaim || inventory <= 0 || isPending}
+        onClick={() => { void onClaim(reward.id) }}
+        aria-label={isPending ? `Claiming ${title}` : `Claim ${title}`}
       >
-        {canClaim ? 'AIRDROP LIVE · CLAIM FLOW T03' : 'CLAIMS OPEN WHEN LIVE'} <span aria-hidden="true">↗</span>
+        {isPending ? 'CLAIMING…' : inventory <= 0 ? 'SOLD OUT' : canClaim ? 'CLAIM REWARD' : 'CLAIMS OPEN WHEN LIVE'}
+        <span aria-hidden="true">↗</span>
       </button>
     </article>
   )

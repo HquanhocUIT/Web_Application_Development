@@ -1,6 +1,10 @@
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .state { margin: 0; padding: 1.5rem; border: 1px dashed #4b4842; border-radius: 0.8rem; color: #b9b7b1; font-size: 0.85rem; line-height: 1.5; }
 .error { border-color: #965349; color: #ffb7a3; }
+.messages { display: grid; gap: 0.4rem; margin-top: 0.8rem; }
+.messages p { margin: 0; padding: 0.65rem 0.8rem; border-radius: 0.45rem; font-size: 0.74rem; line-height: 1.45; }
+.success { border: 1px solid #315743; background: #17251c; color: #a8e5b7; }
+.messages .error { border: 1px solid #76483f; background: #2b1c1a; color: #ffc0ae; }
 
 @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .grid { grid-template-columns: minmax(0, 1fr); } }

@@ -98,12 +98,12 @@
 
 ### T03 – Airdrop Claims & Leaderboard
 
-- [ ] **T03.1: Implement optimistic ticket and crate claiming.**
-  - **Acceptance:** Successful claim actions update the displayed ticket and crate inventory immediately.
-- [ ] **T03.2: Prevent duplicate requests and roll back inventory on HTTP 409 conflicts.**
-  - **Acceptance:** Repeated claims are blocked while pending; a 409 restores the prior inventory and reports the conflict.
-- [ ] **T03.3: Create the PUBG Vietnam leaderboard with filtering and sorting.**
-  - **Acceptance:** Squad standings can be filtered and sorted using the displayed leaderboard controls.
+- [x] **T03.1: Implement optimistic ticket and crate claiming.**
+  - **Acceptance:** VIP pass, crate and ticket inventory decrement immediately; the mock API is authoritative and successful responses reconcile displayed stock. Unit tests and production preview claims pass.
+- [x] **T03.2: Prevent duplicate requests and roll back inventory on HTTP 409 conflicts.**
+  - **Acceptance:** Pending duplicate claims are ignored; 409 responses restore server inventory, network errors roll back, concurrent claims remain consistent, and cancelled or stale responses cannot overwrite newer state. Focused tests pass.
+- [x] **T03.3: Create the PUBG Vietnam leaderboard with filtering and sorting.**
+  - **Acceptance:** All four squads show WWCD, placement, kill and derived total points; pure immutable filtering and sorting controls pass focused tests.
 
 ### T04 – Testing, Audit & Submission
 

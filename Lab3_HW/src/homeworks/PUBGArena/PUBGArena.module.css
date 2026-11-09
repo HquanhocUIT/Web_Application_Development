@@ -42,7 +42,7 @@
 .scoreLegend span { display: inline-flex; align-items: center; gap: 0.35rem; }
 .scoreLegend i { width: 0.42rem; height: 0.42rem; border-radius: 50%; }
 .placementDot { background: #f2a34f; }
-.eliminationDot { background: #8da8c7; }
+.killDot { background: #8da8c7; }
 .leaderboardCard { min-width: 0; padding: 1rem; border: 1px solid #2b2f32; border-radius: 0.8rem; background: #111416; }
 .leaderboardHeader { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.2rem 0.1rem 0.8rem; }
 .leaderboardHeader div { display: flex; align-items: center; gap: 0.65rem; }

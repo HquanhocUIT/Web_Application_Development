@@ -1,4 +1,5 @@
 import type { PubgCrateDrop, PubgMockDataState, PubgTicket } from '../types'
+import type { PubgClaimMessage } from '../usePubgAirdropClaims'
 import RewardCard from './RewardCard'
 import styles from './RewardGrid.module.css'
 
@@ -6,9 +7,13 @@ type Props = {
   drops: PubgMockDataState<PubgCrateDrop>
   tickets: PubgMockDataState<PubgTicket>
   canClaim: boolean
+  inventories: Readonly<Record<string, number>>
+  pendingIds: ReadonlySet<string>
+  messages: readonly PubgClaimMessage[]
+  onClaim: (itemId: string) => Promise<void>
 }
 
-export default function RewardGrid({ drops, tickets, canClaim }: Props) {
+export default function RewardGrid({ drops, tickets, canClaim, inventories, pendingIds, messages, onClaim }: Props) {
   if (drops.status === 'loading' || tickets.status === 'loading') {
     return <p className={styles.state} role="status">Loading arena rewards…</p>
   }
@@ -23,9 +28,20 @@ export default function RewardGrid({ drops, tickets, canClaim }: Props) {
   }
 
   return (
-    <div className={styles.grid}>
-      {dropItems.map((drop) => <RewardCard key={drop.id} reward={drop} kind="drop" canClaim={canClaim} />)}
-      {ticketItems.map((ticket) => <RewardCard key={ticket.id} reward={ticket} kind="ticket" canClaim={canClaim} />)}
-    </div>
+    <>
+      <div className={styles.grid}>
+        {dropItems.map((drop) => <RewardCard key={drop.id} reward={drop} kind="drop" canClaim={canClaim} inventory={inventories[drop.id] ?? 0} isPending={pendingIds.has(drop.id)} onClaim={onClaim} />)}
+        {ticketItems.map((ticket) => <RewardCard key={ticket.id} reward={ticket} kind="ticket" canClaim={canClaim} inventory={inventories[ticket.id] ?? 0} isPending={pendingIds.has(ticket.id)} onClaim={onClaim} />)}
+      </div>
+      {messages.length > 0 && (
+        <div className={styles.messages} aria-live="polite" aria-relevant="additions">
+          {messages.map((message) => (
+            <p className={message.kind === 'success' ? styles.success : styles.error} key={message.id} role={message.kind === 'success' ? 'status' : 'alert'}>
+              {message.text}
+            </p>
+          ))}
+        </div>
+      )}
+    </>
   )
 }

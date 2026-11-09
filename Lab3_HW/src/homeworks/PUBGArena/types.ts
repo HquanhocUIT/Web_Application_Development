@@ -33,10 +33,9 @@ export interface PubgVnSquadStanding {
   name: string
   tag: string
   region: string
+  wwcd: number
   placementPoints: number
-  eliminationPoints: number
-  wins: number
-  trend: 'up' | 'steady' | 'down'
+  killPoints: number
 }
 
 export type PubgMockDataState<T> =

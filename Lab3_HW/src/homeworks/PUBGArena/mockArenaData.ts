@@ -67,9 +67,9 @@ export const mockPubgTickets: PubgMockDataState<PubgTicket> = {
 export const mockSquadStandings: PubgMockDataState<PubgVnSquadStanding> = {
   status: 'ready',
   data: [
-    { id: 'the-expendables', name: 'The Expendables', tag: 'EXP', region: 'Vietnam', placementPoints: 74, eliminationPoints: 68, wins: 3, trend: 'up' },
-    { id: 'cerberus-esports', name: 'Cerberus Esports', tag: 'CES', region: 'Vietnam', placementPoints: 70, eliminationPoints: 65, wins: 2, trend: 'steady' },
-    { id: 'roy-esports', name: 'Roy Esports', tag: 'ROY', region: 'Vietnam', placementPoints: 61, eliminationPoints: 60, wins: 2, trend: 'up' },
-    { id: 'agg', name: 'AGG', tag: 'AGG', region: 'Vietnam', placementPoints: 56, eliminationPoints: 58, wins: 1, trend: 'down' },
+    { id: 'the-expendables', name: 'The Expendables', tag: 'EXP', region: 'Vietnam', wwcd: 3, placementPoints: 74, killPoints: 68 },
+    { id: 'cerberus-esports', name: 'Cerberus Esports', tag: 'CES', region: 'Vietnam', wwcd: 2, placementPoints: 70, killPoints: 65 },
+    { id: 'roy-esports', name: 'Roy Esports', tag: 'ROY', region: 'Vietnam', wwcd: 2, placementPoints: 61, killPoints: 60 },
+    { id: 'agg', name: 'AGG', tag: 'AGG', region: 'Vietnam', wwcd: 0, placementPoints: 56, killPoints: 58 },
   ],
 }

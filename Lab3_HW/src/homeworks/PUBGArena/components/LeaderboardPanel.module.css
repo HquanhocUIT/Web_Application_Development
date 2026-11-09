@@ -1,26 +1,41 @@
-.list { display: grid; gap: 0.55rem; margin: 0; padding: 0; list-style: none; }
-.row { display: grid; min-height: 4.5rem; grid-template-columns: 2.4rem 2.7rem minmax(0, 1fr) 3.4rem 1.5rem; align-items: center; gap: 0.8rem; padding: 0.65rem 0.85rem; border: 1px solid #2e3337; border-radius: 0.65rem; background: #171a1d; }
+.controls { display: flex; flex-wrap: wrap; align-items: end; gap: 0.55rem; margin-bottom: 0.85rem; }
+.controls label { display: grid; flex: 1 1 7.5rem; gap: 0.28rem; }
+.controls label > span { color: #727a7e; font-size: 0.48rem; font-weight: 850; letter-spacing: 0.1em; }
+.controls select { width: 100%; min-height: 2.1rem; padding: 0.35rem 1.5rem 0.35rem 0.5rem; border: 1px solid #343a3e; border-radius: 0.38rem; background: #1b1f22; color: #c9cbca; font: inherit; font-size: 0.63rem; }
+.controls select:focus-visible,
+.directionButton:focus-visible { outline: 3px solid #ffc064; outline-offset: 2px; }
+.directionButton { min-height: 2.1rem; padding: 0 0.55rem; border: 1px solid #4c3b2b; border-radius: 0.38rem; background: #29231d; color: #f0b46c; font-size: 0.56rem; font-weight: 850; cursor: pointer; }
+.metricHeader,
+.row { display: grid; grid-template-columns: 1.5rem 2.3rem minmax(6rem, 1fr) 2.7rem 4rem 3.3rem 3.4rem; align-items: center; column-gap: 0.45rem; }
+.metricHeader { padding: 0.15rem 0.65rem 0.45rem; color: #737a7e; font-size: 0.46rem; font-weight: 850; letter-spacing: 0.07em; text-align: right; }
+.metricHeader span:first-child { grid-column: 1 / 4; text-align: left; }
+.list { display: grid; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
+.row { min-height: 4.2rem; padding: 0.55rem 0.65rem; border: 1px solid #2e3337; border-radius: 0.65rem; background: #171a1d; }
 .topRow { border-color: #56412c; background: linear-gradient(100deg, #27211a, #191a1c 58%); }
-.rank { color: #767c80; font-size: 0.78rem; font-variant-numeric: tabular-nums; font-weight: 850; }
+.rank { color: #767c80; font-size: 0.72rem; font-variant-numeric: tabular-nums; font-weight: 850; }
 .topRow .rank { color: #ffad55; }
-.teamMark { display: grid; width: 2.45rem; height: 2.45rem; place-items: center; border: 1px solid #41454a; border-radius: 0.5rem; background: #25292d; color: #e3e3df; font-size: 0.59rem; font-weight: 900; letter-spacing: 0.05em; }
+.teamMark { display: grid; width: 2.2rem; height: 2.2rem; place-items: center; border: 1px solid #41454a; border-radius: 0.45rem; background: #25292d; color: #e3e3df; font-size: 0.52rem; font-weight: 900; letter-spacing: 0.04em; }
 .topRow .teamMark { border-color: #79512d; background: linear-gradient(145deg, #4c3722, #28211a); color: #ffc071; }
 .teamName { display: grid; min-width: 0; gap: 0.2rem; }
-.teamName strong { overflow: hidden; color: #eeeae3; font-size: 0.79rem; text-overflow: ellipsis; white-space: nowrap; }
-.teamName small { color: #7d8385; font-size: 0.63rem; }
-.points { display: grid; justify-items: end; gap: 0.1rem; }
-.points strong { color: #f5eee4; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
-.points small { color: #777c80; font-size: 0.51rem; font-weight: 850; letter-spacing: 0.1em; }
-.trend { font-size: 1rem; font-weight: 900; text-align: center; }
-.up { color: #83cb9a; }
-.steady { color: #a5a9ad; }
-.down { color: #e28a74; }
+.teamName strong { overflow: hidden; color: #eeeae3; font-size: 0.69rem; text-overflow: ellipsis; white-space: nowrap; }
+.teamName small { color: #7d8385; font-size: 0.58rem; }
+.metric,
+.total { color: #c7c9c8; font-size: 0.72rem; font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; }
+.total { color: #f5eee4; font-size: 0.84rem; font-weight: 850; }
 .state { margin: 0; padding: 1.5rem; border: 1px dashed #4b4842; border-radius: 0.8rem; color: #b9b7b1; font-size: 0.85rem; line-height: 1.5; }
 .error { border-color: #965349; color: #ffb7a3; }
 
-@media (max-width: 440px) {
-  .row { grid-template-columns: 1.8rem 2.35rem minmax(0, 1fr) 2.9rem; gap: 0.55rem; padding-inline: 0.6rem; }
-  .trend { display: none; }
-  .teamMark { width: 2.2rem; height: 2.2rem; }
-  .teamName strong { font-size: 0.72rem; }
+@media (max-width: 540px) {
+  .controls { align-items: end; }
+  .controls label { flex-basis: 6rem; }
+  .metricHeader,
+  .row { grid-template-columns: 1.1rem minmax(5rem, 1fr) 1.85rem 2.5rem 2.1rem 2.4rem; column-gap: 0.27rem; }
+  .teamMark { display: none; }
+  .metricHeader { padding-inline: 0.4rem; font-size: 0.4rem; letter-spacing: 0.025em; }
+  .metricHeader span:first-child { grid-column: 1 / 3; }
+  .row { min-height: 3.8rem; padding: 0.5rem 0.4rem; }
+  .teamName strong { font-size: 0.62rem; }
+  .teamName small { font-size: 0.52rem; }
+  .metric { font-size: 0.66rem; }
+  .total { font-size: 0.72rem; }
 }
