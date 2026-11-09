@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AirdropCountdownPanel from './components/AirdropCountdownPanel'
 import ChampionshipHeader from './components/ChampionshipHeader'
@@ -5,6 +6,7 @@ import LeaderboardPanel from './components/LeaderboardPanel'
 import RewardGrid from './components/RewardGrid'
 import { mockCrateDrops, mockPubgPhase, mockPubgTickets, mockSquadStandings } from './mockArenaData'
 import { pubgClaimApi, mockPubgClaimableItems } from './pubgClaimApi'
+import { getPubgPhaseConfig } from './pubgPhaseConfig'
 import styles from './PUBGArena.module.css'
 import type { PubgCrateDrop, PubgMockDataState, PubgTicket } from './types'
 import { usePubgAirdropClaims } from './usePubgAirdropClaims'
@@ -19,6 +21,12 @@ function syncInventory<T extends { id: string; inventory: number }>(
 }
 
 export default function PUBGArena() {
+  const [{ phase, isTestMode }] = useState(() => getPubgPhaseConfig(
+    mockPubgPhase,
+    import.meta.env.DEV,
+    window.location.search,
+    Date.now(),
+  ))
   const claims = usePubgAirdropClaims(mockPubgClaimableItems, pubgClaimApi)
   const currentDrops: PubgMockDataState<PubgCrateDrop> = syncInventory(mockCrateDrops, claims.inventories)
   const currentTickets: PubgMockDataState<PubgTicket> = syncInventory(mockPubgTickets, claims.inventories)
@@ -26,8 +34,8 @@ export default function PUBGArena() {
     ? currentDrops.data.reduce((total, drop) => total + drop.inventory, 0)
     : 0
   const countdown = usePubgAirdropTimer({
-    targetTimestamp: mockPubgPhase.targetTimestamp,
-    liveUntilTimestamp: mockPubgPhase.liveUntilTimestamp,
+    targetTimestamp: phase.targetTimestamp,
+    liveUntilTimestamp: phase.liveUntilTimestamp,
     inventory: airdropInventory,
   })
   const ticketCount = currentTickets.status === 'ready'
@@ -48,7 +56,8 @@ export default function PUBGArena() {
           </div>
         </div>
 
-        <AirdropCountdownPanel phase={mockPubgPhase} countdown={countdown} />
+        {isTestMode && <div className={styles.mockNotice} role="note">DEV TEST MODE · COUNTDOWN OPENS IN 10 SECONDS</div>}
+        <AirdropCountdownPanel phase={phase} countdown={countdown} />
 
         <div className={styles.metrics} aria-label="Arena overview">
           <div><span className={styles.metricIcon}>◉</span><span><small>COMPETING SQUADS</small><strong>04</strong></span></div>
