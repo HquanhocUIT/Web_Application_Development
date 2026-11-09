@@ -73,5 +73,5 @@
   - **Acceptance:** Tests verify key generation, polyphony, FIFO stealing, recording, playback order and cleanup.
 - [ ] **T04.2: Check responsive design, accessibility, React Profiler and Lighthouse.**
   - **Acceptance:** Mobile and desktop checks, accessibility review, Profiler evidence and Lighthouse results are recorded.
-- [ ] **T04.3: Create `AI_FAILURE_AUDIT.md` with at least 3 verified AI-generated bugs and review submission requirements.**
-  - **Acceptance:** The audit includes three evidence-backed bugs, and required submission files and evidence are reviewed.
+- [x] **T04.3: Create `AI_FAILURE_AUDIT.md` with at least 3 verified AI-generated bugs and review submission requirements.**
+  - **Acceptance:** The audit retains three evidence-backed Homework 1 defects with affected files, discovery, fixes and commit/report evidence. The Homework 2 history was reviewed; no additional verified piano defect was found. Final review records that the piano UI/key generator is missing, Homework 2 T04.1/T04.2 remain incomplete, and screenshots are left for manual capture.
