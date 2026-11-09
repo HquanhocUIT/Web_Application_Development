@@ -7,10 +7,16 @@ export function midiToFrequency(midi: number): number {
   return 440 * 2 ** ((midi - 69) / 12)
 }
 
+export type PianoVoiceHandle = {
+  readonly midi: number
+  readonly token: symbol
+}
+
 type PianoVoice = {
   midi: number
   oscillator: OscillatorNode
   gain: GainNode
+  handle: PianoVoiceHandle
   started: boolean
   releasing: boolean
   startedAt: number | null
@@ -24,11 +30,22 @@ export class PianoAudioEngine {
   private disposed = false
 
   startNote(midi: number): boolean {
-    if (this.disposed || !Number.isInteger(midi) || midi < 0 || midi > 127) return false
-    if (this.activeVoices.has(midi)) return false
+    return this.startVoice(midi) !== null
+  }
+
+  prepareAudio(): Promise<boolean> {
+    const context = this.getOrCreateContext()
+    if (!context) return Promise.resolve(false)
+    if (context.state === 'running') return Promise.resolve(true)
+    return context.resume().then(() => context.state === 'running').catch(() => false)
+  }
+
+  startVoice(midi: number): PianoVoiceHandle | null {
+    if (this.disposed || !Number.isInteger(midi) || midi < 0 || midi > 127) return null
+    if (this.activeVoices.has(midi)) return null
 
     const context = this.getOrCreateContext()
-    if (!context) return false
+    if (!context) return null
 
     if (this.activeVoices.size >= MAX_PIANO_VOICES) {
       const oldestMidi = this.activeVoices.keys().next().value
@@ -41,6 +58,7 @@ export class PianoAudioEngine {
       midi,
       oscillator,
       gain,
+      handle: { midi, token: Symbol(`piano-voice-${midi}`) },
       started: false,
       releasing: false,
       startedAt: null,
@@ -62,14 +80,21 @@ export class PianoAudioEngine {
       }).catch(() => this.cleanupVoice(voice))
     }
 
-    return true
+    return voice.handle
   }
 
   releaseNote(midi: number): boolean {
     const voice = this.activeVoices.get(midi)
     if (!voice) return false
 
-    this.activeVoices.delete(midi)
+    return this.releaseVoiceHandle(voice.handle)
+  }
+
+  releaseVoiceHandle(handle: PianoVoiceHandle): boolean {
+    const voice = this.activeVoices.get(handle.midi)
+    if (!voice || voice.handle !== handle) return false
+
+    this.activeVoices.delete(handle.midi)
     if (!voice.started) {
       this.cleanupVoice(voice)
       return true

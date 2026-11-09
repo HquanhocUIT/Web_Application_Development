@@ -60,12 +60,12 @@
 
 ### T03 – Performance, Recording & Replay
 
-- [ ] **T03.1: Optimize all 88 keys with React.memo and verify rendering using React DevTools Profiler.**
-  - **Acceptance:** Piano keys use memoization and Profiler evidence confirms unchanged keys avoid unnecessary renders.
-- [ ] **T03.2: Record MIDI notes, frequencies, durations and timing.**
-  - **Acceptance:** Recording captures each played note's MIDI value, frequency, duration and relative timing.
-- [ ] **T03.3: Implement FIFO replay at 0.5x, 1x and 2x, with Stop and AbortController cancellation.**
-  - **Acceptance:** Replay preserves event order and selected speed; Stop aborts pending and active scheduled work.
+- [x] **T03.1: Optimize all 88 keys with React.memo and verify rendering using React DevTools Profiler.**
+  - **Acceptance:** Piano keys are memoized with stable internal handlers; a React Profiler API test confirms pressing one of 88 keys commits only that key subtree. React DevTools Profiler was unavailable and was not claimed.
+- [x] **T03.2: Record MIDI notes, frequencies, durations and timing.**
+  - **Acceptance:** Recording stores notes in start order with MIDI, formula-derived frequency, monotonic start offset and duration, including overlaps.
+- [x] **T03.3: Implement FIFO replay at 0.5x, 1x and 2x, with Stop and AbortController cancellation.**
+  - **Acceptance:** Replay preserves recorded timing and overlaps at all three speeds; Stop, restart and unmount abort waits and release playback-owned voices.
 
 ### T04 – Testing, Audit & Submission
 

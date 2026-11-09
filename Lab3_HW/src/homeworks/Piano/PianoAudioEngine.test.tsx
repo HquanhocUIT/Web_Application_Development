@@ -177,38 +177,50 @@ describe('PianoKey input handling', () => {
 
   it('starts on pointer down and releases on pointer up or cancellation', () => {
     const engine = {
-      startNote: vi.fn(),
-      releaseNote: vi.fn(),
+      startVoice: vi.fn(() => ({ midi: 60, token: Symbol('test-voice') })),
+      releaseVoiceHandle: vi.fn(),
     } as unknown as PianoAudioEngine
-    render(<PianoKey midi={60} label="C4" engine={engine} />)
+    const onNoteStart = vi.fn()
+    const onNoteEnd = vi.fn()
+    render(
+      <PianoKey
+        midi={60}
+        label="C4"
+        engine={engine}
+        onNoteStart={onNoteStart}
+        onNoteEnd={onNoteEnd}
+      />,
+    )
     const key = screen.getByRole('button', { name: 'C4' })
 
     fireEvent.pointerDown(key, { pointerId: 3, pointerType: 'touch', button: 0 })
-    expect(engine.startNote).toHaveBeenCalledOnce()
+    expect(engine.startVoice).toHaveBeenCalledOnce()
     expect(key.getAttribute('aria-pressed')).toBe('true')
     fireEvent.pointerCancel(key, { pointerId: 3, pointerType: 'touch' })
-    expect(engine.releaseNote).toHaveBeenCalledOnce()
+    expect(engine.releaseVoiceHandle).toHaveBeenCalledOnce()
     expect(key.getAttribute('aria-pressed')).toBe('false')
 
     fireEvent.pointerDown(key, { pointerId: 4, pointerType: 'mouse', button: 0 })
     fireEvent.pointerUp(key, { pointerId: 4, pointerType: 'mouse', button: 0 })
-    expect(engine.startNote).toHaveBeenCalledTimes(2)
-    expect(engine.releaseNote).toHaveBeenCalledTimes(2)
+    expect(engine.startVoice).toHaveBeenCalledTimes(2)
+    expect(engine.releaseVoiceHandle).toHaveBeenCalledTimes(2)
+    expect(onNoteStart).toHaveBeenCalledTimes(2)
+    expect(onNoteEnd).toHaveBeenCalledTimes(2)
   })
 
   it('starts and releases keyboard notes and ignores repeated keydown events', () => {
     const engine = {
-      startNote: vi.fn(),
-      releaseNote: vi.fn(),
+      startVoice: vi.fn(() => ({ midi: 60, token: Symbol('test-voice') })),
+      releaseVoiceHandle: vi.fn(),
     } as unknown as PianoAudioEngine
     render(<PianoKey midi={60} label="C4" engine={engine} />)
     const key = screen.getByRole('button', { name: 'C4' })
 
     fireEvent.keyDown(key, { key: ' ', repeat: false })
     fireEvent.keyDown(key, { key: ' ', repeat: true })
-    expect(engine.startNote).toHaveBeenCalledOnce()
+    expect(engine.startVoice).toHaveBeenCalledOnce()
     fireEvent.keyUp(key, { key: ' ' })
-    expect(engine.releaseNote).toHaveBeenCalledOnce()
+    expect(engine.releaseVoiceHandle).toHaveBeenCalledOnce()
   })
 })
 

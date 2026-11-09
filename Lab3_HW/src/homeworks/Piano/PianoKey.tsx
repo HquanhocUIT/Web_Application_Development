@@ -1,30 +1,43 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent, PointerEvent } from 'react'
 import { PianoAudioEngine } from './PianoAudioEngine'
+import type { PianoVoiceHandle } from './PianoAudioEngine'
 import styles from './PianoKey.module.css'
 
 type PianoKeyProps = {
   midi: number
   label: string
   engine: PianoAudioEngine
+  onNoteStart?: (midi: number) => void
+  onNoteEnd?: (midi: number) => void
 }
 
-function PianoKey({ midi, label, engine }: PianoKeyProps) {
+function PianoKey({ midi, label, engine, onNoteStart, onNoteEnd }: PianoKeyProps) {
   const heldInputs = useRef(new Set<string>())
+  const voiceHandle = useRef<PianoVoiceHandle | null>(null)
+  const onNoteStartRef = useRef(onNoteStart)
+  const onNoteEndRef = useRef(onNoteEnd)
   const [pressed, setPressed] = useState(false)
+  onNoteStartRef.current = onNoteStart
+  onNoteEndRef.current = onNoteEnd
 
   const press = useCallback((source: string) => {
     if (heldInputs.current.has(source)) return
     const wasReleased = heldInputs.current.size === 0
     heldInputs.current.add(source)
-    if (wasReleased) engine.startNote(midi)
+    if (wasReleased) {
+      voiceHandle.current = engine.startVoice(midi)
+      onNoteStartRef.current?.(midi)
+    }
     setPressed(true)
   }, [engine, midi])
 
   const release = useCallback((source: string) => {
     if (!heldInputs.current.delete(source)) return
     if (heldInputs.current.size === 0) {
-      engine.releaseNote(midi)
+      if (voiceHandle.current) engine.releaseVoiceHandle(voiceHandle.current)
+      voiceHandle.current = null
+      onNoteEndRef.current?.(midi)
       setPressed(false)
     }
   }, [engine, midi])
@@ -60,8 +73,11 @@ function PianoKey({ midi, label, engine }: PianoKeyProps) {
   }, [release])
 
   useEffect(() => () => {
+    const wasPressed = heldInputs.current.size > 0
     heldInputs.current.clear()
-    engine.releaseNote(midi)
+    if (voiceHandle.current) engine.releaseVoiceHandle(voiceHandle.current)
+    voiceHandle.current = null
+    if (wasPressed) onNoteEndRef.current?.(midi)
   }, [engine, midi])
 
   return (
