@@ -148,8 +148,11 @@
 .timerBlock { max-width: 24rem; margin-top: 1.65rem; }
 .timerLabel { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; color: #aaa49b; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; }
 .previewTag { padding: 0.28rem 0.45rem; border: 1px solid #4f3b2d; border-radius: 0.25rem; color: #ecaa68; font-size: 0.52rem; }
-.timer { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem; color: #f4eee5; font-size: clamp(2rem, 5vw, 3.4rem); font-variant-numeric: tabular-nums; font-weight: 750; letter-spacing: 0.05em; }
-.timer b { color: #e88a3f; font-size: 0.72em; }
+.timer { display: flex; align-items: start; gap: clamp(0.3rem, 1.4vw, 0.75rem); margin-top: 0.45rem; color: #f4eee5; font-variant-numeric: tabular-nums; }
+.timerUnit { display: grid; min-width: 2.7rem; justify-items: center; gap: 0.1rem; }
+.timerUnit strong { font-size: clamp(1.6rem, 4.4vw, 3rem); font-weight: 780; letter-spacing: 0.015em; line-height: 1; }
+.timerUnit small { color: #85817b; font-size: 0.48rem; font-weight: 850; letter-spacing: 0.12em; }
+.timer b { padding-top: 0.1rem; color: #e88a3f; font-size: clamp(1.3rem, 3vw, 2rem); }
 .timerBlock p { margin: 0.15rem 0 0; color: #767a7d; font-size: 0.68rem; }
 
 .action {

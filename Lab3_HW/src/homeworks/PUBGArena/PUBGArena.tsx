@@ -5,8 +5,17 @@ import LeaderboardPanel from './components/LeaderboardPanel'
 import RewardGrid from './components/RewardGrid'
 import { mockCrateDrops, mockPubgPhase, mockPubgTickets, mockSquadStandings } from './mockArenaData'
 import styles from './PUBGArena.module.css'
+import { usePubgAirdropTimer } from './usePubgAirdropTimer'
 
 export default function PUBGArena() {
+  const airdropInventory = mockCrateDrops.status === 'ready'
+    ? mockCrateDrops.data[0]?.inventory ?? 0
+    : 0
+  const countdown = usePubgAirdropTimer({
+    targetTimestamp: mockPubgPhase.targetTimestamp,
+    liveUntilTimestamp: mockPubgPhase.liveUntilTimestamp,
+    inventory: airdropInventory,
+  })
   const ticketCount = mockPubgTickets.status === 'ready'
     ? mockPubgTickets.data.reduce((count, ticket) => count + ticket.inventory, 0)
     : 0
@@ -25,7 +34,7 @@ export default function PUBGArena() {
           </div>
         </div>
 
-        <AirdropCountdownPanel phase={mockPubgPhase} />
+        <AirdropCountdownPanel phase={mockPubgPhase} countdown={countdown} />
 
         <div className={styles.metrics} aria-label="Arena overview">
           <div><span className={styles.metricIcon}>◉</span><span><small>COMPETING SQUADS</small><strong>04</strong></span></div>
@@ -39,8 +48,8 @@ export default function PUBGArena() {
             <div><p className={styles.eyebrow}>Secure your loadout</p><h2 id="rewards-title">Airdrop rewards</h2></div>
             <span className={styles.sectionIndex}>01 <i>/</i> REWARDS</span>
           </div>
-          <RewardGrid drops={mockCrateDrops} tickets={mockPubgTickets} />
-          <p className={styles.mockFootnote}>Prices and inventory are sample values for this local mock dashboard. Claiming is not available in this milestone.</p>
+          <RewardGrid drops={mockCrateDrops} tickets={mockPubgTickets} canClaim={countdown.isClaimable} />
+          <p className={styles.mockFootnote}>Prices and inventory are sample values for this local mock dashboard. The timer gates the claim window; claim requests are implemented in T03.</p>
         </section>
 
         <section className={styles.leaderboardSection} id="leaderboard" aria-labelledby="leaderboard-title">

@@ -6,13 +6,15 @@ import type {
   PubgVnSquadStanding,
 } from './types'
 
+const mockDropOpensAt = Date.now() + 24 * 60 * 60 * 1000
+
 /** Local presentation data only; replace behind a service layer when an API exists. */
 export const mockPubgPhase: PubgPhase = {
   id: 'pvs-grand-finals',
   name: 'PVS Grand Finals',
   subtitle: 'THE FINAL DROP ZONE',
-  status: 'WARMUP',
-  targetTimestamp: Date.now() + 24 * 60 * 1000,
+  targetTimestamp: mockDropOpensAt,
+  liveUntilTimestamp: mockDropOpensAt + 60 * 60 * 1000,
   arenaName: 'Ho Chi Minh City · Vietnam',
 }
 

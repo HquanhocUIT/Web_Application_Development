@@ -89,12 +89,12 @@
 
 ### T02 – Anti-Drift Countdown
 
-- [ ] **T02.1: Create the `usePubgAirdropTimer` hook using `Date.now()` and an absolute target timestamp.**
-  - **Acceptance:** Countdown values derive from the current time and target timestamp, not accumulated intervals.
-- [ ] **T02.2: Add `visibilitychange` synchronization and proper timer cleanup.**
-  - **Acceptance:** Returning to a visible tab refreshes remaining time; listeners and timers are cleaned up.
-- [ ] **T02.3: Display the live countdown and unlock airdrops when time expires.**
-  - **Acceptance:** The countdown updates onscreen and expired airdrops become claimable.
+- [x] **T02.1: Create the `usePubgAirdropTimer` hook using `Date.now()` and an absolute target timestamp.**
+  - **Acceptance:** The hook derives time from absolute opening/closing timestamps on each tick and supports an optional server offset; normal and offset calculations pass tests.
+- [x] **T02.2: Add `visibilitychange` synchronization and proper timer cleanup.**
+  - **Acceptance:** Returning to a visible tab recalculates immediately; tests verify hidden/visible synchronization and interval/listener cleanup on unmount.
+- [x] **T02.3: Display the live countdown and unlock airdrops when time expires.**
+  - **Acceptance:** Days, hours, minutes and seconds render without negative values; `WARMUP`, `AIRDROP_LIVE`, `LOOTED_OUT` and `EXPIRED` states gate claim controls. Full suite passes 49 tests; lint, typecheck and production build pass.
 
 ### T03 – Airdrop Claims & Leaderboard
 

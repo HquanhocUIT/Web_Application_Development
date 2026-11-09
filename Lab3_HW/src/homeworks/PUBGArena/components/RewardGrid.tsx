@@ -5,9 +5,10 @@ import styles from './RewardGrid.module.css'
 type Props = {
   drops: PubgMockDataState<PubgCrateDrop>
   tickets: PubgMockDataState<PubgTicket>
+  canClaim: boolean
 }
 
-export default function RewardGrid({ drops, tickets }: Props) {
+export default function RewardGrid({ drops, tickets, canClaim }: Props) {
   if (drops.status === 'loading' || tickets.status === 'loading') {
     return <p className={styles.state} role="status">Loading arena rewards…</p>
   }
@@ -23,8 +24,8 @@ export default function RewardGrid({ drops, tickets }: Props) {
 
   return (
     <div className={styles.grid}>
-      {dropItems.map((drop) => <RewardCard key={drop.id} reward={drop} kind="drop" />)}
-      {ticketItems.map((ticket) => <RewardCard key={ticket.id} reward={ticket} kind="ticket" />)}
+      {dropItems.map((drop) => <RewardCard key={drop.id} reward={drop} kind="drop" canClaim={canClaim} />)}
+      {ticketItems.map((ticket) => <RewardCard key={ticket.id} reward={ticket} kind="ticket" canClaim={canClaim} />)}
     </div>
   )
 }

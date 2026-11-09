@@ -4,8 +4,8 @@ export interface PubgPhase {
   id: string
   name: string
   subtitle: string
-  status: PubgPhaseStatus
   targetTimestamp: number
+  liveUntilTimestamp: number
   arenaName: string
 }
 

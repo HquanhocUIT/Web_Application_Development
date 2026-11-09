@@ -3,10 +3,10 @@ import { formatVnd } from '../formatVnd'
 import styles from './RewardCard.module.css'
 
 type Props =
-  | { reward: PubgCrateDrop; kind: 'drop' }
-  | { reward: PubgTicket; kind: 'ticket' }
+  | { reward: PubgCrateDrop; kind: 'drop'; canClaim: boolean }
+  | { reward: PubgTicket; kind: 'ticket'; canClaim: boolean }
 
-export default function RewardCard({ reward, kind }: Props) {
+export default function RewardCard({ reward, kind, canClaim }: Props) {
   const isDrop = kind === 'drop'
   const title = reward.name
   const subtitle = isDrop ? reward.subtitle : 'ARENA ACCESS'
@@ -36,8 +36,13 @@ export default function RewardCard({ reward, kind }: Props) {
           <strong>{reward.inventory.toLocaleString('vi-VN')} <small>units</small></strong>
         </div>
       </div>
-      <button className={styles.claimButton} type="button" disabled aria-disabled="true">
-        DROP PREVIEW <span aria-hidden="true">↗</span>
+      <button
+        className={styles.claimButton}
+        type="button"
+        disabled={!canClaim}
+        aria-label={canClaim ? `Claim ${title}; claim service arrives in T03` : `Claim ${title} unavailable until the airdrop is live`}
+      >
+        {canClaim ? 'AIRDROP LIVE · CLAIM FLOW T03' : 'CLAIMS OPEN WHEN LIVE'} <span aria-hidden="true">↗</span>
       </button>
     </article>
   )
